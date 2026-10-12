@@ -22,6 +22,13 @@ namespace Defend.Unity
         private Quaternion facingRestRotation;
         private bool hasRestPose;
         private int previousHealth;
+        private HitFlashEffect hitFlashEffect;
+        private void Awake()
+        {
+            hitFlashEffect = GetComponent<HitFlashEffect>();
+            if (hitFlashEffect == null) hitFlashEffect = GetComponentInChildren<HitFlashEffect>(true);
+        }
+        public void SetPaused(bool paused) { hitFlashEffect?.SetPaused(paused); }
         private Vector3 previousPosition;
         private Vector3 currentPosition;
         private bool hasPosition;
@@ -34,6 +41,7 @@ namespace Defend.Unity
             EnemyId = 0;
             ShowSelection(false);
             previousHealth = 0;
+            hitFlashEffect?.ResetFlash();
             if (facingRoot != null)
             {
                 if (!hasRestPose)
@@ -49,6 +57,8 @@ namespace Defend.Unity
         }
         public void Apply(EnemyState state, long tick = 0, int ticksPerSecond = 20)
         {
+            bool receivedDamage = previousHealth > state.Health;
+            if (receivedDamage) hitFlashEffect?.Flash();
             Kind = state.Kind;
             EnemyId = state.Id;
             Vector3 nextPosition = new Vector3((float)state.X, 0, (float)state.Z);
@@ -56,15 +66,18 @@ namespace Defend.Unity
             currentPosition = nextPosition;
             hasPosition = true;
             float fraction = Mathf.Clamp01((float)state.Health / state.MaximumHealth);
-            healthFill.localScale = new Vector3(Mathf.Max(0.001f, fraction * 0.72f), 0.055f, 0.12f);
+            if (healthFill != null)
+            {
+                healthFill.localScale = new Vector3(Mathf.Max(0.001f, fraction * 0.72f), 0.055f, 0.12f);
             healthFill.localPosition = new Vector3((fraction - 1) * 0.36f, 1.15f, 0);
+            }
             transform.localScale = industrialModel ? Vector3.one : state.Kind == EnemyKind.Heavy ? new Vector3(1.5f, 1.25f, 1.5f) :
                 state.Kind == EnemyKind.Fast ? new Vector3(0.65f, 0.7f, 0.65f) : Vector3.one;
             ApplyFacing(state, tick, ticksPerSecond);
             if (bodyRenderer != null && !industrialModel)
             {
                 if (bodyProperties == null) bodyProperties = new MaterialPropertyBlock();
-                Color color = previousHealth > state.Health ? Color.white : state.Kind == EnemyKind.Fast ?
+                Color color = receivedDamage ? Color.white : state.Kind == EnemyKind.Fast ?
                     new Color(1, 0.8f, 0.15f) : state.Kind == EnemyKind.Heavy ? new Color(0.65f, 0.25f, 0.8f) : new Color(0.95f, 0.25f, 0.2f);
                 bodyProperties.SetColor("_BaseColor", color); bodyRenderer.SetPropertyBlock(bodyProperties);
             }

@@ -752,6 +752,7 @@ GameObject:
   - component: {fileID: 2999289668279102830}
   - component: {fileID: 7333927053997153058}
   - component: {fileID: 3141855641924810767}
+  - component: {fileID: 1116485220017282286}
   m_Layer: 0
   m_Name: Heavy
   m_TagString: Untagged
@@ -831,6 +832,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.8, y: 1.1, z: 0.8}
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &1116485220017282286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6707706342829563564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da02de4bd4def6e439a6bfae372c83f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Defend.Unity::Defend.Unity.HitFlashEffect
+  WhiteOverlay: 0
+  DecayPerSecond: 6
 --- !u!1 &8778444588333380678
 GameObject:
   m_ObjectHideFlags: 0

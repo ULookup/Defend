@@ -114,7 +114,7 @@ namespace Defend.Unity
             lastReportedCommand = World.LastCommandResult.Sequence;
             Feedback = Battle == null ? "选择建筑查看供给，或从左侧购买建筑。" : "部署炮塔与供电线路，准备好后开始第一波。";
             presentation.Refresh(World, SelectedBuildingId, World.CurrentTick);
-            battlePresentation?.Refresh(World, World.CurrentTick);
+            battlePresentation?.Refresh(World, World.CurrentTick, Paused);
             combatArt?.Initialize(World, presentation, battlePresentation);
             RefreshPanels();
         }
@@ -137,7 +137,7 @@ namespace Defend.Unity
             double interpolation = Math.Min(1, clock.PendingSeconds * experimentSettings.TicksPerSecond);
             presentation.Refresh(World, SelectedBuildingId, World.CurrentTick + interpolation);
             energyLossGridOverlay?.Refresh(World, SelectedBuildingId);
-            battlePresentation?.Refresh(World, World.CurrentTick + interpolation);
+            battlePresentation?.Refresh(World, World.CurrentTick + interpolation, Paused || terminal || AtStartPage);
             battlePresentation?.ShowSelection(SelectedEnemy != null && SelectedEnemy.IsAlive ? SelectedEnemy.Id : 0);
             combatArt?.Refresh(World.CurrentTick + interpolation, SelectedBuildingId, Paused, Time.unscaledDeltaTime);
             if (Time.unscaledTime >= nextPanelRefresh)
@@ -187,7 +187,7 @@ namespace Defend.Unity
             if (combatArt != null && combatArt.IsBoundTo(World))
             {
                 presentation.Refresh(World, SelectedBuildingId, World.CurrentTick);
-                battlePresentation?.Refresh(World, World.CurrentTick);
+                battlePresentation?.Refresh(World, World.CurrentTick, Paused);
                 combatArt.ObserveStep(World);
             }
         }

@@ -84,7 +84,7 @@ namespace Defend.Unity
             lastAppliedTick = -1;
         }
 
-        public void Refresh(GameWorld world, double displayTick)
+        public void Refresh(GameWorld world, double displayTick, bool paused = false)
         {
             if (world.Battle == null) return;
             if (lastAppliedTick != world.CurrentTick)
@@ -93,7 +93,11 @@ namespace Defend.Unity
                 lastAppliedTick = world.CurrentTick;
             }
             float progress = Mathf.Clamp01((float)(displayTick - world.CurrentTick));
-            foreach (EnemyView view in enemyViews.Values) view.Interpolate(progress);
+            foreach (EnemyView view in enemyViews.Values)
+            {
+                view.SetPaused(paused);
+                view.Interpolate(progress);
+            }
         }
 
         private void RefreshSnapshots(GameWorld world)

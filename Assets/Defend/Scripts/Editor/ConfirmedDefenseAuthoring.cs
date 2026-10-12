@@ -107,10 +107,15 @@ namespace Defend.Editor
         private static EnemyView MakeEnemy(EnemyView source, EnemyKind kind, Color color, float scale)
         {
             string path = Root + "/Enemies/" + kind + ".prefab";
-            if (AssetDatabase.LoadAssetAtPath<GameObject>(path) != null) return AssetDatabase.LoadAssetAtPath<GameObject>(path).GetComponent<EnemyView>();
+            if (AssetDatabase.LoadAssetAtPath<GameObject>(path) != null)
+            {
+                EnsureEnemyHitFlash(path);
+                return AssetDatabase.LoadAssetAtPath<GameObject>(path).GetComponent<EnemyView>();
+            }
             var instance = Object.Instantiate(source.gameObject);
             try
             {
+                if (instance.GetComponentInChildren<HitFlashEffect>(true) == null) instance.AddComponent<HitFlashEffect>();
                 instance.name = kind.ToString(); var view = instance.GetComponent<EnemyView>(); var data = new SerializedObject(view);
                 var facing = (Transform)data.FindProperty("facingRoot").objectReferenceValue; facing.localScale *= scale;
                 var badge = CreateMaterial(kind+"Signal",color);
@@ -124,6 +129,19 @@ namespace Defend.Editor
             }
             finally { Object.DestroyImmediate(instance); }
         }
+        public static void EnsureEnemyHitFlash(string path)
+        {
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            if (prefab == null || prefab.GetComponentInChildren<HitFlashEffect>(true) != null) return;
+            var contents = PrefabUtility.LoadPrefabContents(path);
+            try
+            {
+                contents.AddComponent<HitFlashEffect>();
+                PrefabUtility.SaveAsPrefabAsset(contents, path);
+            }
+            finally { PrefabUtility.UnloadPrefabContents(contents); }
+        }
+
         private static Sprite RenderPortrait(EnemyView source)
         {
             string path=Root+"/Portraits/"+source.name+".png";
