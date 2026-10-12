@@ -8,8 +8,11 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/Defend/Content/Scenes/Dev/CombatStress.unity
     guid: 746293dc584de864e98b3e5d7a04de89
+  - enabled: 1
+    path: Assets/Defend/Content/Scenes/Dev/IndustrialDefense.unity
+    guid: a51a9202509508543a04b645c995d9bb
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

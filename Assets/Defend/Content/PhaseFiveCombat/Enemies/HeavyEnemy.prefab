@@ -191,6 +191,7 @@ GameObject:
   - component: {fileID: 8350747206081505563}
   - component: {fileID: 4889325568049525197}
   - component: {fileID: 7484896410952357488}
+  - component: {fileID: 654040755893803497}
   m_Layer: 0
   m_Name: HeavyEnemy
   m_TagString: Untagged
@@ -247,6 +248,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Defend.Unity::Defend.Unity.MechanicalEnemyMotion
   Legs: []
+--- !u!114 &654040755893803497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6556187192278236835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da02de4bd4def6e439a6bfae372c83f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Defend.Unity.HitFlashEffect
+  WhiteOverlay: 0
+  DecayPerSecond: 6
 --- !u!1001 &5821046709224066991
 PrefabInstance:
   m_ObjectHideFlags: 0

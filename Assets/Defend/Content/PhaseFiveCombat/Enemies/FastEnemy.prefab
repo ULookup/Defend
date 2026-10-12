@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: 935782522280096228}
   - component: {fileID: 4557899402382352724}
   - component: {fileID: 8712819401090998525}
+  - component: {fileID: 8035079482546545447}
   m_Layer: 0
   m_Name: FastEnemy
   m_TagString: Untagged
@@ -157,6 +158,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Defend.Unity::Defend.Unity.MechanicalEnemyMotion
   Legs: []
+--- !u!114 &8035079482546545447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1200936123608684336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da02de4bd4def6e439a6bfae372c83f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Defend.Unity.HitFlashEffect
+  WhiteOverlay: 0
+  DecayPerSecond: 6
 --- !u!1 &4178254030868549882
 GameObject:
   m_ObjectHideFlags: 0
