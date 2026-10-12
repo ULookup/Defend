@@ -19,12 +19,20 @@ namespace Defend.Unity
         [SerializeField, Range(16, 1024)] private int maximumVisibleTransfers = 160;
         [SerializeField, Range(16, 2048)] private int maximumVisibleConnections = 600;
 
+        [Header("电池供给启停阈值")]
+        [SerializeField, Range(0, 1)] private float batterySupportStartRatio = 0.3f;
+        [SerializeField, Range(0, 1)] private float batterySupportStopRatio = 0.75f;
+        [SerializeField, Range(0, 1)] private float batteryBalanceStartDifference = 0.25f;
+        [SerializeField, Range(0, 1)] private float batteryBalanceStopDifference = 0.1f;
+
         public int TicksPerSecond => ticksPerSecond;
         public bool EnableTestLoad => enableTestLoad;
         public int MaximumVisibleTransfers => maximumVisibleTransfers;
         public int MaximumVisibleConnections => maximumVisibleConnections;
         public WorldSettings CreateWorldSettings() => new WorldSettings(width, depth, ticksPerSecond, startingCredits);
         public EnergySettings CreateEnergySettings() => new EnergySettings(stallTimeoutTicks,
-            flightTicksPerCell, baseQuantum, maximumLossAtRange);
+            flightTicksPerCell, baseQuantum, maximumLossAtRange,
+            batterySupportStartRatio: batterySupportStartRatio, batterySupportStopRatio: batterySupportStopRatio,
+            batteryBalanceStartDifference: batteryBalanceStartDifference, batteryBalanceStopDifference: batteryBalanceStopDifference);
     }
 }

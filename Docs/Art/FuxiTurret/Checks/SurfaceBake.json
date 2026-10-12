@@ -1,0 +1,58 @@
+{
+  "asset": "FuxiTurret",
+  "source": "E:\\UnityProject\\Defend\\ArtSource\\Production\\FuxiTurret\\FuxiTurret.blend",
+  "export": "E:\\UnityProject\\Defend\\Assets\\Defend\\Content\\Art\\FuxiTurret\\Models\\FuxiTurret.fbx",
+  "sourceBeforeAtlas": "E:\\UnityProject\\Defend\\ArtSource\\Production\\FuxiTurret\\FuxiTurret.BeforeAtlas.blend",
+  "size": 2048,
+  "samples": 16,
+  "bakeEngine": "Cycles CPU EMIT",
+  "passes": [
+    "BaseColor",
+    "Metallic",
+    "Smoothness"
+  ],
+  "surfaceVersion": 3,
+  "contactOcclusionDistanceMeters": 0.006,
+  "contactOcclusionScope": "Low-strength nondirectional local contact tone in base color; source duplicates and studio floor excluded from baking.",
+  "sourcePartCount": 644,
+  "sourceGeometryAndMotionParentsUnchanged": true,
+  "uv": {
+    "uvLayer": "FuxiSurfaceUV",
+    "method": "Multi-object UV island scale averaging and joint nonoverlapping packing",
+    "fractionalMargin": 0.003,
+    "outsideUnitSquareLoops": 0,
+    "nonfiniteLoops": 0
+  },
+  "exportGroups": {
+    "meshCount": 9,
+    "groups": [
+      "FixedBase",
+      "PitchArmor",
+      "PitchHousing",
+      "RecoilCarriage",
+      "RotatingBarrels",
+      "RotorBearings",
+      "StatusLamps",
+      "TurretHousing",
+      "YawArmor"
+    ]
+  },
+  "baseColorTexture": "E:\\UnityProject\\Defend\\Assets\\Defend\\Content\\Art\\FuxiTurret\\Textures\\FuxiTurret_BaseColor.png",
+  "metallicSmoothnessTexture": "E:\\UnityProject\\Defend\\Assets\\Defend\\Content\\Art\\FuxiTurret\\Textures\\FuxiTurret_MetallicSmoothness.png",
+  "occupiedFractionIncludingPadding": 0.5361251831054688,
+  "sourceSurface": {
+    "sourceUsesGameAtlases": true,
+    "packedImages": [
+      "FuxiTurret_GameBaseColor",
+      "FuxiTurret_GameMetallicSmoothness"
+    ],
+    "pathsRelativeToSource": [
+      "//..\\..\\..\\Assets\\Defend\\Content\\Art\\FuxiTurret\\Textures\\FuxiTurret_BaseColor.png",
+      "//..\\..\\..\\Assets\\Defend\\Content\\Art\\FuxiTurret\\Textures\\FuxiTurret_MetallicSmoothness.png"
+    ],
+    "proceduralNodesRetainedDisconnected": true,
+    "microscopicBumpConnected": false
+  },
+  "elapsedSeconds": 48.32306030000018,
+  "scope": "The saved Blender source and Unity use the same base-color and metallic-smoothness PNGs. Images are packed in the source with relative paths. Original procedural nodes remain disconnected for editing; microscopic bump is disconnected to prevent texture swimming on mechanical motion."
+}

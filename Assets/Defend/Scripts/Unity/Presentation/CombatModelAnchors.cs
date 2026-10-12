@@ -1,3 +1,4 @@
+using Defend.PhaseFiveEffects;
 using UnityEngine;
 
 namespace Defend.Unity
@@ -6,13 +7,23 @@ namespace Defend.Unity
     public sealed class CombatModelAnchors : MonoBehaviour
     {
         public Transform TurretYaw, Muzzle, AlternateMuzzle, EnergyPort, StatusAnchor;
+        public RapidTurretMotion RapidMotion;
         private Quaternion restingYaw;
         private void Awake() { restingYaw = TurretYaw == null ? Quaternion.identity : TurretYaw.localRotation; }
-        public void ResetPose() { if (TurretYaw != null) TurretYaw.localRotation = restingYaw; }
+        public void ResetPose()
+        {
+            if (RapidMotion != null) RapidMotion.ResetPose();
+            else if (TurretYaw != null) TurretYaw.localRotation = restingYaw;
+        }
         public Vector3 PortPosition => EnergyPort == null ? transform.position + Vector3.up * .25f : EnergyPort.position;
         public Vector3 StatusPosition => StatusAnchor == null ? transform.position + Vector3.up * 1.1f : StatusAnchor.position;
         public Vector3 Aim(Vector3 destination, long shotId)
         {
+            if (RapidMotion != null && RapidMotion.IsConfigured)
+            {
+                RapidMotion.SetAimTarget(destination);
+                return RapidMotion.MuzzlePosition;
+            }
             if (TurretYaw != null)
             {
                 Vector3 direction = TurretYaw.parent.InverseTransformDirection(destination - TurretYaw.position);

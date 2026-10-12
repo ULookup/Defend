@@ -9,6 +9,7 @@ namespace Defend.Unity
     /// <summary>逐逻辑步消费结算记录；插值只推进表现时钟，不参与命中、到货或寻路。</summary>
     public sealed class CombatArtPresentation : MonoBehaviour
     {
+        private const float MaximumRapidShotDelaySeconds = 1.25f;
         [SerializeField] private EffectPool pool;
         private GameWorld world;
         private WorldPresentation buildings;
@@ -25,7 +26,27 @@ namespace Defend.Unity
         private readonly List<(string effect, long id)> retiredStates = new List<(string, long)>();
         private readonly HashSet<long> connected = new HashSet<long>();
         private readonly List<long> retiredMuzzles = new List<long>();
+        private sealed class RapidTurretTracking
+        {
+            public BuildingState Building;
+            public RapidTurretMotion Motion;
+            public EnemyState Target;
+            public long LastShotEnemyId;
+            public int LifeGeneration, PositionRevision;
+            public ShotSnapshot PendingShot;
+            public bool HasPendingShot;
+            public float PendingAge, VisualCooldownRemaining;
+        }
+        private readonly Dictionary<long, RapidTurretTracking> rapidTurrets = new Dictionary<long, RapidTurretTracking>();
+        private readonly List<long> retiredRapidTurrets = new List<long>();
         public int ObservedShots { get; private set; }
+        public int PlayedRapidShots { get; private set; }
+        public int MergedRapidShots { get; private set; }
+        public int ExpiredRapidShots { get; private set; }
+        public int PendingRapidShots
+        {
+            get { int count = 0; foreach (var tracking in rapidTurrets.Values) if (tracking.HasPendingShot) count++; return count; }
+        }
         public int ObservedDeliveries { get; private set; }
         public int ObservedDeaths { get; private set; }
         public int ObservedBuildingHits { get; private set; }
@@ -42,10 +63,13 @@ namespace Defend.Unity
         public void ResetSession()
         {
             pool.StopAll();
+            foreach (var tracking in rapidTurrets.Values) if (tracking.Motion != null) tracking.Motion.ResetPose();
+            rapidTurrets.Clear(); retiredRapidTurrets.Clear();
             world = null; lastTick = stateTick = stateSelection = -1; sequence = 0; presentationSeconds = 0;
             muzzleHandles.Clear(); transferHandles.Clear(); states.Clear(); wantedStates.Clear();
             travelling.Clear(); retiredTransfers.Clear(); retiredStates.Clear(); connected.Clear();
             ObservedShots = ObservedDeliveries = ObservedDeaths = ObservedBuildingHits = ObservedRepairs = ObservedShieldHits = ObservedShieldBreaks = 0;
+            PlayedRapidShots = MergedRapidShots = ExpiredRapidShots = 0;
             SuppressedEnergyEndpoints = 0;
         }
 
@@ -60,8 +84,128 @@ namespace Defend.Unity
         private void AdvanceTo(double seconds)
         {
             if (seconds <= presentationSeconds) return;
-            pool.Advance((float)(seconds - presentationSeconds));
+            float elapsed = (float)(seconds - presentationSeconds);
+            AdvanceRapidTurrets(elapsed);
+            pool.Advance(elapsed);
             presentationSeconds = seconds;
+            PlayReadyRapidShots();
+        }
+
+        private void AdvanceRapidTurrets(float seconds)
+        {
+            foreach (var tracking in rapidTurrets.Values)
+            {
+                if (!CanPresentRapidTurret(tracking)) { tracking.HasPendingShot = false; continue; }
+                tracking.VisualCooldownRemaining = Mathf.Max(0f, tracking.VisualCooldownRemaining - seconds);
+                if (tracking.HasPendingShot)
+                {
+                    tracking.PendingAge += seconds;
+                    if (tracking.PendingAge > MaximumRapidShotDelaySeconds)
+                    {
+                        tracking.HasPendingShot = false;
+                        ExpiredRapidShots++;
+                    }
+                }
+                if (tracking.HasPendingShot)
+                    tracking.Motion.SetAimTarget(Point(tracking.PendingShot.TargetX, tracking.PendingShot.TargetZ, .35f));
+                else if (tracking.Target != null && tracking.Target.IsAlive)
+                    tracking.Motion.SetAimTarget(EnemyAimPoint(tracking.Target));
+                tracking.Motion.Advance(seconds);
+            }
+        }
+
+        private static bool CanPresentRapidTurret(RapidTurretTracking tracking) =>
+            tracking.Motion != null && tracking.Motion.isActiveAndEnabled && tracking.Building.IsAlive && !tracking.Building.IsSold &&
+            tracking.LifeGeneration == tracking.Building.LifeGeneration && tracking.PositionRevision == tracking.Building.PositionRevision;
+
+        private void PlayReadyRapidShots()
+        {
+            foreach (var tracking in rapidTurrets.Values) TryPlayRapidShot(tracking);
+        }
+
+        private void TryPlayRapidShot(RapidTurretTracking tracking)
+        {
+            if (!tracking.HasPendingShot) return;
+            if (!CanPresentRapidTurret(tracking)) { tracking.HasPendingShot = false; return; }
+            if (tracking.VisualCooldownRemaining > .00001f) return;
+            ShotSnapshot shot = tracking.PendingShot;
+            Vector3 target = Point(shot.TargetX, shot.TargetZ, .35f);
+            if (!tracking.Motion.IsHorizontallyAimed(target)) return;
+            tracking.HasPendingShot = false;
+            float interval = world.Battle.Settings.GetTurret(shot.TurretKind).CooldownTicks / (float)world.Settings.TicksPerSecond;
+            tracking.VisualCooldownRemaining = interval;
+            tracking.Motion.NotifyShot(interval);
+            PlayedRapidShots++;
+            PlayShot(shot);
+        }
+
+        private Vector3 EnemyAimPoint(EnemyState enemy)
+        {
+            var view = enemies == null ? null : enemies.FindView(enemy.Id);
+            // 读取已经插值的可见目标，保留高度分量；不把瞄准结果写回模拟。
+            return view == null ? Point(enemy.X, enemy.Z, .35f) : view.transform.position + Vector3.up * .35f;
+        }
+
+        private void RefreshRapidTurretTargets()
+        {
+            retiredRapidTurrets.Clear();
+            foreach (var item in rapidTurrets)
+                if (item.Value.Motion == null || item.Value.Building.IsSold || !item.Value.Building.IsAlive)
+                {
+                    if (item.Value.Motion != null) item.Value.Motion.ResetPose();
+                    retiredRapidTurrets.Add(item.Key);
+                }
+            foreach (long id in retiredRapidTurrets) rapidTurrets.Remove(id);
+            if (world.Battle == null) return;
+            foreach (BuildingState building in world.Buildings)
+            {
+                if (building.Kind != BuildingKind.Turret || !building.IsAlive || building.IsSold) continue;
+                if (!rapidTurrets.TryGetValue(building.Id, out var tracking))
+                {
+                    var view = buildings.FindView(building.Id);
+                    var motion = view == null || view.ModelAnchors == null ? null : view.ModelAnchors.RapidMotion;
+                    if (motion == null || !motion.IsConfigured) continue;
+                    motion.ResetPose();
+                    tracking = new RapidTurretTracking { Building = building, Motion = motion,
+                        LifeGeneration = building.LifeGeneration, PositionRevision = building.PositionRevision };
+                    rapidTurrets.Add(building.Id, tracking);
+                }
+                if (tracking.LifeGeneration != building.LifeGeneration || tracking.PositionRevision != building.PositionRevision)
+                {
+                    StopMuzzle(building.Id);
+                    tracking.Motion.ResetPose(); tracking.Target = null; tracking.LastShotEnemyId = 0;
+                    tracking.HasPendingShot = false; tracking.PendingAge = tracking.VisualCooldownRemaining = 0f;
+                    tracking.LifeGeneration = building.LifeGeneration; tracking.PositionRevision = building.PositionRevision;
+                }
+                // 冷却期间沿用仍有效的真实射击目标；其他时段按模拟的距离、身份顺序预瞄。
+                // 额外一格只提前转向，不改变射程、目标选择、能量消耗或伤害。
+                double trackingRange = world.Battle.Settings.GetTurret(building.Kind).Range + 1;
+                double nearestDistance = trackingRange * trackingRange;
+                bool retainShotTarget = world.CurrentTick < building.NextShotTick && tracking.Target != null &&
+                    tracking.Target.IsAlive && tracking.Target.Id == tracking.LastShotEnemyId &&
+                    EnemyDistanceSquared(building, tracking.Target) <= nearestDistance;
+                if (!retainShotTarget)
+                {
+                    tracking.Target = null;
+                    foreach (EnemyState enemy in world.Battle.Enemies)
+                    {
+                        if (!enemy.IsAlive) continue;
+                        double distance = EnemyDistanceSquared(building, enemy);
+                        if (distance > nearestDistance || (distance == nearestDistance && tracking.Target != null && enemy.Id > tracking.Target.Id)) continue;
+                        tracking.Target = enemy; nearestDistance = distance;
+                    }
+                }
+                if (!tracking.HasPendingShot && tracking.Target != null) tracking.Motion.SetAimTarget(EnemyAimPoint(tracking.Target));
+                if (tracking.Target == null || building.CombatState == TurretCombatState.WaitingForEnergy ||
+                    building.CombatState == TurretCombatState.Searching)
+                    tracking.Motion.StopFiring();
+            }
+        }
+
+        private static double EnemyDistanceSquared(BuildingState building, EnemyState enemy)
+        {
+            double x = enemy.X - building.CenterX, z = enemy.Z - building.CenterZ;
+            return x * x + z * z;
         }
 
         public void Refresh(double displayTick, long selectedId, bool paused, float frameSeconds)
@@ -73,11 +217,18 @@ namespace Defend.Unity
                 StopStates();
                 foreach (var handle in transferHandles.Values) pool.Stop(handle);
                 transferHandles.Clear();
-                if (!paused) pool.Advance(Mathf.Min(frameSeconds, .1f));
+                if (!paused)
+                {
+                    float elapsed = Mathf.Min(frameSeconds, .1f);
+                    AdvanceRapidTurrets(elapsed);
+                    pool.Advance(elapsed);
+                    PlayReadyRapidShots();
+                }
             }
             else
             {
-                AdvanceTo(displayTick / world.Settings.TicksPerSecond);
+                // 普通刷新以暂停标志为准；显式单步仍由 ObserveStep 推进一次表现时间。
+                if (!paused) AdvanceTo(displayTick / world.Settings.TicksPerSecond);
                 RefreshStates(selectedId);
             }
         }
@@ -87,6 +238,7 @@ namespace Defend.Unity
             if (world != value || lastTick == value.CurrentTick) return;
             AdvanceTo(world.CurrentTick / (double)world.Settings.TicksPerSecond);
             lastTick = world.CurrentTick;
+            RefreshRapidTurretTargets();
             retiredMuzzles.Clear();
             foreach (var item in muzzleHandles)
             {
@@ -151,11 +303,34 @@ namespace Defend.Unity
         private void Fire(ShotSnapshot shot)
         {
             ObservedShots++;
+            if (rapidTurrets.TryGetValue(shot.TurretId, out var tracking))
+            {
+                tracking.LastShotEnemyId = shot.EnemyId;
+                tracking.Target = null;
+                foreach (EnemyState enemy in world.Battle.Enemies)
+                    if (enemy.Id == shot.EnemyId && enemy.IsAlive) { tracking.Target = enemy; break; }
+                // 只保留最新一发未播放快照；转向耗时较长时合并表现，不积压或补射伤害。
+                if (tracking.HasPendingShot) MergedRapidShots++;
+                tracking.PendingShot = shot;
+                tracking.HasPendingShot = true;
+                tracking.PendingAge = 0f;
+                tracking.Motion.SetAimTarget(Point(shot.TargetX, shot.TargetZ, .35f));
+                TryPlayRapidShot(tracking);
+                return;
+            }
+            var view = buildings.FindView(shot.TurretId);
+            // 新模型失去有效跟踪记录意味着已损毁或回收，不借用其旧姿态播放本步射击。
+            if (view != null && view.ModelAnchors != null && view.ModelAnchors.RapidMotion != null) return;
+            PlayShot(shot);
+        }
+
+        private void PlayShot(ShotSnapshot shot)
+        {
             var view = buildings.FindView(shot.TurretId);
             if (view == null) return;
             StopMuzzle(shot.TurretId);
             bool alive = world.FindBuilding(shot.TurretId)?.IsAlive == true;
-            var anchors = alive ? view.VisualRoot.GetComponent<CombatModelAnchors>() : null;
+            var anchors = alive ? view.ModelAnchors : null;
             Vector3 target = Point(shot.TargetX, shot.TargetZ, .35f);
             Vector3 source = anchors == null ? Point(shot.SourceX, shot.SourceZ, .7f) : anchors.Aim(target, shot.Id);
             string prefix = shot.TurretKind == BuildingKind.BurstTurret ? "Heavy" : shot.TurretKind == BuildingKind.AreaTurret ? "Area" : "Rapid";

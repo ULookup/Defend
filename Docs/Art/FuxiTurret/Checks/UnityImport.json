@@ -1,0 +1,33 @@
+{
+  "unityVersion": "6000.6.5f1",
+  "source": "Assets/Defend/Content/Art/FuxiTurret/Models/FuxiTurret.fbx",
+  "canonicalPrefab": "Assets/Defend/Content/Art/FuxiTurret/Prefabs/FuxiTurret.prefab",
+  "combatPrefab": "Assets/Defend/Content/PhaseFiveCombat/Buildings/Turret.prefab",
+  "triangles": 99248,
+  "renderers": 9,
+  "materialSlots": 27,
+  "materials": [
+    "Fuxi_Steel",
+    "Fuxi_Graphite",
+    "Fuxi_Armor",
+    "Fuxi_Amber",
+    "Fuxi_Accent",
+    "Fuxi_Glass"
+  ],
+  "dimensions": [
+    0.840000033,
+    0.558,
+    0.963000059
+  ],
+  "muzzle": [
+    0.0,
+    0.3359999,
+    0.542
+  ],
+  "normalizedTransforms": true,
+  "sourceForward": [
+    0.0,
+    5.96046448E-08,
+    -0.49999997
+  ]
+}

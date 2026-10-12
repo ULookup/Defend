@@ -13,9 +13,11 @@ namespace Defend.Unity
         [SerializeField] private GameObject destroyedMarker;
         [SerializeField] private Renderer feedbackRenderer;
         private MaterialPropertyBlock feedbackProperties;
+        private CombatModelAnchors modelAnchors;
         public BuildingDefinitionAsset Definition => definition;
         public Transform VisualRoot => visualRoot;
-        public void ResetForReuse() { visualRoot.GetComponent<CombatModelAnchors>()?.ResetPose(); }
+        public CombatModelAnchors ModelAnchors => modelAnchors != null ? modelAnchors : modelAnchors = visualRoot.GetComponent<CombatModelAnchors>();
+        public void ResetForReuse() { ModelAnchors?.ResetPose(); }
         public long BuildingId { get; private set; }
 
         public void Configure(BuildingDefinitionAsset asset, Transform visual, GameObject selection,
@@ -23,6 +25,7 @@ namespace Defend.Unity
         {
             definition = asset;
             visualRoot = visual;
+            modelAnchors = null;
             selectionRoot = selection;
             energyFill = fill;
             destroyedMarker = destroyed;

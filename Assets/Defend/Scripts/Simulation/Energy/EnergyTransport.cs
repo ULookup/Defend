@@ -23,6 +23,7 @@ namespace Defend.Simulation
         public IReadOnlyList<EnergyBatch> Batches => batches;
         public IReadOnlyList<EnergyTransferSnapshot> Snapshots { get; }
         internal Action<BuildingState, BuildingState, long, long> TransferCompleted;
+        internal Action<BuildingState, long, IReadOnlyList<long>, long> TerminalDeliveryCompleted;
         private readonly List<EnergyTransferSnapshot> departures = new List<EnergyTransferSnapshot>();
         private readonly List<EnergyTransferSnapshot> deliveries = new List<EnergyTransferSnapshot>();
         public IReadOnlyList<EnergyTransferSnapshot> Departures { get; }
@@ -72,7 +73,7 @@ namespace Defend.Simulation
             travelling.RouteEdge = 0;
             travelling.Commitment = EnergyArithmetic.Predict(sent, route);
             destination.CommittedIncoming = checked(destination.CommittedIncoming + travelling.Commitment);
-            travelling.SourceServiceCharge = owner.Building.Kind == BuildingKind.Reactor ? travelling.Commitment : 0;
+            travelling.SourceServiceCharge = (owner.Building.Kind == BuildingKind.Reactor || owner.Building.Kind == BuildingKind.Battery) ? travelling.Commitment : 0;
             if (travelling.SourceServiceCharge > 0) allocationSchedule.Spend(destination, travelling.SourceServiceCharge);
             // 旧批次换目标后仍占用同一个中继出口，不能绕过该出口的有效量份额。
             if (owner.Building.Kind == BuildingKind.Relay)
@@ -128,11 +129,12 @@ namespace Defend.Simulation
             long received = EnergyArithmetic.Receive(sent, edge.Efficiency);
             if (received <= 0) throw new InvalidOperationException("不应创建有效量为零的运输批次。");
             owner.Building.StoredEnergy -= sent;
+            owner.Building.TotalDischarged = checked(owner.Building.TotalDischarged + sent);
             owner.AvailableOutput -= sent;
             owner.LastOutputTick = tick;
             owner.NextOutputTick = checked(tick + Math.Max(1, owner.Building.Definition.OutputIntervalTicks));
             ledger.TransmissionLoss = checked(ledger.TransmissionLoss + sent - received);
-            if (!edge.Target.IsConsumer) edge.Target.ReservedIncoming = checked(edge.Target.ReservedIncoming + received);
+            if (!edge.Target.IsEnergyDestination) edge.Target.ReservedIncoming = checked(edge.Target.ReservedIncoming + received);
             planner.RefreshAvailability(owner.Building, edge.Target);
             batch.Amount = received;
             batch.IsStalled = false;
@@ -168,14 +170,14 @@ namespace Defend.Simulation
                     continue;
                 }
                 BuildingState target = receiver.Building;
-                if (!target.IsConsumer) target.ReservedIncoming -= batch.Amount;
+                if (!target.IsEnergyDestination) target.ReservedIncoming -= batch.Amount;
                 target.StoredEnergy = checked(target.StoredEnergy + batch.Amount);
                 target.TotalReceived = checked(target.TotalReceived + batch.Amount);
                 deliveries.Add(new EnergyTransferSnapshot(batch));
                 if (TransferCompleted != null && nodes.TryGetValue(batch.FlightSourceId, out EnergyNodeRuntime sender) &&
                     sender.Building.CenterX == batch.SourceX && sender.Building.CenterZ == batch.SourceZ)
                     TransferCompleted(sender.Building, target, batch.Amount, tick);
-                if (target.IsConsumer)
+                if (target.IsEnergyDestination)
                 {
                     if (batch.Destination != target || batch.Commitment != batch.Amount)
                         throw new InvalidOperationException($"批次 {batch.Id} 的终端到货与承诺不一致。");
@@ -183,7 +185,30 @@ namespace Defend.Simulation
                     batch.Commitment = 0;
                     batch.SourceServiceCharge = 0;
                     batch.Destination = null;
-                    Retire(batch);
+                    if (target.Kind == BuildingKind.Battery)
+                    {
+                        // 充电任务在此结束，但能量没有消失；完整历史和累计滞留随批次进入库存。
+                        batch.History = AppendHistory(batch.History, target.Id);
+                        batch.InFlight = false;
+                        batch.Location = target;
+                        batch.Route = null;
+                        batch.RouteEdge = 0;
+                        batch.IsStalled = false;
+                        batch.BlocksIncomingTraffic = false;
+                        batch.EligibleTick = Math.Max(tick + 1, receiver.NextOutputTick);
+                        receiver.Batches.Add(batch);
+                    }
+                    else
+                    {
+                        if (TerminalDeliveryCompleted != null)
+                        {
+                            var history = new List<long>();
+                            for (EnergyHistory entry = batch.History; entry != null; entry = entry.Previous) history.Add(entry.BuildingId);
+                            history.Reverse();
+                            TerminalDeliveryCompleted(target, batch.Amount, history.AsReadOnly(), tick);
+                        }
+                        Retire(batch);
+                    }
                 }
                 else
                 {
@@ -198,6 +223,18 @@ namespace Defend.Simulation
                     receiver.Batches.Add(batch);
                 }
             }
+        }
+
+        /// <summary>
+        /// 最后一跳出发时，为预计到货的逻辑步保留充电吞吐。已有任务承诺已计入容量，
+        /// 这里仅限制到货速率，不能再把同一承诺重复减去一次。
+        /// </summary>
+        public long AvailableChargingSpace(BuildingState battery, long arrivalTick)
+        {
+            long remaining = battery.Definition.MaximumChargePerTick;
+            foreach (EnergyBatch pending in arrivals)
+                if (pending.FlightTargetId == battery.Id && pending.ArrivalTick == arrivalTick) remaining -= pending.Amount;
+            return Math.Max(0, remaining);
         }
 
         private EnergyHistory AppendHistory(EnergyHistory previous, long buildingId)
@@ -265,7 +302,7 @@ namespace Defend.Simulation
             if (batch.InFlight)
             {
                 arrivals.Remove(batch);
-                if (nodes.TryGetValue(batch.FlightTargetId, out EnergyNodeRuntime receiver) && !receiver.Building.IsConsumer)
+                if (nodes.TryGetValue(batch.FlightTargetId, out EnergyNodeRuntime receiver) && !receiver.Building.IsEnergyDestination)
                     receiver.Building.ReservedIncoming -= batch.Amount;
                 ledger.FailedHopLoss = checked(ledger.FailedHopLoss + batch.Amount);
             }

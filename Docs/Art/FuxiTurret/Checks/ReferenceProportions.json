@@ -1,0 +1,103 @@
+{
+  "kind": "Approximate visual proportion targets from the four user supplied orthographic-like images",
+  "method": "Manual pixel landmarks normalized to outermost fixed-base foot width D = 1; no similarity percentage is measured or asserted.",
+  "referenceFiles": {
+    "front": "E:/夸克下载/fuxi_turret_4views/c428fd2b-571e-41f1-b68d-1efbb4b88c9c.png",
+    "rear": "E:/夸克下载/fuxi_turret_4views/17e38d6b-8d32-4fd1-9b39-86e94a1aa1ce.png",
+    "sideBarrelRight": "E:/夸克下载/fuxi_turret_4views/50e22db2-e2f8-437d-93f4-84fa158edfd7.png",
+    "sideBarrelLeft": "E:/夸克下载/fuxi_turret_4views/d2f7a8cb-d1c7-42b2-bc83-0530c3ea2a4d.png"
+  },
+  "frontLandmarksPixels": {
+    "baseFootLeftRight": [
+      66,
+      1473
+    ],
+    "groundY": 956,
+    "highestY": 21,
+    "upperBodyLeftRight": [
+      200,
+      1334
+    ],
+    "upperBodyTopY": 285,
+    "barrelAxis": [
+      767,
+      467
+    ],
+    "radarDishCenter": [
+      897,
+      149
+    ],
+    "radarDishDiameter": 252,
+    "sensorBallCenter": [
+      658,
+      178
+    ],
+    "sensorBallDiameter": 138
+  },
+  "sideLandmarksPixels": {
+    "baseFootLeftRight": [
+      9,
+      1300
+    ],
+    "groundY": 929,
+    "sideArmorDiscCenter": [
+      516,
+      533
+    ],
+    "sideArmorDiscDiameter": 388,
+    "sideArmorOuterFrameDiameter": 446,
+    "barrelAxisY": 490,
+    "shroudStartEndX": [
+      780,
+      1007
+    ],
+    "exposedBarrelStartEndX": [
+      1045,
+      1484
+    ],
+    "frontBraceDiameter": 184
+  },
+  "normalizedTargets": {
+    "totalHeight": 0.667,
+    "fixedBaseSkirtHeight": 0.108,
+    "baseIncludingTurntableHeight": 0.134,
+    "upperBodyWidth": 0.805,
+    "upperBodyTopHeight": 0.478,
+    "barrelAxisHeight": 0.349,
+    "sideArmorDiscDiameter": 0.3,
+    "sideArmorDiscCenterHeight": 0.307,
+    "sideArmorDiscCenterBehindBaseCenter": 0.1,
+    "sideArmorOuterFrameDiameter": 0.347,
+    "bodyFrontRearLength": 0.59,
+    "perforatedShroudLength": 0.176,
+    "perforatedShroudDiameter": 0.167,
+    "exposedBarrelLength": 0.34,
+    "barrelBundleDiameter": 0.12,
+    "frontBraceDiameter": 0.142,
+    "muzzleOverhangBeyondFrontFoot": 0.145,
+    "radarDishDiameter": 0.18,
+    "radarDishThickness": 0.02,
+    "radarDishCenterRightOffset": 0.092,
+    "radarDishCenterHeight": 0.573,
+    "radarDishCenterBehindBaseCenter": 0.075,
+    "sensorBallDiameter": 0.1,
+    "sensorBallCenterRightOffset": -0.078,
+    "sensorBallCenterHeight": 0.552,
+    "sensorBallCenterAheadOfBaseCenter": 0.02,
+    "shroudFrontToMuzzleIncludingSupportCollars": 0.37
+  },
+  "essentialSilhouetteFeatures": [
+    "Low broad circular skirt base with discrete diagonal brace feet",
+    "Large circular side armor inside octagonal armored frames",
+    "Long exposed eight-barrel cluster",
+    "Perforated tapered shroud behind the exposed barrel cluster",
+    "Large thin off-center radar dish plus separate spherical optical head",
+    "Warm ivory armor, dark mechanisms and amber signal lights"
+  ],
+  "caveats": [
+    "These are approximate image-space targets, not orthographic engineering measurements.",
+    "The references include subtle view and scale inconsistencies; prioritize coherent same-angle silhouette and feature placement.",
+    "A requested 90 percent visual similarity is a target, not a verified numeric result. Final acceptance requires side-by-side same-angle comparison.",
+    "The 0.340 D exposed-barrel target is the visually straight tube segment; the complete shroud-front-to-muzzle segment including support collars is approximately 0.370 D."
+  ]
+}

@@ -106,23 +106,33 @@ namespace Defend.Tests
         }
 
         [Test]
-        public void RepairOfDestroyedBuildingPreservesIdentityAndAdvancesLifeGeneration()
+        public void RepairQuotesRoundPerBuildingAndAllRepairIsAtomic()
         {
-            var world = SimulationTestWorld.Create();
-            var building = SimulationTestWorld.Place(world, BuildingKind.Relay, 4, 6);
-            var identity = building.Id;
-            var generation = building.LifeGeneration;
+            var world = SimulationTestWorld.Create(credits: 401);
+            var first = SimulationTestWorld.Place(world, BuildingKind.Turret, 4, 6);
+            var second = SimulationTestWorld.Place(world, BuildingKind.Turret, 5, 6);
+            var destroyed = SimulationTestWorld.Place(world, BuildingKind.Relay, 7, 6);
+            var core = SimulationTestWorld.Place(world, BuildingKind.Core, 9, 6);
+            world.Submit(WorldCommand.Damage(first.Id, 1));
+            world.Submit(WorldCommand.Damage(second.Id, 1));
+            world.Submit(WorldCommand.Damage(destroyed.Id, 100));
+            world.Submit(WorldCommand.Damage(core.Id, 1));
 
-            SimulationTestWorld.Execute(world, WorldCommand.Damage(identity, 100));
-            Assert.That(building.IsAlive, Is.False);
-            Assert.That(world.FindBuildingAt(4, 6), Is.Null);
-            SimulationTestWorld.Execute(world, WorldCommand.Repair(identity));
-
-            Assert.That(building.Id, Is.EqualTo(identity));
-            Assert.That(building.IsAlive, Is.True);
-            Assert.That(building.Health, Is.EqualTo(building.Definition.MaximumHealth));
-            Assert.That(building.LifeGeneration, Is.GreaterThan(generation));
-            Assert.That(world.FindBuildingAt(4, 6), Is.SameAs(building));
+            Assert.That(world.RepairQuote(first.Id).Cost, Is.EqualTo(1));
+            Assert.That(world.RepairAllQuote().Cost, Is.EqualTo(2));
+            Assert.That(world.RepairAllQuote().BuildingCount, Is.EqualTo(2));
+            Assert.That(world.Submit(WorldCommand.RepairAll()).Succeeded, Is.False);
+            Assert.That(first.Health, Is.EqualTo(99));
+            Assert.That(second.Health, Is.EqualTo(99));
+            Assert.That(world.Credits, Is.EqualTo(1));
+            Assert.That(world.Submit(WorldCommand.Repair(first.Id)).Succeeded, Is.True);
+            Assert.That(first.Health, Is.EqualTo(100));
+            Assert.That(world.Credits, Is.Zero);
+            Assert.That(world.Submit(WorldCommand.Repair(destroyed.Id)).Succeeded, Is.False);
+            Assert.That(world.Submit(WorldCommand.Sell(destroyed.Id)).Succeeded, Is.False);
+            Assert.That(world.Submit(WorldCommand.Repair(core.Id)).Succeeded, Is.False);
+            Assert.That(core.Health, Is.EqualTo(99));
+            Assert.That(world.FindBuildingAt(7, 6), Is.Null);
         }
 
         [Test]

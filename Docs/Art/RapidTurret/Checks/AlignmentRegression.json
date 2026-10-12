@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "checkCount": 10,
+  "checks": {
+    "首次权威射击确实来自炮管后方": true,
+    "未对齐首次射击只排队且无后座闪光射线": true,
+    "暂停冻结待播射击与转向": true,
+    "真实射线仅在水平对齐6度内发出": true,
+    "对齐后首次射击同时触发炮口与后座": true,
+    "转向期间合并待播且不集中补射": true,
+    "移动回归开始时确有未播射击": true,
+    "移动取消原位置待播且之后不补发": true,
+    "重开回归开始时确有未播射击": true,
+    "重开清空待播并保持初始关节姿态": true
+  },
+  "observations": {
+    "turretId": 4,
+    "spawn": [
+      24,
+      20
+    ],
+    "initialPoseSetup": "预充能后通过现役RapidTurretMotion.SetAimTarget与Advance建立朝后姿态；新敌人出生、射击与后续推进均由真实会话完成。",
+    "firstEmission": {
+      "initialAngle": 173.583557,
+      "emittedAngle": 5.36571169,
+      "delayTicks": 13,
+      "observedShots": 3,
+      "playedShots": 1,
+      "mergedShots": 2
+    },
+    "movedDestination": [
+      38,
+      38
+    ]
+  }
+}

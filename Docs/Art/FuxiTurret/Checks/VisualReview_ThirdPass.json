@@ -1,0 +1,44 @@
+{
+  "asset": "FuxiTurret",
+  "reviewStage": "Third calibrated four-view geometry draft",
+  "verdict": "REVISE",
+  "numericSimilarity": null,
+  "similarityNote": "The requested 90 percent similarity is the target, not a measured result. Passing mechanical checks does not establish reference fidelity.",
+  "viewsInspected": ["ThirdPassViews/Front.png", "ThirdPassViews/Rear.png", "ThirdPassViews/Left.png", "ThirdPassViews/Right.png"],
+  "cameraNote": "The root agent calibrated orthographic cameras to the supplied views. Left means the barrel points left in the image. Small inconsistent reference proportions are not reproduced by deforming the model per view.",
+  "referenceFiles": {
+    "Front": "E:/夸克下载/fuxi_turret_4views/c428fd2b-571e-41f1-b68d-1efbb4b88c9c.png",
+    "Rear": "E:/夸克下载/fuxi_turret_4views/17e38d6b-8d32-4fd1-9b39-86e94a1aa1ce.png",
+    "Left": "E:/夸克下载/fuxi_turret_4views/d2f7a8cb-d1c7-42b2-bc83-0530c3ea2a4d.png",
+    "Right": "E:/夸克下载/fuxi_turret_4views/50e22db2-e2f8-437d-93f4-84fa158edfd7.png"
+  },
+  "firstPassClosure": [
+    {"topic": "Base skirt/core intersection", "status": "closed", "evidence": "All four views now show broad continuous ivory skirt plates with a lower service notch; the old dark core intrusion is gone."},
+    {"topic": "Sparse wire protective shroud", "status": "closed_major_form", "evidence": "The third source uses a continuous closed thick perforated cone with 24 real apertures. Left and Right views show solid plate webs. The exact aperture pattern still differs from the reference."},
+    {"topic": "Body profile and side armor", "status": "partial", "evidence": "The side circle, broad octagonal outline and sloped front shoulder are present, but their axial thickness and integration with front/rear armor remain simplified."},
+    {"topic": "Sensor geometry", "status": "partial", "evidence": "The oversized circular tray is gone, lens layers and radar panel seams are present. Mechanical supports remain simple posts on a thin platform."},
+    {"topic": "Surface and panel definition", "status": "pending_surface_stage", "evidence": "Rear bolts and ivory radar back are corrected. Surface finish is assigned to the dedicated material/bake pass and is not yet accepted."}
+  ],
+  "remainingGeometryFindings": [
+    {"priority": 1, "topic": "Front and rear shoulder armor", "observation": "Three isolated plates of similar thickness read as stacked flat cards. The references use integrated folded armor with substantial slanted top and lower faces, separated by fine seams.", "requestedChange": "Keep the current overall width and center positions. Replace the three plate silhouettes with one coherent thick folded shell or tightly adjoining armor sections, using shallow seams and slanted end faces."},
+    {"priority": 2, "topic": "Axial thickness of side armor", "observation": "The circular assembly has the correct dominant side-view feature, but the front/rear views reduce its outside edge to a thin blade. The references show a broad stepped armor shoulder.", "requestedChange": "Give the fixed octagonal outer frame a stepped axial section and sloped outside returns while preserving total upper-body width. Keep the moving disc separate from fixed armor."},
+    {"priority": 3, "topic": "Base anchor recesses", "observation": "Current anchor ramps are upright rectangular blocks. The reference has two slanted webs around a deep dark recess, with small lamps and visible anchor eyes.", "requestedChange": "Replace the block silhouette with inclined side supports and a recessed center face. Preserve the current footprint and lamp positions and add an open eye at the outer foot."},
+    {"priority": 4, "topic": "Sensor support structure", "observation": "The support posts and flat platform remain exposed as primitive shapes. The reference has stepped mounting feet, paired supports and short transverse joints connecting the radar and optical assembly.", "requestedChange": "Add compact paired cheeks, short optical side journals and a stepped mount or diagonal braces. Do not lower the platform into the proven pitch sweep clearance."},
+    {"priority": 5, "topic": "Lower front armor and center hierarchy", "observation": "The lower front support remains two blunt boxes beneath a broad ivory center frame. The reference has a connected angled U-shaped lower armor with a central dark opening and more visible dark machinery beside the central guard.", "requestedChange": "Rework the lower fixed support into a connected sloping U-shaped armor with an open center. Avoid increasing the center frame width; use dark inner cheek surfaces to restore the ivory/graphite hierarchy."}
+  ],
+  "additionalDetails": [
+    "The gold geometric side emblem was added in the source after the ThirdPass photographs and must be confirmed in the next actual render.",
+    "The exact shroud aperture layout and fine seam layout remain interpretive differences; no claim of exact reconstruction is made.",
+    "The material finish, lens depth and small edge wear require the final surface render before acceptance."
+  ],
+  "mechanicalStatus": {
+    "status": "RECHECK_AFTER_EXPANDED_EXTERNAL_ARMOR_SCOPE",
+    "report": "MechanicalReview.json",
+    "checksPassed": 17,
+    "checksTotal": 18,
+    "sourceLastWriteLocal": "2026-10-12 13:31:48",
+    "scope": "Editable closed parts, parent hierarchy, fixed-base invariance, two actual rotor-bearing sweep clearances, trunnion alignment, recoil engagement and selected sampled external surface intersections at -6 to +18 degrees elevation and 0 to 0.012 m recoil. The original 18 checks passed. Expanding external-armor coverage to the lower fixed support exposed one additional contact requiring the planned lower-armor revision.",
+    "remainingIssue": "At -6 degrees elevation the present Yaw_LowerSupportBridge cuts the bottom of the inner pitch bezel and cheeks. The art agent was asked to keep the redesigned central bridge top at or below 0.171 m, with its service cover moved consistently.",
+    "limits": "This is game-art mechanical coherence, not real-world engineering certification or a complete physical collision solver. Any subsequent geometry changes must be checked again."
+  }
+}

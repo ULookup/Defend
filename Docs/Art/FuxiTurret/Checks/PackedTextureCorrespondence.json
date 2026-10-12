@@ -1,0 +1,28 @@
+{
+  "method": "Direct comparison of original PNG bytes embedded in Blender against the delivered external PNG files; no file digest is calculated.",
+  "images": [
+    {
+      "image": "FuxiTurret_GameBaseColor",
+      "path": "E:\\UnityProject\\Defend\\ArtSource\\Production\\FuxiTurret\\..\\..\\..\\Assets\\Defend\\Content\\Art\\FuxiTurret\\Textures\\FuxiTurret_BaseColor.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "packedBytes": 11703076,
+      "diskBytes": 11703076,
+      "directByteEquality": true
+    },
+    {
+      "image": "FuxiTurret_GameMetallicSmoothness",
+      "path": "E:\\UnityProject\\Defend\\ArtSource\\Production\\FuxiTurret\\..\\..\\..\\Assets\\Defend\\Content\\Art\\FuxiTurret\\Textures\\FuxiTurret_MetallicSmoothness.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "packedBytes": 3014526,
+      "diskBytes": 3014526,
+      "directByteEquality": true
+    }
+  ],
+  "passed": true
+}

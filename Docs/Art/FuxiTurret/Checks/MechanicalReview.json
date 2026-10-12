@@ -1,0 +1,1249 @@
+{
+  "asset_source": "E:\\UnityProject\\Defend\\ArtSource\\Production\\FuxiTurret\\FuxiTurret.blend",
+  "source_metadata": {
+    "file_size_bytes": 16265852,
+    "last_modified_unix_seconds": 1791786722.109035
+  },
+  "review_kind": "Independent editable-mesh, hierarchy, analytical-clearance and sampled-pose game-art review",
+  "checks": [
+    {
+      "name": "Hierarchy_TurretYaw",
+      "passed": true,
+      "details": {
+        "required_parent": "FuxiTurret",
+        "actual_parent": "FuxiTurret"
+      }
+    },
+    {
+      "name": "Hierarchy_BarrelPitch",
+      "passed": true,
+      "details": {
+        "required_parent": "TurretYaw",
+        "actual_parent": "TurretYaw"
+      }
+    },
+    {
+      "name": "Hierarchy_BarrelRecoil",
+      "passed": true,
+      "details": {
+        "required_parent": "BarrelPitch",
+        "actual_parent": "BarrelPitch"
+      }
+    },
+    {
+      "name": "Hierarchy_BarrelSpin",
+      "passed": true,
+      "details": {
+        "required_parent": "BarrelRecoil",
+        "actual_parent": "BarrelRecoil"
+      }
+    },
+    {
+      "name": "Hierarchy_Muzzle",
+      "passed": true,
+      "details": {
+        "required_parent": "BarrelSpin",
+        "actual_parent": "BarrelSpin"
+      }
+    },
+    {
+      "name": "Closed_non_degenerate_editable_parts",
+      "passed": true,
+      "details": {
+        "problem_objects": []
+      }
+    },
+    {
+      "name": "Fixed_base_unchanged_by_all_four_motions",
+      "passed": true,
+      "details": {
+        "maximum_vertex_displacement_m": 0.0
+      }
+    },
+    {
+      "name": "Spin_does_not_rotate_bearing_outers_or_non_rotor_parts",
+      "passed": true,
+      "details": {
+        "maximum_vertex_displacement_m": 0.0
+      }
+    },
+    {
+      "name": "Full_360_spin_returns_to_same_geometry",
+      "passed": true,
+      "details": {
+        "maximum_vertex_difference_m": 3.122362236350814e-08
+      }
+    },
+    {
+      "name": "Recoil_moves_slide_and_rotor_together_while_pitch_frame_stays",
+      "passed": true,
+      "details": {
+        "slide_displacement_error_m": 3.5390257835388184e-08,
+        "pitch_frame_vertex_displacement_m": 0.0
+      }
+    },
+    {
+      "name": "Rear_rotor_sweep_clearance_inside_actual_bearing_slab",
+      "passed": true,
+      "details": {
+        "bearing_inner_radius_m": 0.05669999122619629,
+        "swept_rotor_radius_in_bearing_slab_m": 0.05630001425743103,
+        "minimum_radial_clearance_m": 0.0003999769687652588,
+        "note": "Actual edges are clipped to the bearing axial slab; remote muzzle hoops are excluded."
+      }
+    },
+    {
+      "name": "Front_rotor_sweep_clearance_inside_actual_bearing_slab",
+      "passed": true,
+      "details": {
+        "bearing_inner_radius_m": 0.05669999122619629,
+        "swept_rotor_radius_in_bearing_slab_m": 0.05630001425743103,
+        "minimum_radial_clearance_m": 0.0003999769687652588,
+        "note": "Actual edges are clipped to the bearing axial slab; remote muzzle hoops are excluded."
+      }
+    },
+    {
+      "name": "Left_true_trunnion_coaxial_and_axially_engaged",
+      "passed": true,
+      "details": {
+        "off_axis_error_m": 7.450580596923828e-09,
+        "axial_overlap_m": 0.024000003933906555
+      }
+    },
+    {
+      "name": "Left_slide_supported_for_entire_recoil",
+      "passed": true,
+      "details": {
+        "minimum_end_margin_m": 0.020000003278255463,
+        "end_pose_engagement_m": [
+          0.09600000083446503,
+          0.09600000083446503
+        ],
+        "note": "Rail/shoe nested fit is intentional."
+      }
+    },
+    {
+      "name": "Right_true_trunnion_coaxial_and_axially_engaged",
+      "passed": true,
+      "details": {
+        "off_axis_error_m": 7.450580596923828e-09,
+        "axial_overlap_m": 0.024000003933906555
+      }
+    },
+    {
+      "name": "Right_slide_supported_for_entire_recoil",
+      "passed": true,
+      "details": {
+        "minimum_end_margin_m": 0.020000003278255463,
+        "end_pose_engagement_m": [
+          0.09600000083446503,
+          0.09600000083446503
+        ],
+        "note": "Rail/shoe nested fit is intentional."
+      }
+    },
+    {
+      "name": "Pitch_and_recoil_clear_of_fixed_external_armor_and_sensors",
+      "passed": true,
+      "details": {
+        "fixed_external_parts_tested": [
+          "Sensor_InstrumentBase",
+          "Sensor_OpticEquatorialBand",
+          "Sensor_OpticFooting",
+          "Sensor_OpticFork_-1",
+          "Sensor_OpticFork_1",
+          "Sensor_OpticFrontArmorRing",
+          "Sensor_OpticFrontBezel",
+          "Sensor_OpticFrontMetalRim",
+          "Sensor_OpticFrontRingBolt_0",
+          "Sensor_OpticFrontRingBolt_1",
+          "Sensor_OpticFrontRingBolt_2",
+          "Sensor_OpticFrontRingBolt_3",
+          "Sensor_OpticFrontRingBolt_4",
+          "Sensor_OpticFrontRingBolt_5",
+          "Sensor_OpticFrontRingBolt_6",
+          "Sensor_OpticFrontRingBolt_7",
+          "Sensor_OpticFrontRingBolt_8",
+          "Sensor_OpticFrontRingBolt_9",
+          "Sensor_OpticGlass",
+          "Sensor_OpticInnerLensRing",
+          "Sensor_OpticRearCover",
+          "Sensor_OpticRearCoverBolt_-0.016_-0.015",
+          "Sensor_OpticRearCoverBolt_-0.016_0.015",
+          "Sensor_OpticRearCoverBolt_0.016_-0.015",
+          "Sensor_OpticRearCoverBolt_0.016_0.015",
+          "Sensor_OpticSecondaryMountFastener_-1",
+          "Sensor_OpticSecondaryMountFastener_1",
+          "Sensor_OpticSecondaryShellSeam_0",
+          "Sensor_OpticSecondaryShellSeam_1",
+          "Sensor_OpticSideCap_-1",
+          "Sensor_OpticSideCap_1",
+          "Sensor_OpticSideJournal_-1",
+          "Sensor_OpticSideJournal_1",
+          "Sensor_OpticSideLamp",
+          "Sensor_OpticSideLampHousing",
+          "Sensor_OpticSphericalArmor",
+          "Sensor_OpticSupport",
+          "Sensor_RadarCenterCover",
+          "Sensor_RadarDisk",
+          "Sensor_RadarFacePanel_0",
+          "Sensor_RadarFacePanel_1",
+          "Sensor_RadarFacePanel_2",
+          "Sensor_RadarFacePanel_3",
+          "Sensor_RadarFooting",
+          "Sensor_RadarRearBrace_0",
+          "Sensor_RadarRearBrace_1",
+          "Sensor_RadarRearBrace_2",
+          "Sensor_RadarRearBrace_3",
+          "Sensor_RadarRearFace",
+          "Sensor_RadarRearHub",
+          "Sensor_RadarRearHubCap",
+          "Sensor_RadarRearHubCapRim",
+          "Sensor_RadarRearHubCenter",
+          "Sensor_RadarRearHubOuterRim",
+          "Sensor_RadarRim",
+          "Sensor_RadarRimFastener_0",
+          "Sensor_RadarRimFastener_1",
+          "Sensor_RadarRimFastener_10",
+          "Sensor_RadarRimFastener_11",
+          "Sensor_RadarRimFastener_12",
+          "Sensor_RadarRimFastener_13",
+          "Sensor_RadarRimFastener_14",
+          "Sensor_RadarRimFastener_15",
+          "Sensor_RadarRimFastener_16",
+          "Sensor_RadarRimFastener_17",
+          "Sensor_RadarRimFastener_18",
+          "Sensor_RadarRimFastener_19",
+          "Sensor_RadarRimFastener_2",
+          "Sensor_RadarRimFastener_3",
+          "Sensor_RadarRimFastener_4",
+          "Sensor_RadarRimFastener_5",
+          "Sensor_RadarRimFastener_6",
+          "Sensor_RadarRimFastener_7",
+          "Sensor_RadarRimFastener_8",
+          "Sensor_RadarRimFastener_9",
+          "Sensor_RadarSecondaryMountFastener_-1",
+          "Sensor_RadarSecondaryMountFastener_1",
+          "Sensor_RadarSupportRail_-1",
+          "Sensor_RadarSupportRail_1",
+          "Yaw_FrontActuatorSecondaryRib_-1_0.1485",
+          "Yaw_FrontActuatorSecondaryRib_-1_0.1905",
+          "Yaw_FrontActuatorSecondaryRib_1_0.1485",
+          "Yaw_FrontActuatorSecondaryRib_1_0.1905",
+          "Yaw_FrontArmorSegment_1",
+          "Yaw_FrontArmorSegment_2",
+          "Yaw_FrontArmorSegment_3",
+          "Yaw_FrontArmorSegment_4",
+          "Yaw_FrontArmorSegment_5",
+          "Yaw_FrontArmorSegment_6",
+          "Yaw_FrontArmorSegment_7",
+          "Yaw_FrontFrameSecondaryAccess_-1",
+          "Yaw_FrontFrameSecondaryAccess_1",
+          "Yaw_FrontFrameSecondaryFastener_-1_0.226",
+          "Yaw_FrontFrameSecondaryFastener_-1_0.338",
+          "Yaw_FrontFrameSecondaryFastener_1_0.226",
+          "Yaw_FrontFrameSecondaryFastener_1_0.338",
+          "Yaw_FrontLeftSecondary_FoldFastener_0_-0.046",
+          "Yaw_FrontLeftSecondary_FoldFastener_0_0.046",
+          "Yaw_FrontLeftSecondary_FoldFastener_1_-0.046",
+          "Yaw_FrontLeftSecondary_FoldFastener_1_0.046",
+          "Yaw_FrontLeftSecondary_MiddleFastener_-0.048_0.211",
+          "Yaw_FrontLeftSecondary_MiddleFastener_-0.048_0.3",
+          "Yaw_FrontLeftSecondary_MiddleFastener_0.048_0.211",
+          "Yaw_FrontLeftSecondary_MiddleFastener_0.048_0.3",
+          "Yaw_FrontLeftSecondary_PanelSeam_0",
+          "Yaw_FrontLeftSecondary_PanelSeam_1",
+          "Yaw_FrontLeftSecondary_PanelSeam_2",
+          "Yaw_FrontLeftSecondary_PanelSeam_3",
+          "Yaw_FrontLeftSecondary_PanelSeam_4",
+          "Yaw_FrontLeftSecondary_PanelSeam_5",
+          "Yaw_FrontLeftSecondary_PanelSeam_6",
+          "Yaw_FrontLeftSecondary_PanelSeam_7",
+          "Yaw_FrontLeftSecondary_ReturnClip_-0.057",
+          "Yaw_FrontLeftSecondary_ReturnClip_0.057",
+          "Yaw_FrontLowerService",
+          "Yaw_FrontLowerService_Bolt_-1_-1",
+          "Yaw_FrontLowerService_Bolt_-1_1",
+          "Yaw_FrontLowerService_Bolt_1_-1",
+          "Yaw_FrontLowerService_Bolt_1_1",
+          "Yaw_FrontLowerService_InsetGasket",
+          "Yaw_FrontRightSecondary_FoldFastener_0_-0.046",
+          "Yaw_FrontRightSecondary_FoldFastener_0_0.046",
+          "Yaw_FrontRightSecondary_FoldFastener_1_-0.046",
+          "Yaw_FrontRightSecondary_FoldFastener_1_0.046",
+          "Yaw_FrontRightSecondary_MiddleFastener_-0.048_0.211",
+          "Yaw_FrontRightSecondary_MiddleFastener_-0.048_0.3",
+          "Yaw_FrontRightSecondary_MiddleFastener_0.048_0.211",
+          "Yaw_FrontRightSecondary_MiddleFastener_0.048_0.3",
+          "Yaw_FrontRightSecondary_PanelSeam_0",
+          "Yaw_FrontRightSecondary_PanelSeam_1",
+          "Yaw_FrontRightSecondary_PanelSeam_2",
+          "Yaw_FrontRightSecondary_PanelSeam_3",
+          "Yaw_FrontRightSecondary_PanelSeam_4",
+          "Yaw_FrontRightSecondary_PanelSeam_5",
+          "Yaw_FrontRightSecondary_PanelSeam_6",
+          "Yaw_FrontRightSecondary_PanelSeam_7",
+          "Yaw_FrontRightSecondary_ReturnClip_-0.057",
+          "Yaw_FrontRightSecondary_ReturnClip_0.057",
+          "Yaw_FrontUpperSecondaryFastener_-0.067",
+          "Yaw_FrontUpperSecondaryFastener_0.067",
+          "Yaw_LeftBroadSideArmor",
+          "Yaw_LeftFrontArmorSection_0",
+          "Yaw_LeftFrontArmorSection_1",
+          "Yaw_LeftFrontArmorSection_2",
+          "Yaw_LeftOctagonalFrame",
+          "Yaw_LeftRearArmorSection_0",
+          "Yaw_LeftRearArmorSection_1",
+          "Yaw_LeftRearArmorSection_2",
+          "Yaw_LeftUpperArmor",
+          "Yaw_LowerJawArmor",
+          "Yaw_RearCabinetArmor",
+          "Yaw_RearCabinetCore",
+          "Yaw_RearGrilleInset",
+          "Yaw_RearGrilleSlat_0",
+          "Yaw_RearGrilleSlat_1",
+          "Yaw_RearGrilleSlat_2",
+          "Yaw_RearLeftSecondary_FoldFastener_0_-0.046",
+          "Yaw_RearLeftSecondary_FoldFastener_0_0.046",
+          "Yaw_RearLeftSecondary_FoldFastener_1_-0.046",
+          "Yaw_RearLeftSecondary_FoldFastener_1_0.046",
+          "Yaw_RearLeftSecondary_MiddleFastener_-0.048_0.211",
+          "Yaw_RearLeftSecondary_MiddleFastener_-0.048_0.3",
+          "Yaw_RearLeftSecondary_MiddleFastener_0.048_0.211",
+          "Yaw_RearLeftSecondary_MiddleFastener_0.048_0.3",
+          "Yaw_RearLeftSecondary_PanelSeam_0",
+          "Yaw_RearLeftSecondary_PanelSeam_1",
+          "Yaw_RearLeftSecondary_PanelSeam_2",
+          "Yaw_RearLeftSecondary_PanelSeam_3",
+          "Yaw_RearLeftSecondary_PanelSeam_4",
+          "Yaw_RearLeftSecondary_PanelSeam_5",
+          "Yaw_RearLeftSecondary_PanelSeam_6",
+          "Yaw_RearLeftSecondary_PanelSeam_7",
+          "Yaw_RearLeftSecondary_ReturnClip_-0.057",
+          "Yaw_RearLeftSecondary_ReturnClip_0.057",
+          "Yaw_RearPerimeterArmor",
+          "Yaw_RearRightSecondary_FoldFastener_0_-0.046",
+          "Yaw_RearRightSecondary_FoldFastener_0_0.046",
+          "Yaw_RearRightSecondary_FoldFastener_1_-0.046",
+          "Yaw_RearRightSecondary_FoldFastener_1_0.046",
+          "Yaw_RearRightSecondary_MiddleFastener_-0.048_0.211",
+          "Yaw_RearRightSecondary_MiddleFastener_-0.048_0.3",
+          "Yaw_RearRightSecondary_MiddleFastener_0.048_0.211",
+          "Yaw_RearRightSecondary_MiddleFastener_0.048_0.3",
+          "Yaw_RearRightSecondary_PanelSeam_0",
+          "Yaw_RearRightSecondary_PanelSeam_1",
+          "Yaw_RearRightSecondary_PanelSeam_2",
+          "Yaw_RearRightSecondary_PanelSeam_3",
+          "Yaw_RearRightSecondary_PanelSeam_4",
+          "Yaw_RearRightSecondary_PanelSeam_5",
+          "Yaw_RearRightSecondary_PanelSeam_6",
+          "Yaw_RearRightSecondary_PanelSeam_7",
+          "Yaw_RearRightSecondary_ReturnClip_-0.057",
+          "Yaw_RearRightSecondary_ReturnClip_0.057",
+          "Yaw_RearService_-0.067",
+          "Yaw_RearService_-0.067_Bolt_-1_-1",
+          "Yaw_RearService_-0.067_Bolt_-1_1",
+          "Yaw_RearService_-0.067_Bolt_1_-1",
+          "Yaw_RearService_-0.067_Bolt_1_1",
+          "Yaw_RearService_-0.067_InsetGasket",
+          "Yaw_RearService_0.067",
+          "Yaw_RearService_0.067_Bolt_-1_-1",
+          "Yaw_RearService_0.067_Bolt_-1_1",
+          "Yaw_RearService_0.067_Bolt_1_-1",
+          "Yaw_RearService_0.067_Bolt_1_1",
+          "Yaw_RearService_0.067_InsetGasket",
+          "Yaw_RearTopCover",
+          "Yaw_RearUpperService",
+          "Yaw_RearUpperService_Bolt_-1_-1",
+          "Yaw_RearUpperService_Bolt_-1_1",
+          "Yaw_RearUpperService_Bolt_1_-1",
+          "Yaw_RearUpperService_Bolt_1_1",
+          "Yaw_RearUpperService_InsetGasket",
+          "Yaw_RightBroadSideArmor",
+          "Yaw_RightFrontArmorSection_0",
+          "Yaw_RightFrontArmorSection_1",
+          "Yaw_RightFrontArmorSection_2",
+          "Yaw_RightOctagonalFrame",
+          "Yaw_RightRearArmorSection_0",
+          "Yaw_RightRearArmorSection_1",
+          "Yaw_RightRearArmorSection_2",
+          "Yaw_RightUpperArmor"
+        ],
+        "unexpected_boundary_intersections": [],
+        "classified_concealed_support_contacts": [
+          {
+            "elevation_degrees": -6,
+            "recoil_m": 0,
+            "moving_part": "Pitch_LeftLargeArmorDisc",
+            "fixed_part": "Yaw_LeftBroadSideArmor",
+            "crossing_edges": 68,
+            "classification": "Sub-millimeter concealed rear-face seating of the circular armor on its backing panel, unchanged through the coaxial rotation; the exposed front surface and rim stay clear.",
+            "axial_seating_m": 0.0004999935626983643
+          },
+          {
+            "elevation_degrees": -6,
+            "recoil_m": 0,
+            "moving_part": "Pitch_LeftTrunnionJournal",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 18,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": -6,
+            "recoil_m": 0,
+            "moving_part": "Pitch_MainTransverseAxle",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 26,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": -6,
+            "recoil_m": 0,
+            "moving_part": "Pitch_RightLargeArmorDisc",
+            "fixed_part": "Yaw_RightBroadSideArmor",
+            "crossing_edges": 68,
+            "classification": "Sub-millimeter concealed rear-face seating of the circular armor on its backing panel, unchanged through the coaxial rotation; the exposed front surface and rim stay clear.",
+            "axial_seating_m": 0.0004999935626983643
+          },
+          {
+            "elevation_degrees": -6,
+            "recoil_m": 0,
+            "moving_part": "Pitch_RightTrunnionJournal",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 18,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": -6,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_LeftLargeArmorDisc",
+            "fixed_part": "Yaw_LeftBroadSideArmor",
+            "crossing_edges": 68,
+            "classification": "Sub-millimeter concealed rear-face seating of the circular armor on its backing panel, unchanged through the coaxial rotation; the exposed front surface and rim stay clear.",
+            "axial_seating_m": 0.0004999935626983643
+          },
+          {
+            "elevation_degrees": -6,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_LeftTrunnionJournal",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 18,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": -6,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_MainTransverseAxle",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 26,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": -6,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_RightLargeArmorDisc",
+            "fixed_part": "Yaw_RightBroadSideArmor",
+            "crossing_edges": 68,
+            "classification": "Sub-millimeter concealed rear-face seating of the circular armor on its backing panel, unchanged through the coaxial rotation; the exposed front surface and rim stay clear.",
+            "axial_seating_m": 0.0004999935626983643
+          },
+          {
+            "elevation_degrees": -6,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_RightTrunnionJournal",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 18,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 0,
+            "recoil_m": 0,
+            "moving_part": "Pitch_LeftLargeArmorDisc",
+            "fixed_part": "Yaw_LeftBroadSideArmor",
+            "crossing_edges": 68,
+            "classification": "Sub-millimeter concealed rear-face seating of the circular armor on its backing panel, unchanged through the coaxial rotation; the exposed front surface and rim stay clear.",
+            "axial_seating_m": 0.0004999935626983643
+          },
+          {
+            "elevation_degrees": 0,
+            "recoil_m": 0,
+            "moving_part": "Pitch_LeftTrunnionJournal",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 18,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 0,
+            "recoil_m": 0,
+            "moving_part": "Pitch_MainTransverseAxle",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 25,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 0,
+            "recoil_m": 0,
+            "moving_part": "Pitch_RightLargeArmorDisc",
+            "fixed_part": "Yaw_RightBroadSideArmor",
+            "crossing_edges": 68,
+            "classification": "Sub-millimeter concealed rear-face seating of the circular armor on its backing panel, unchanged through the coaxial rotation; the exposed front surface and rim stay clear.",
+            "axial_seating_m": 0.0004999935626983643
+          },
+          {
+            "elevation_degrees": 0,
+            "recoil_m": 0,
+            "moving_part": "Pitch_RightTrunnionJournal",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 18,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 0,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_LeftLargeArmorDisc",
+            "fixed_part": "Yaw_LeftBroadSideArmor",
+            "crossing_edges": 68,
+            "classification": "Sub-millimeter concealed rear-face seating of the circular armor on its backing panel, unchanged through the coaxial rotation; the exposed front surface and rim stay clear.",
+            "axial_seating_m": 0.0004999935626983643
+          },
+          {
+            "elevation_degrees": 0,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_LeftTrunnionJournal",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 18,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 0,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_MainTransverseAxle",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 25,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 0,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_RightLargeArmorDisc",
+            "fixed_part": "Yaw_RightBroadSideArmor",
+            "crossing_edges": 68,
+            "classification": "Sub-millimeter concealed rear-face seating of the circular armor on its backing panel, unchanged through the coaxial rotation; the exposed front surface and rim stay clear.",
+            "axial_seating_m": 0.0004999935626983643
+          },
+          {
+            "elevation_degrees": 0,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_RightTrunnionJournal",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 18,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 6,
+            "recoil_m": 0,
+            "moving_part": "Pitch_LeftLargeArmorDisc",
+            "fixed_part": "Yaw_LeftBroadSideArmor",
+            "crossing_edges": 68,
+            "classification": "Sub-millimeter concealed rear-face seating of the circular armor on its backing panel, unchanged through the coaxial rotation; the exposed front surface and rim stay clear.",
+            "axial_seating_m": 0.0004999935626983643
+          },
+          {
+            "elevation_degrees": 6,
+            "recoil_m": 0,
+            "moving_part": "Pitch_LeftTrunnionJournal",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 18,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 6,
+            "recoil_m": 0,
+            "moving_part": "Pitch_MainTransverseAxle",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 26,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 6,
+            "recoil_m": 0,
+            "moving_part": "Pitch_RightLargeArmorDisc",
+            "fixed_part": "Yaw_RightBroadSideArmor",
+            "crossing_edges": 68,
+            "classification": "Sub-millimeter concealed rear-face seating of the circular armor on its backing panel, unchanged through the coaxial rotation; the exposed front surface and rim stay clear.",
+            "axial_seating_m": 0.0004999935626983643
+          },
+          {
+            "elevation_degrees": 6,
+            "recoil_m": 0,
+            "moving_part": "Pitch_RightTrunnionJournal",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 18,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 6,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_LeftLargeArmorDisc",
+            "fixed_part": "Yaw_LeftBroadSideArmor",
+            "crossing_edges": 68,
+            "classification": "Sub-millimeter concealed rear-face seating of the circular armor on its backing panel, unchanged through the coaxial rotation; the exposed front surface and rim stay clear.",
+            "axial_seating_m": 0.0004999935626983643
+          },
+          {
+            "elevation_degrees": 6,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_LeftTrunnionJournal",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 18,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 6,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_MainTransverseAxle",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 26,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 6,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_RightLargeArmorDisc",
+            "fixed_part": "Yaw_RightBroadSideArmor",
+            "crossing_edges": 68,
+            "classification": "Sub-millimeter concealed rear-face seating of the circular armor on its backing panel, unchanged through the coaxial rotation; the exposed front surface and rim stay clear.",
+            "axial_seating_m": 0.0004999935626983643
+          },
+          {
+            "elevation_degrees": 6,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_RightTrunnionJournal",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 18,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 12,
+            "recoil_m": 0,
+            "moving_part": "Pitch_LeftLargeArmorDisc",
+            "fixed_part": "Yaw_LeftBroadSideArmor",
+            "crossing_edges": 68,
+            "classification": "Sub-millimeter concealed rear-face seating of the circular armor on its backing panel, unchanged through the coaxial rotation; the exposed front surface and rim stay clear.",
+            "axial_seating_m": 0.0004999935626983643
+          },
+          {
+            "elevation_degrees": 12,
+            "recoil_m": 0,
+            "moving_part": "Pitch_LeftTrunnionJournal",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 20,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 12,
+            "recoil_m": 0,
+            "moving_part": "Pitch_MainTransverseAxle",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 26,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 12,
+            "recoil_m": 0,
+            "moving_part": "Pitch_RightLargeArmorDisc",
+            "fixed_part": "Yaw_RightBroadSideArmor",
+            "crossing_edges": 68,
+            "classification": "Sub-millimeter concealed rear-face seating of the circular armor on its backing panel, unchanged through the coaxial rotation; the exposed front surface and rim stay clear.",
+            "axial_seating_m": 0.0004999935626983643
+          },
+          {
+            "elevation_degrees": 12,
+            "recoil_m": 0,
+            "moving_part": "Pitch_RightTrunnionJournal",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 20,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 12,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_LeftLargeArmorDisc",
+            "fixed_part": "Yaw_LeftBroadSideArmor",
+            "crossing_edges": 68,
+            "classification": "Sub-millimeter concealed rear-face seating of the circular armor on its backing panel, unchanged through the coaxial rotation; the exposed front surface and rim stay clear.",
+            "axial_seating_m": 0.0004999935626983643
+          },
+          {
+            "elevation_degrees": 12,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_LeftTrunnionJournal",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 20,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 12,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_MainTransverseAxle",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 26,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 12,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_RightLargeArmorDisc",
+            "fixed_part": "Yaw_RightBroadSideArmor",
+            "crossing_edges": 68,
+            "classification": "Sub-millimeter concealed rear-face seating of the circular armor on its backing panel, unchanged through the coaxial rotation; the exposed front surface and rim stay clear.",
+            "axial_seating_m": 0.0004999935626983643
+          },
+          {
+            "elevation_degrees": 12,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_RightTrunnionJournal",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 20,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0,
+            "moving_part": "Pitch_LeftLargeArmorDisc",
+            "fixed_part": "Yaw_LeftBroadSideArmor",
+            "crossing_edges": 68,
+            "classification": "Sub-millimeter concealed rear-face seating of the circular armor on its backing panel, unchanged through the coaxial rotation; the exposed front surface and rim stay clear.",
+            "axial_seating_m": 0.0004999935626983643
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0,
+            "moving_part": "Pitch_LeftTrunnionJournal",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 20,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0,
+            "moving_part": "Pitch_MainTransverseAxle",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 26,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0,
+            "moving_part": "Pitch_RightLargeArmorDisc",
+            "fixed_part": "Yaw_RightBroadSideArmor",
+            "crossing_edges": 68,
+            "classification": "Sub-millimeter concealed rear-face seating of the circular armor on its backing panel, unchanged through the coaxial rotation; the exposed front surface and rim stay clear.",
+            "axial_seating_m": 0.0004999935626983643
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0,
+            "moving_part": "Pitch_RightTrunnionJournal",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 20,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_LeftLargeArmorDisc",
+            "fixed_part": "Yaw_LeftBroadSideArmor",
+            "crossing_edges": 68,
+            "classification": "Sub-millimeter concealed rear-face seating of the circular armor on its backing panel, unchanged through the coaxial rotation; the exposed front surface and rim stay clear.",
+            "axial_seating_m": 0.0004999935626983643
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_LeftTrunnionJournal",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 20,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_MainTransverseAxle",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 26,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_RightLargeArmorDisc",
+            "fixed_part": "Yaw_RightBroadSideArmor",
+            "crossing_edges": 68,
+            "classification": "Sub-millimeter concealed rear-face seating of the circular armor on its backing panel, unchanged through the coaxial rotation; the exposed front surface and rim stay clear.",
+            "axial_seating_m": 0.0004999935626983643
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_RightTrunnionJournal",
+            "fixed_part": "Yaw_RearCabinetCore",
+            "crossing_edges": 20,
+            "classification": "Intentional concealed axle entry into its enclosing support cabinet; no exposed armor collision."
+          }
+        ]
+      }
+    },
+    {
+      "name": "Sampled_motion_stays_above_fixed_base_top",
+      "passed": true,
+      "details": {
+        "samples": 72,
+        "minimum_height_m": 0.12999998033046722,
+        "measured_fixed_base_top_m": 0.09849999845027924
+      }
+    }
+  ],
+  "all_automated_checks_pass": true,
+  "sampled_poses": [
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 0,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 30,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 60,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 90,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 120,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 150,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 180,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 210,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 240,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 270,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 300,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 330,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 0,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 30,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 60,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 90,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 120,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 150,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 180,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 210,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 240,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 270,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 300,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 330,
+      "minimum_moving_part_z_m": 0.13001948595046997
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 0,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 30,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 60,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 90,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 120,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 150,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 180,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 210,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 240,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 270,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 300,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 330,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 0,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 30,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 60,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 90,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 120,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 150,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 180,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 210,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 240,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 270,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 300,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 330,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 0,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 30,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 60,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 90,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 120,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 150,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 180,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 210,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 240,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 270,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 300,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 330,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 0,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 30,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 60,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 90,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 120,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 150,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 180,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 210,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 240,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 270,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 300,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 330,
+      "minimum_moving_part_z_m": 0.13007795810699463
+    }
+  ],
+  "evidence_images": [
+    "MechanicalSideNeutral.png",
+    "MechanicalSideDownRecoil.png",
+    "MechanicalSideUpRecoil.png",
+    "MechanicalExploded.png"
+  ],
+  "limits": "Dimensional checks cover intended bearing and sliding interfaces. These are not a complete triangle intersection or physical simulation. Independent review of the rendered views is required for the final verdict."
+}

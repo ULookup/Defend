@@ -1,0 +1,3656 @@
+{
+  "importedFixedBaseFailures": [
+    {
+      "polygon": 885,
+      "area": 1.1377170494597522e-06,
+      "minimumNormalDot": -0.025900990702211857,
+      "worldPoints": [
+        [
+          -0.0358978733420372,
+          0.36257341504096985,
+          0.08230365812778473
+        ],
+        [
+          -0.035736411809921265,
+          0.3638874292373657,
+          0.08176835626363754
+        ],
+        [
+          -0.03423161059617996,
+          0.3635860085487366,
+          0.08229388296604156
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 13,
+          "vertexCount": 3
+        }
+      ]
+    },
+    {
+      "polygon": 927,
+      "area": 0.0,
+      "minimumNormalDot": -0.5067825317382812,
+      "worldPoints": [
+        [
+          0.03734868764877319,
+          0.3632793426513672,
+          0.08107306808233261
+        ],
+        [
+          0.03573642671108246,
+          0.3638874590396881,
+          0.08176835626363754
+        ],
+        [
+          0.03573642671108246,
+          0.3638874590396881,
+          0.08176835626363754
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 11,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 55,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 939,
+      "area": 0.0,
+      "minimumNormalDot": -0.6527512073516846,
+      "worldPoints": [
+        [
+          -0.0358978733420372,
+          0.36257341504096985,
+          0.08230365812778473
+        ],
+        [
+          -0.035736411809921265,
+          0.3638874292373657,
+          0.08176835626363754
+        ],
+        [
+          -0.035736411809921265,
+          0.3638874292373657,
+          0.08176835626363754
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 13,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 67,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 951,
+      "area": 0.0,
+      "minimumNormalDot": 0.6517049074172974,
+      "worldPoints": [
+        [
+          -0.0358978807926178,
+          0.3687765896320343,
+          0.07769621908664703
+        ],
+        [
+          -0.03573639690876007,
+          0.36746254563331604,
+          0.07823152095079422
+        ],
+        [
+          -0.03573639690876007,
+          0.36746254563331604,
+          0.07823152095079422
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 24,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 79,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 969,
+      "area": 0.0,
+      "minimumNormalDot": 0.9499168395996094,
+      "worldPoints": [
+        [
+          -0.035736411809921265,
+          0.3662991523742676,
+          0.07756415009498596
+        ],
+        [
+          -0.03573639690876007,
+          0.36746254563331604,
+          0.07823152095079422
+        ],
+        [
+          -0.03573639690876007,
+          0.36746254563331604,
+          0.07823152095079422
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 37,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 75,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 97,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 970,
+      "area": 0.0,
+      "minimumNormalDot": 0.9293290376663208,
+      "worldPoints": [
+        [
+          0.03573642671108246,
+          0.36629918217658997,
+          0.07756415009498596
+        ],
+        [
+          0.03573642671108246,
+          0.36746254563331604,
+          0.07823152095079422
+        ],
+        [
+          0.03573642671108246,
+          0.36746254563331604,
+          0.07823152095079422
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 39,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 45,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 98,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 972,
+      "area": 0.0,
+      "minimumNormalDot": 0.31252312660217285,
+      "worldPoints": [
+        [
+          0.03573642671108246,
+          0.3638874590396881,
+          0.08176835626363754
+        ],
+        [
+          0.03573644161224365,
+          0.3650508522987366,
+          0.0824357271194458
+        ],
+        [
+          0.03573644161224365,
+          0.3650508522987366,
+          0.0824357271194458
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 51,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 57,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 100,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 974,
+      "area": 4.713078885498767e-12,
+      "minimumNormalDot": -0.026191353797912598,
+      "worldPoints": [
+        [
+          -0.035736411809921265,
+          0.3638874292373657,
+          0.08176835626363754
+        ],
+        [
+          -0.03573640435934067,
+          0.3650508224964142,
+          0.0824357271194458
+        ],
+        [
+          -0.03573639690876007,
+          0.3650508224964142,
+          0.0824357271194458
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 63,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 69,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 102,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 1731,
+      "area": 0.0,
+      "minimumNormalDot": -0.506813108921051,
+      "worldPoints": [
+        [
+          0.2831427752971649,
+          0.23034951090812683,
+          0.08125991374254227
+        ],
+        [
+          0.28243809938430786,
+          0.23192548751831055,
+          0.08194715529680252
+        ],
+        [
+          0.28243809938430786,
+          0.23192548751831055,
+          0.08194715529680252
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 11,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 55,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 1755,
+      "area": 0.0,
+      "minimumNormalDot": 0.6503337621688843,
+      "worldPoints": [
+        [
+          0.23552647233009338,
+          0.2862544059753418,
+          0.07751671969890594
+        ],
+        [
+          0.23470443487167358,
+          0.2852170169353485,
+          0.07805275917053223
+        ],
+        [
+          0.23470443487167358,
+          0.2852170169353485,
+          0.07805275917053223
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 24,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 79,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 1773,
+      "area": 0.0,
+      "minimumNormalDot": 0.9503892064094543,
+      "worldPoints": [
+        [
+          0.23388007283210754,
+          0.28439611196517944,
+          0.07738535106182098
+        ],
+        [
+          0.23470443487167358,
+          0.2852170169353485,
+          0.07805275917053223
+        ],
+        [
+          0.23470443487167358,
+          0.2852170169353485,
+          0.07805275917053223
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 37,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 75,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 97,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 1774,
+      "area": 0.0,
+      "minimumNormalDot": 0.7938274145126343,
+      "worldPoints": [
+        [
+          0.2841668426990509,
+          0.23360754549503326,
+          0.07774312049150467
+        ],
+        [
+          0.28499114513397217,
+          0.23442839086055756,
+          0.07841053605079651
+        ],
+        [
+          0.28499114513397217,
+          0.23442839086055756,
+          0.07841053605079651
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 39,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 45,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 98,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 1778,
+      "area": 0.0,
+      "minimumNormalDot": -0.4521743059158325,
+      "worldPoints": [
+        [
+          0.2321513593196869,
+          0.2827140688896179,
+          0.08158938586711884
+        ],
+        [
+          0.23297569155693054,
+          0.283534973859787,
+          0.08225679397583008
+        ],
+        [
+          0.23297569155693054,
+          0.283534973859787,
+          0.08225679397583008
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 63,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 69,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 102,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 2531,
+      "area": 1.1377117061783792e-06,
+      "minimumNormalDot": -0.032359909266233444,
+      "worldPoints": [
+        [
+          0.36214345693588257,
+          0.03582765907049179,
+          0.08273699879646301
+        ],
+        [
+          0.3634593188762665,
+          0.03568843752145767,
+          0.08219992369413376
+        ],
+        [
+          0.3631758689880371,
+          0.03417389839887619,
+          0.08270719647407532
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 13,
+          "vertexCount": 3
+        }
+      ]
+    },
+    {
+      "polygon": 2561,
+      "area": 0.0,
+      "minimumNormalDot": -0.32756897807121277,
+      "worldPoints": [
+        [
+          0.3665279150009155,
+          -0.03584125265479088,
+          0.075726218521595
+        ],
+        [
+          0.3667272925376892,
+          -0.03569434955716133,
+          0.07713262736797333
+        ],
+        [
+          0.3667272925376892,
+          -0.03569434955716133,
+          0.07713262736797333
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 9,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 43,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 2585,
+      "area": 0.0,
+      "minimumNormalDot": -0.6502947807312012,
+      "worldPoints": [
+        [
+          0.36214345693588257,
+          0.03582765907049179,
+          0.08273699879646301
+        ],
+        [
+          0.3634593188762665,
+          0.03568843752145767,
+          0.08219992369413376
+        ],
+        [
+          0.3634593188762665,
+          0.03568843752145767,
+          0.08219992369413376
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 13,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 67,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 2597,
+      "area": 0.0,
+      "minimumNormalDot": 0.652723491191864,
+      "worldPoints": [
+        [
+          0.3683459758758545,
+          0.035957690328359604,
+          0.0781305655837059
+        ],
+        [
+          0.367033988237381,
+          0.035774048417806625,
+          0.07866372913122177
+        ],
+        [
+          0.367033988237381,
+          0.035774048417806625,
+          0.07866372913122177
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 24,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 79,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 2615,
+      "area": 0.0,
+      "minimumNormalDot": 0.8574929237365723,
+      "worldPoints": [
+        [
+          0.3658706247806549,
+          0.03576816990971565,
+          0.07799629122018814
+        ],
+        [
+          0.367033988237381,
+          0.035774048417806625,
+          0.07866372913122177
+        ],
+        [
+          0.367033988237381,
+          0.035774048417806625,
+          0.07866372913122177
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 37,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 75,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 97,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 2616,
+      "area": 0.0,
+      "minimumNormalDot": 0.9436658024787903,
+      "worldPoints": [
+        [
+          0.3667272925376892,
+          -0.03569434955716133,
+          0.07713262736797333
+        ],
+        [
+          0.3678906261920929,
+          -0.03568847104907036,
+          0.07780007272958755
+        ],
+        [
+          0.3678906261920929,
+          -0.03568847104907036,
+          0.07780007272958755
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 39,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 45,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 98,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 2620,
+      "area": 0.0,
+      "minimumNormalDot": 0.3093777298927307,
+      "worldPoints": [
+        [
+          0.3634593188762665,
+          0.03568843752145767,
+          0.08219992369413376
+        ],
+        [
+          0.3646225929260254,
+          0.03569430112838745,
+          0.08286736905574799
+        ],
+        [
+          0.3646225929260254,
+          0.03569430112838745,
+          0.08286736905574799
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 63,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 69,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 102,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 3403,
+      "area": 0.0,
+      "minimumNormalDot": -0.32746806740760803,
+      "worldPoints": [
+        [
+          0.23362843692302704,
+          -0.28436434268951416,
+          0.07598009705543518
+        ],
+        [
+          0.23388008773326874,
+          -0.2843961715698242,
+          0.07738543301820755
+        ],
+        [
+          0.23388008773326874,
+          -0.2843961715698242,
+          0.07738543301820755
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 9,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 43,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 3439,
+      "area": 0.0,
+      "minimumNormalDot": 0.6517789959907532,
+      "worldPoints": [
+        [
+          0.28604042530059814,
+          -0.23523637652397156,
+          0.07787618041038513
+        ],
+        [
+          0.28499114513397217,
+          -0.23442845046520233,
+          0.07841061055660248
+        ],
+        [
+          0.28499114513397217,
+          -0.23442845046520233,
+          0.07841061055660248
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 24,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 79,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 3457,
+      "area": 0.0,
+      "minimumNormalDot": 0.9494022130966187,
+      "worldPoints": [
+        [
+          0.2841668128967285,
+          -0.23360756039619446,
+          0.07774319499731064
+        ],
+        [
+          0.28499114513397217,
+          -0.23442845046520233,
+          0.07841061055660248
+        ],
+        [
+          0.28499114513397217,
+          -0.23442845046520233,
+          0.07841061055660248
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 37,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 75,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 97,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 3460,
+      "area": 0.0,
+      "minimumNormalDot": 0.3140457272529602,
+      "worldPoints": [
+        [
+          0.2321513295173645,
+          -0.2827141582965851,
+          0.0815894678235054
+        ],
+        [
+          0.23297566175460815,
+          -0.2835350036621094,
+          0.08225688338279724
+        ],
+        [
+          0.23297566175460815,
+          -0.2835350036621094,
+          0.08225688338279724
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 51,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 57,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 100,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 3462,
+      "area": 0.0,
+      "minimumNormalDot": -0.7570840716362,
+      "worldPoints": [
+        [
+          0.2824380695819855,
+          -0.23192553222179413,
+          0.08194722980260849
+        ],
+        [
+          0.2832624018192291,
+          -0.2327464073896408,
+          0.08261464536190033
+        ],
+        [
+          0.2832624018192291,
+          -0.2327464073896408,
+          0.08261464536190033
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 63,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 69,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 102,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 4245,
+      "area": 0.0,
+      "minimumNormalDot": -0.3257441520690918,
+      "worldPoints": [
+        [
+          -0.035897910594940186,
+          -0.36609789729118347,
+          0.07615973055362701
+        ],
+        [
+          -0.035736456513404846,
+          -0.36629918217658997,
+          0.07756426930427551
+        ],
+        [
+          -0.035736456513404846,
+          -0.36629918217658997,
+          0.07756426930427551
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 9,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 43,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 4257,
+      "area": 0.0,
+      "minimumNormalDot": -0.5070106983184814,
+      "worldPoints": [
+        [
+          -0.037348710000514984,
+          -0.3632793426513672,
+          0.08107318729162216
+        ],
+        [
+          -0.03573644161224365,
+          -0.3638874590396881,
+          0.0817684754729271
+        ],
+        [
+          -0.03573644161224365,
+          -0.3638874590396881,
+          0.0817684754729271
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 11,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 55,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 4299,
+      "area": 4.713173427928208e-12,
+      "minimumNormalDot": -0.8495613932609558,
+      "worldPoints": [
+        [
+          0.03573638200759888,
+          -0.3662991225719452,
+          0.07756426930427551
+        ],
+        [
+          0.03573638200759888,
+          -0.36746254563331604,
+          0.07823164016008377
+        ],
+        [
+          0.035736389458179474,
+          -0.36746254563331604,
+          0.07823164016008377
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 37,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 75,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 97,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 4300,
+      "area": 0.0,
+      "minimumNormalDot": 0.942444920539856,
+      "worldPoints": [
+        [
+          -0.035736456513404846,
+          -0.36629918217658997,
+          0.07756426930427551
+        ],
+        [
+          -0.035736434161663055,
+          -0.3674625754356384,
+          0.07823164016008377
+        ],
+        [
+          -0.035736434161663055,
+          -0.3674625754356384,
+          0.07823164016008377
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 39,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 45,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 98,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 4302,
+      "area": 0.0,
+      "minimumNormalDot": 0.3128640055656433,
+      "worldPoints": [
+        [
+          -0.03573644161224365,
+          -0.3638874590396881,
+          0.0817684754729271
+        ],
+        [
+          -0.03573644906282425,
+          -0.3650508522987366,
+          0.08243584632873535
+        ],
+        [
+          -0.03573644906282425,
+          -0.3650508522987366,
+          0.08243584632873535
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 51,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 57,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 100,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 4304,
+      "area": 0.0,
+      "minimumNormalDot": -0.4460300803184509,
+      "worldPoints": [
+        [
+          0.03573638200759888,
+          -0.36388739943504333,
+          0.0817684754729271
+        ],
+        [
+          0.035736389458179474,
+          -0.3650508224964142,
+          0.08243584632873535
+        ],
+        [
+          0.035736389458179474,
+          -0.3650508224964142,
+          0.08243584632873535
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 63,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 69,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 102,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 5087,
+      "area": 0.0,
+      "minimumNormalDot": -0.32752925157546997,
+      "worldPoints": [
+        [
+          -0.28414252400398254,
+          -0.23334625363349915,
+          0.0763394758105278
+        ],
+        [
+          -0.28416693210601807,
+          -0.23360751569271088,
+          0.07774319499731064
+        ],
+        [
+          -0.28416693210601807,
+          -0.23360751569271088,
+          0.07774319499731064
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 9,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 43,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 5099,
+      "area": 0.0,
+      "minimumNormalDot": -0.5068099498748779,
+      "worldPoints": [
+        [
+          -0.2831428647041321,
+          -0.23034949600696564,
+          0.08125998824834824
+        ],
+        [
+          -0.28243815898895264,
+          -0.23192551732063293,
+          0.08194722980260849
+        ],
+        [
+          -0.28243815898895264,
+          -0.23192551732063293,
+          0.08194722980260849
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 11,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 55,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 5123,
+      "area": 0.0,
+      "minimumNormalDot": 0.6517471075057983,
+      "worldPoints": [
+        [
+          -0.23552656173706055,
+          -0.2862544059753418,
+          0.07751680910587311
+        ],
+        [
+          -0.23470449447631836,
+          -0.2852169871330261,
+          0.07805284857749939
+        ],
+        [
+          -0.23470449447631836,
+          -0.2852169871330261,
+          0.07805284857749939
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 24,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 79,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 5141,
+      "area": 0.0,
+      "minimumNormalDot": 0.9503849148750305,
+      "worldPoints": [
+        [
+          -0.23388010263442993,
+          -0.28439608216285706,
+          0.07738543301820755
+        ],
+        [
+          -0.23470449447631836,
+          -0.2852169871330261,
+          0.07805284857749939
+        ],
+        [
+          -0.23470449447631836,
+          -0.2852169871330261,
+          0.07805284857749939
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 37,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 75,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 97,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 5144,
+      "area": 0.0,
+      "minimumNormalDot": 0.311303973197937,
+      "worldPoints": [
+        [
+          -0.28243815898895264,
+          -0.23192551732063293,
+          0.08194722980260849
+        ],
+        [
+          -0.2832624912261963,
+          -0.23274636268615723,
+          0.08261464536190033
+        ],
+        [
+          -0.2832624912261963,
+          -0.23274636268615723,
+          0.08261464536190033
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 51,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 57,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 100,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 5146,
+      "area": 0.0,
+      "minimumNormalDot": -0.4181286692619324,
+      "worldPoints": [
+        [
+          -0.23215138912200928,
+          -0.28271403908729553,
+          0.0815894678235054
+        ],
+        [
+          -0.23297572135925293,
+          -0.283534973859787,
+          0.08225688338279724
+        ],
+        [
+          -0.23297572135925293,
+          -0.283534973859787,
+          0.08225688338279724
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 63,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 69,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 102,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 5899,
+      "area": 1.1377137525414582e-06,
+      "minimumNormalDot": -0.0322979437187314,
+      "worldPoints": [
+        [
+          -0.36214348673820496,
+          -0.0358276292681694,
+          0.0827370136976242
+        ],
+        [
+          -0.36345934867858887,
+          -0.035688407719135284,
+          0.08219993859529495
+        ],
+        [
+          -0.36317598819732666,
+          -0.03417385369539261,
+          0.08270720392465591
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 13,
+          "vertexCount": 3
+        }
+      ]
+    },
+    {
+      "polygon": 5929,
+      "area": 0.0,
+      "minimumNormalDot": -0.3257831335067749,
+      "worldPoints": [
+        [
+          -0.3665280044078827,
+          0.035841237753629684,
+          0.07572620362043381
+        ],
+        [
+          -0.366727352142334,
+          0.03569434955716133,
+          0.07713261246681213
+        ],
+        [
+          -0.366727352142334,
+          0.03569434955716133,
+          0.07713261246681213
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 9,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 43,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 5953,
+      "area": 0.0,
+      "minimumNormalDot": -0.6517290472984314,
+      "worldPoints": [
+        [
+          -0.36214348673820496,
+          -0.0358276292681694,
+          0.0827370136976242
+        ],
+        [
+          -0.36345934867858887,
+          -0.035688407719135284,
+          0.08219993859529495
+        ],
+        [
+          -0.36345934867858887,
+          -0.035688407719135284,
+          0.08219993859529495
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 13,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 67,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 5965,
+      "area": 0.0,
+      "minimumNormalDot": 0.6517043709754944,
+      "worldPoints": [
+        [
+          -0.3683460056781769,
+          -0.03595766797661781,
+          0.0781305804848671
+        ],
+        [
+          -0.36703401803970337,
+          -0.03577399626374245,
+          0.07866374403238297
+        ],
+        [
+          -0.36703401803970337,
+          -0.03577399626374245,
+          0.07866374403238297
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 24,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 79,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 5983,
+      "area": 0.0,
+      "minimumNormalDot": 0.948698878288269,
+      "worldPoints": [
+        [
+          -0.36587071418762207,
+          -0.03576813265681267,
+          0.07799630612134933
+        ],
+        [
+          -0.36703401803970337,
+          -0.03577399626374245,
+          0.07866374403238297
+        ],
+        [
+          -0.36703401803970337,
+          -0.03577399626374245,
+          0.07866374403238297
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 37,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 75,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 97,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 5984,
+      "area": 0.0,
+      "minimumNormalDot": 0.9436662197113037,
+      "worldPoints": [
+        [
+          -0.366727352142334,
+          0.03569434955716133,
+          0.07713261246681213
+        ],
+        [
+          -0.3678906559944153,
+          0.03568849340081215,
+          0.07780005782842636
+        ],
+        [
+          -0.3678906559944153,
+          0.03568849340081215,
+          0.07780005782842636
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 39,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 45,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 98,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 5986,
+      "area": 0.0,
+      "minimumNormalDot": 0.0004649451293516904,
+      "worldPoints": [
+        [
+          -0.3643159568309784,
+          0.035774074494838715,
+          0.08133624494075775
+        ],
+        [
+          -0.3654792904853821,
+          0.03576819598674774,
+          0.08200369030237198
+        ],
+        [
+          -0.3654792904853821,
+          0.03576819598674774,
+          0.08200369030237198
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 51,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 57,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 100,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 5988,
+      "area": 0.0,
+      "minimumNormalDot": 0.3094468414783478,
+      "worldPoints": [
+        [
+          -0.36345934867858887,
+          -0.035688407719135284,
+          0.08219993859529495
+        ],
+        [
+          -0.36462271213531494,
+          -0.03569428622722626,
+          0.08286738395690918
+        ],
+        [
+          -0.36462271213531494,
+          -0.03569428622722626,
+          0.08286738395690918
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 63,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 69,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 102,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 6737,
+      "area": 1.137718754762318e-06,
+      "minimumNormalDot": -0.7041492527350783,
+      "worldPoints": [
+        [
+          -0.23362846672534943,
+          0.28436434268951416,
+          0.07598000764846802
+        ],
+        [
+          -0.23388008773326874,
+          0.28439614176750183,
+          0.07738534361124039
+        ],
+        [
+          -0.235154926776886,
+          0.2835370898246765,
+          0.07686737179756165
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 9,
+          "vertexCount": 3
+        }
+      ]
+    },
+    {
+      "polygon": 6771,
+      "area": 9.448301516168378e-13,
+      "minimumNormalDot": -0.1250680685043335,
+      "worldPoints": [
+        [
+          -0.23362846672534943,
+          0.28436434268951416,
+          0.07598000764846802
+        ],
+        [
+          -0.23388008773326874,
+          0.28439614176750183,
+          0.07738535106182098
+        ],
+        [
+          -0.23388008773326874,
+          0.28439614176750183,
+          0.07738534361124039
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 9,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 43,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 6828,
+      "area": 0.0,
+      "minimumNormalDot": 0.3139767646789551,
+      "worldPoints": [
+        [
+          -0.2321513295173645,
+          0.2827141284942627,
+          0.08158937841653824
+        ],
+        [
+          -0.23297569155693054,
+          0.2835350036621094,
+          0.08225679397583008
+        ],
+        [
+          -0.23297569155693054,
+          0.2835350036621094,
+          0.08225679397583008
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 51,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 57,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 100,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 6830,
+      "area": 0.0,
+      "minimumNormalDot": -0.8402414321899414,
+      "worldPoints": [
+        [
+          -0.28243809938430786,
+          0.23192551732063293,
+          0.08194715529680252
+        ],
+        [
+          -0.2832624316215515,
+          0.2327464371919632,
+          0.08261456340551376
+        ],
+        [
+          -0.2832624316215515,
+          0.2327464371919632,
+          0.08261456340551376
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 63,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 69,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 102,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 9006,
+      "area": 0.0,
+      "minimumNormalDot": 0.5065081715583801,
+      "worldPoints": [
+        [
+          0.03573642671108246,
+          0.36746254563331604,
+          0.07823152095079422
+        ],
+        [
+          0.03573642671108246,
+          0.36746254563331604,
+          0.07823152095079422
+        ],
+        [
+          0.03734869509935379,
+          0.3680706322193146,
+          0.07892680913209915
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 26,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 44,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 9018,
+      "area": 0.0,
+      "minimumNormalDot": 0.3257284164428711,
+      "worldPoints": [
+        [
+          0.03573644161224365,
+          0.3650508522987366,
+          0.0824357271194458
+        ],
+        [
+          0.03573644161224365,
+          0.3650508522987366,
+          0.0824357271194458
+        ],
+        [
+          0.03589790314435959,
+          0.3652520775794983,
+          0.0838402658700943
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 28,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 56,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 9030,
+      "area": 5.459256310902383e-12,
+      "minimumNormalDot": -0.39057815819978714,
+      "worldPoints": [
+        [
+          -0.03573639690876007,
+          0.3650508224964142,
+          0.0824357271194458
+        ],
+        [
+          -0.03573640435934067,
+          0.3650508224964142,
+          0.0824357271194458
+        ],
+        [
+          -0.037348657846450806,
+          0.36595797538757324,
+          0.08260966837406158
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 30,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 68,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 9062,
+      "area": 0.0,
+      "minimumNormalDot": 0.31252312660217285,
+      "worldPoints": [
+        [
+          0.03573642671108246,
+          0.3638874590396881,
+          0.08176835626363754
+        ],
+        [
+          0.03573642671108246,
+          0.3638874590396881,
+          0.08176835626363754
+        ],
+        [
+          0.03573644161224365,
+          0.3650508522987366,
+          0.0824357271194458
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 51,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 57,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 100,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 9064,
+      "area": 0.0,
+      "minimumNormalDot": -1.0,
+      "worldPoints": [
+        [
+          -0.035736411809921265,
+          0.3638874292373657,
+          0.08176835626363754
+        ],
+        [
+          -0.035736411809921265,
+          0.3638874292373657,
+          0.08176835626363754
+        ],
+        [
+          -0.03573640435934067,
+          0.3650508224964142,
+          0.0824357271194458
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 63,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 69,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_01",
+          "polygon": 102,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 9742,
+      "area": 0.0,
+      "minimumNormalDot": 0.5063141584396362,
+      "worldPoints": [
+        [
+          0.28499114513397217,
+          0.23442839086055756,
+          0.07841053605079651
+        ],
+        [
+          0.28499114513397217,
+          0.23442839086055756,
+          0.07841053605079651
+        ],
+        [
+          0.2865551710128784,
+          0.2337130606174469,
+          0.0791139155626297
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 26,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 44,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 9766,
+      "area": 0.0,
+      "minimumNormalDot": 0.44796428084373474,
+      "worldPoints": [
+        [
+          0.23297569155693054,
+          0.283534973859787,
+          0.08225679397583008
+        ],
+        [
+          0.23297569155693054,
+          0.283534973859787,
+          0.08225679397583008
+        ],
+        [
+          0.2324853539466858,
+          0.2853195369243622,
+          0.08242271840572357
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 30,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 68,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 9776,
+      "area": 0.0,
+      "minimumNormalDot": -0.4869644343852997,
+      "worldPoints": [
+        [
+          0.23388007283210754,
+          0.28439611196517944,
+          0.07738535106182098
+        ],
+        [
+          0.23388007283210754,
+          0.28439611196517944,
+          0.07738535106182098
+        ],
+        [
+          0.232101708650589,
+          0.2849029004573822,
+          0.07720328867435455
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 15,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 78,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 9795,
+      "area": 0.0,
+      "minimumNormalDot": 0.9438616037368774,
+      "worldPoints": [
+        [
+          0.23388007283210754,
+          0.28439611196517944,
+          0.07738535106182098
+        ],
+        [
+          0.23388007283210754,
+          0.28439611196517944,
+          0.07738535106182098
+        ],
+        [
+          0.23470443487167358,
+          0.2852170169353485,
+          0.07805275917053223
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 37,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 75,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 97,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 9798,
+      "area": 0.0,
+      "minimumNormalDot": -0.5599104762077332,
+      "worldPoints": [
+        [
+          0.28243809938430786,
+          0.23192548751831055,
+          0.08194715529680252
+        ],
+        [
+          0.28243809938430786,
+          0.23192548751831055,
+          0.08194715529680252
+        ],
+        [
+          0.2832624018192291,
+          0.23274636268615723,
+          0.08261457085609436
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 51,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 57,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 100,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 9800,
+      "area": 1.1142661446306157e-11,
+      "minimumNormalDot": -0.7193005084991455,
+      "worldPoints": [
+        [
+          0.2321513593196869,
+          0.2827140688896179,
+          0.08158938586711884
+        ],
+        [
+          0.2321513444185257,
+          0.2827140986919403,
+          0.08158937841653824
+        ],
+        [
+          0.23297569155693054,
+          0.283534973859787,
+          0.08225679397583008
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 63,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 69,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_02",
+          "polygon": 102,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 10532,
+      "area": 0.0,
+      "minimumNormalDot": 0.5075066089630127,
+      "worldPoints": [
+        [
+          0.3678906261920929,
+          -0.03568847104907036,
+          0.07780007272958755
+        ],
+        [
+          0.3678906261920929,
+          -0.03568847104907036,
+          0.07780007272958755
+        ],
+        [
+          0.36851805448532104,
+          -0.03730160370469093,
+          0.07847589254379272
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 26,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 44,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 10556,
+      "area": 0.0,
+      "minimumNormalDot": 0.4438118040561676,
+      "worldPoints": [
+        [
+          0.3646225929260254,
+          0.03569430112838745,
+          0.08286736905574799
+        ],
+        [
+          0.3646225929260254,
+          0.03569430112838745,
+          0.08286736905574799
+        ],
+        [
+          0.36551037430763245,
+          0.037315115332603455,
+          0.08306088298559189
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 30,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 68,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 10586,
+      "area": 0.0,
+      "minimumNormalDot": 0.9510812163352966,
+      "worldPoints": [
+        [
+          0.3667272925376892,
+          -0.03569434955716133,
+          0.07713262736797333
+        ],
+        [
+          0.3667272925376892,
+          -0.03569434955716133,
+          0.07713262736797333
+        ],
+        [
+          0.3678906261920929,
+          -0.03568847104907036,
+          0.07780007272958755
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 39,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 45,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 98,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 10590,
+      "area": 0.0,
+      "minimumNormalDot": 0.3093777298927307,
+      "worldPoints": [
+        [
+          0.3634593188762665,
+          0.03568843752145767,
+          0.08219992369413376
+        ],
+        [
+          0.3634593188762665,
+          0.03568843752145767,
+          0.08219992369413376
+        ],
+        [
+          0.3646225929260254,
+          0.03569430112838745,
+          0.08286736905574799
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 63,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 69,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_03",
+          "polygon": 102,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 11334,
+      "area": 0.0,
+      "minimumNormalDot": 0.3275791108608246,
+      "worldPoints": [
+        [
+          0.23297566175460815,
+          -0.2835350036621094,
+          0.08225688338279724
+        ],
+        [
+          0.23297566175460815,
+          -0.2835350036621094,
+          0.08225688338279724
+        ],
+        [
+          0.23300008475780487,
+          -0.2837963104248047,
+          0.08366061002016068
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 28,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 56,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 11346,
+      "area": 0.0,
+      "minimumNormalDot": 0.44548216462135315,
+      "worldPoints": [
+        [
+          0.2832624018192291,
+          -0.2327464073896408,
+          0.08261464536190033
+        ],
+        [
+          0.2832624018192291,
+          -0.2327464073896408,
+          0.08261464536190033
+        ],
+        [
+          0.28504079580307007,
+          -0.23223963379859924,
+          0.08279670029878616
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 30,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 68,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 11356,
+      "area": 0.0,
+      "minimumNormalDot": -0.48686257004737854,
+      "worldPoints": [
+        [
+          0.2841668128967285,
+          -0.23360756039619446,
+          0.07774319499731064
+        ],
+        [
+          0.2841668128967285,
+          -0.23360756039619446,
+          0.07774319499731064
+        ],
+        [
+          0.2846571207046509,
+          -0.23182299733161926,
+          0.07757727801799774
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 15,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 78,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 11375,
+      "area": 0.0,
+      "minimumNormalDot": 0.9426858425140381,
+      "worldPoints": [
+        [
+          0.2841668128967285,
+          -0.23360756039619446,
+          0.07774319499731064
+        ],
+        [
+          0.2841668128967285,
+          -0.23360756039619446,
+          0.07774319499731064
+        ],
+        [
+          0.28499114513397217,
+          -0.23442845046520233,
+          0.07841061055660248
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 37,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 75,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 97,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 11376,
+      "area": 0.0,
+      "minimumNormalDot": 0.8746135830879211,
+      "worldPoints": [
+        [
+          0.23388008773326874,
+          -0.2843961715698242,
+          0.07738543301820755
+        ],
+        [
+          0.23388008773326874,
+          -0.2843961715698242,
+          0.07738543301820755
+        ],
+        [
+          0.23470439016819,
+          -0.2852170467376709,
+          0.07805284857749939
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 39,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 45,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 98,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 11378,
+      "area": 4.7100548287992705e-12,
+      "minimumNormalDot": -0.849322497844696,
+      "worldPoints": [
+        [
+          0.2321513295173645,
+          -0.2827141582965851,
+          0.0815894678235054
+        ],
+        [
+          0.2321513444185257,
+          -0.2827141582965851,
+          0.0815894678235054
+        ],
+        [
+          0.23297566175460815,
+          -0.2835350036621094,
+          0.08225688338279724
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 51,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 57,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 100,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 11380,
+      "area": 9.420109657598541e-12,
+      "minimumNormalDot": -0.849322497844696,
+      "worldPoints": [
+        [
+          0.2824380695819855,
+          -0.23192553222179413,
+          0.08194722980260849
+        ],
+        [
+          0.2824380695819855,
+          -0.23192551732063293,
+          0.08194722980260849
+        ],
+        [
+          0.2832624018192291,
+          -0.2327464073896408,
+          0.08261464536190033
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 63,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 69,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_04",
+          "polygon": 102,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 12112,
+      "area": 0.0,
+      "minimumNormalDot": 0.5067836046218872,
+      "worldPoints": [
+        [
+          -0.035736434161663055,
+          -0.3674625754356384,
+          0.07823164016008377
+        ],
+        [
+          -0.035736434161663055,
+          -0.3674625754356384,
+          0.07823164016008377
+        ],
+        [
+          -0.03734871745109558,
+          -0.36807066202163696,
+          0.0789269283413887
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 26,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 44,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 12124,
+      "area": 0.0,
+      "minimumNormalDot": 0.3244267702102661,
+      "worldPoints": [
+        [
+          -0.03573644906282425,
+          -0.3650508522987366,
+          0.08243584632873535
+        ],
+        [
+          -0.03573644906282425,
+          -0.3650508522987366,
+          0.08243584632873535
+        ],
+        [
+          -0.035897910594940186,
+          -0.3652521073818207,
+          0.08384038507938385
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 28,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 56,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 12136,
+      "area": 0.0,
+      "minimumNormalDot": 0.44669535756111145,
+      "worldPoints": [
+        [
+          0.035736389458179474,
+          -0.3650508224964142,
+          0.08243584632873535
+        ],
+        [
+          0.035736389458179474,
+          -0.3650508224964142,
+          0.08243584632873535
+        ],
+        [
+          0.03734862804412842,
+          -0.36595794558525085,
+          0.08260978758335114
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 30,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 68,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 12146,
+      "area": 0.0,
+      "minimumNormalDot": -0.48661136627197266,
+      "worldPoints": [
+        [
+          0.03573638200759888,
+          -0.3662991225719452,
+          0.07756426930427551
+        ],
+        [
+          0.03573638200759888,
+          -0.3662991225719452,
+          0.07756426930427551
+        ],
+        [
+          0.037348635494709015,
+          -0.36539196968078613,
+          0.07739032804965973
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 15,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 78,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 12165,
+      "area": 0.0,
+      "minimumNormalDot": 0.024690702557563782,
+      "worldPoints": [
+        [
+          0.03573638200759888,
+          -0.3662991225719452,
+          0.07756426930427551
+        ],
+        [
+          0.03573638200759888,
+          -0.3662991225719452,
+          0.07756426930427551
+        ],
+        [
+          0.03573638200759888,
+          -0.36746254563331604,
+          0.07823164016008377
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 37,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 75,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 97,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 12166,
+      "area": 0.0,
+      "minimumNormalDot": 0.9499068856239319,
+      "worldPoints": [
+        [
+          -0.035736456513404846,
+          -0.36629918217658997,
+          0.07756426930427551
+        ],
+        [
+          -0.035736456513404846,
+          -0.36629918217658997,
+          0.07756426930427551
+        ],
+        [
+          -0.035736434161663055,
+          -0.3674625754356384,
+          0.07823164016008377
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 39,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 45,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 98,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 12168,
+      "area": 0.0,
+      "minimumNormalDot": 0.3128640055656433,
+      "worldPoints": [
+        [
+          -0.03573644161224365,
+          -0.3638874590396881,
+          0.0817684754729271
+        ],
+        [
+          -0.03573644161224365,
+          -0.3638874590396881,
+          0.0817684754729271
+        ],
+        [
+          -0.03573644906282425,
+          -0.3650508522987366,
+          0.08243584632873535
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 51,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 57,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 100,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 12170,
+      "area": 4.713173427928208e-12,
+      "minimumNormalDot": -0.8495614528656006,
+      "worldPoints": [
+        [
+          0.03573638200759888,
+          -0.36388739943504333,
+          0.0817684754729271
+        ],
+        [
+          0.035736389458179474,
+          -0.36388739943504333,
+          0.0817684754729271
+        ],
+        [
+          0.035736389458179474,
+          -0.3650508224964142,
+          0.08243584632873535
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 63,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 69,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_05",
+          "polygon": 102,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 12914,
+      "area": 0.0,
+      "minimumNormalDot": 0.32443493604660034,
+      "worldPoints": [
+        [
+          -0.2832624912261963,
+          -0.23274636268615723,
+          0.08261464536190033
+        ],
+        [
+          -0.2832624912261963,
+          -0.23274636268615723,
+          0.08261464536190033
+        ],
+        [
+          -0.283514142036438,
+          -0.23277822136878967,
+          0.0840199887752533
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 28,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 56,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 12926,
+      "area": 0.0,
+      "minimumNormalDot": 0.4479607939720154,
+      "worldPoints": [
+        [
+          -0.23297572135925293,
+          -0.283534973859787,
+          0.08225688338279724
+        ],
+        [
+          -0.23297572135925293,
+          -0.283534973859787,
+          0.08225688338279724
+        ],
+        [
+          -0.23248536884784698,
+          -0.2853195071220398,
+          0.08242280036211014
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 30,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 68,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 12936,
+      "area": 0.0,
+      "minimumNormalDot": -0.4869617223739624,
+      "worldPoints": [
+        [
+          -0.23388010263442993,
+          -0.28439608216285706,
+          0.07738543301820755
+        ],
+        [
+          -0.23388010263442993,
+          -0.28439608216285706,
+          0.07738543301820755
+        ],
+        [
+          -0.23210173845291138,
+          -0.2849029004573822,
+          0.07720337808132172
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 15,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 78,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 12955,
+      "area": 0.0,
+      "minimumNormalDot": 0.9438585638999939,
+      "worldPoints": [
+        [
+          -0.23388010263442993,
+          -0.28439608216285706,
+          0.07738543301820755
+        ],
+        [
+          -0.23388010263442993,
+          -0.28439608216285706,
+          0.07738543301820755
+        ],
+        [
+          -0.23470449447631836,
+          -0.2852169871330261,
+          0.07805284857749939
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 37,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 75,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 97,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 12956,
+      "area": 0.0,
+      "minimumNormalDot": 0.0003287668223492801,
+      "worldPoints": [
+        [
+          -0.28416693210601807,
+          -0.23360751569271088,
+          0.07774319499731064
+        ],
+        [
+          -0.28416693210601807,
+          -0.23360751569271088,
+          0.07774319499731064
+        ],
+        [
+          -0.28499120473861694,
+          -0.23442842066287994,
+          0.07841061800718307
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 39,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 45,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 98,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 12958,
+      "area": 0.0,
+      "minimumNormalDot": 0.311303973197937,
+      "worldPoints": [
+        [
+          -0.28243815898895264,
+          -0.23192551732063293,
+          0.08194722980260849
+        ],
+        [
+          -0.28243815898895264,
+          -0.23192551732063293,
+          0.08194722980260849
+        ],
+        [
+          -0.2832624912261963,
+          -0.23274636268615723,
+          0.08261464536190033
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 51,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 57,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_06",
+          "polygon": 100,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 13692,
+      "area": 0.0,
+      "minimumNormalDot": 0.5074893236160278,
+      "worldPoints": [
+        [
+          -0.3678906559944153,
+          0.03568849340081215,
+          0.07780005782842636
+        ],
+        [
+          -0.3678906559944153,
+          0.03568849340081215,
+          0.07780005782842636
+        ],
+        [
+          -0.3685181140899658,
+          0.037301626056432724,
+          0.07847587764263153
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 26,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 44,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 13704,
+      "area": 0.0,
+      "minimumNormalDot": 0.3245667815208435,
+      "worldPoints": [
+        [
+          -0.3654792904853821,
+          0.03576819598674774,
+          0.08200369030237198
+        ],
+        [
+          -0.3654792904853821,
+          0.03576819598674774,
+          0.08200369030237198
+        ],
+        [
+          -0.36568254232406616,
+          0.035944193601608276,
+          0.08340620249509811
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 28,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 56,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 13716,
+      "area": 0.0,
+      "minimumNormalDot": 0.44381290674209595,
+      "worldPoints": [
+        [
+          -0.36462271213531494,
+          -0.03569428622722626,
+          0.08286738395690918
+        ],
+        [
+          -0.36462271213531494,
+          -0.03569428622722626,
+          0.08286738395690918
+        ],
+        [
+          -0.3655104637145996,
+          -0.037315092980861664,
+          0.08306089788675308
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 30,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 68,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 13726,
+      "area": 0.0,
+      "minimumNormalDot": -0.4875934422016144,
+      "worldPoints": [
+        [
+          -0.36587071418762207,
+          -0.03576813265681267,
+          0.07799630612134933
+        ],
+        [
+          -0.36587071418762207,
+          -0.03576813265681267,
+          0.07799630612134933
+        ],
+        [
+          -0.3649442493915558,
+          -0.03737137094140053,
+          0.07784175127744675
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 15,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 78,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 13745,
+      "area": 0.0,
+      "minimumNormalDot": 0.9418438673019409,
+      "worldPoints": [
+        [
+          -0.36587071418762207,
+          -0.03576813265681267,
+          0.07799630612134933
+        ],
+        [
+          -0.36587071418762207,
+          -0.03576813265681267,
+          0.07799630612134933
+        ],
+        [
+          -0.36703401803970337,
+          -0.03577399626374245,
+          0.07866374403238297
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 37,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 75,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 97,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 13746,
+      "area": 0.0,
+      "minimumNormalDot": 0.9510785341262817,
+      "worldPoints": [
+        [
+          -0.366727352142334,
+          0.03569434955716133,
+          0.07713261246681213
+        ],
+        [
+          -0.366727352142334,
+          0.03569434955716133,
+          0.07713261246681213
+        ],
+        [
+          -0.3678906559944153,
+          0.03568849340081215,
+          0.07780005782842636
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 39,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 45,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 98,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 13750,
+      "area": 0.0,
+      "minimumNormalDot": 0.3094468414783478,
+      "worldPoints": [
+        [
+          -0.36345934867858887,
+          -0.035688407719135284,
+          0.08219993859529495
+        ],
+        [
+          -0.36345934867858887,
+          -0.035688407719135284,
+          0.08219993859529495
+        ],
+        [
+          -0.36462271213531494,
+          -0.03569428622722626,
+          0.08286738395690918
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 63,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 69,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_07",
+          "polygon": 102,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 14494,
+      "area": 0.0,
+      "minimumNormalDot": 0.32752707600593567,
+      "worldPoints": [
+        [
+          -0.23297569155693054,
+          0.2835350036621094,
+          0.08225679397583008
+        ],
+        [
+          -0.23297569155693054,
+          0.2835350036621094,
+          0.08225679397583008
+        ],
+        [
+          -0.23300011456012726,
+          0.2837963104248047,
+          0.08366052061319351
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 28,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 56,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 14506,
+      "area": 0.0,
+      "minimumNormalDot": 0.4454796314239502,
+      "worldPoints": [
+        [
+          -0.2832624316215515,
+          0.2327464371919632,
+          0.08261456340551376
+        ],
+        [
+          -0.2832624316215515,
+          0.2327464371919632,
+          0.08261456340551376
+        ],
+        [
+          -0.28504079580307007,
+          0.23223963379859924,
+          0.0827966257929802
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 30,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 68,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 14516,
+      "area": 0.0,
+      "minimumNormalDot": -0.487505704164505,
+      "worldPoints": [
+        [
+          -0.2841668426990509,
+          0.23360756039619446,
+          0.07774312049150467
+        ],
+        [
+          -0.2841668426990509,
+          0.23360756039619446,
+          0.07774312049150467
+        ],
+        [
+          -0.28465715050697327,
+          0.23182299733161926,
+          0.07757719606161118
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 15,
+          "vertexCount": 3
+        },
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 78,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 14535,
+      "area": 0.0,
+      "minimumNormalDot": 0.37144458293914795,
+      "worldPoints": [
+        [
+          -0.2841668426990509,
+          0.23360756039619446,
+          0.07774312049150467
+        ],
+        [
+          -0.2841668426990509,
+          0.23360756039619446,
+          0.07774312049150467
+        ],
+        [
+          -0.28499117493629456,
+          0.23442848026752472,
+          0.07841052860021591
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 37,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 75,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 97,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 14538,
+      "area": 4.710148937547842e-12,
+      "minimumNormalDot": -0.8493291139602661,
+      "worldPoints": [
+        [
+          -0.2321513295173645,
+          0.2827141284942627,
+          0.08158937841653824
+        ],
+        [
+          -0.2321513444185257,
+          0.2827140986919403,
+          0.08158937841653824
+        ],
+        [
+          -0.23297569155693054,
+          0.2835350036621094,
+          0.08225679397583008
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 51,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 57,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 100,
+          "vertexCount": 4
+        }
+      ]
+    },
+    {
+      "polygon": 14540,
+      "area": 9.420268384796593e-12,
+      "minimumNormalDot": -0.849331796169281,
+      "worldPoints": [
+        [
+          -0.28243809938430786,
+          0.23192551732063293,
+          0.08194715529680252
+        ],
+        [
+          -0.28243809938430786,
+          0.23192551732063293,
+          0.08194715529680252
+        ],
+        [
+          -0.2832624316215515,
+          0.2327464371919632,
+          0.08261456340551376
+        ]
+      ],
+      "sourceMatches": [
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 63,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 69,
+          "vertexCount": 4
+        },
+        {
+          "object": "Base_UpperVentFrame_08",
+          "polygon": 102,
+          "vertexCount": 4
+        }
+      ]
+    }
+  ],
+  "sourceCollapsedUV": [
+    {
+      "object": "Base_UpperVentFrame_01",
+      "polygon": 55,
+      "uvArea": 5.838662886503698e-13,
+      "worldPoints": [
+        [
+          0.03734870254993439,
+          0.3632793128490448,
+          0.08107312768697739
+        ],
+        [
+          0.03573644533753395,
+          0.3638874292373657,
+          0.08176841586828232
+        ],
+        [
+          0.03573644906282425,
+          0.3638874292373657,
+          0.08176841586828232
+        ]
+      ]
+    },
+    {
+      "object": "Base_UpperVentFrame_02",
+      "polygon": 55,
+      "uvArea": 5.838662886503698e-13,
+      "worldPoints": [
+        [
+          0.2831427752971649,
+          0.23034949600696564,
+          0.08125995099544525
+        ],
+        [
+          0.28243809938430786,
+          0.23192547261714935,
+          0.0819471925497055
+        ],
+        [
+          0.28243809938430786,
+          0.23192547261714935,
+          0.08194718509912491
+        ]
+      ]
+    },
+    {
+      "object": "Base_UpperVentFrame_05",
+      "polygon": 55,
+      "uvArea": 5.838662886503698e-13,
+      "worldPoints": [
+        [
+          -0.037348706275224686,
+          -0.3632793128490448,
+          0.08107312768697739
+        ],
+        [
+          -0.03573644906282425,
+          -0.3638874292373657,
+          0.08176841586828232
+        ],
+        [
+          -0.03573645278811455,
+          -0.3638874292373657,
+          0.08176841586828232
+        ]
+      ]
+    },
+    {
+      "object": "Base_UpperVentFrame_08",
+      "polygon": 55,
+      "uvArea": 5.838662886503698e-13,
+      "worldPoints": [
+        [
+          -0.23058733344078064,
+          0.28342947363853455,
+          0.08088604360818863
+        ],
+        [
+          -0.2321513295173645,
+          0.2827140986919403,
+          0.08158942312002182
+        ],
+        [
+          -0.2321513295173645,
+          0.2827140986919403,
+          0.08158942312002182
+        ]
+      ]
+    }
+  ]
+}

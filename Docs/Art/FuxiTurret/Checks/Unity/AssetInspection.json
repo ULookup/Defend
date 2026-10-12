@@ -1,0 +1,106 @@
+{
+  "passed": true,
+  "checkCount": 20,
+  "checks": {
+    "现役模型引用生产版规范轴向预制体网格": true,
+    "源FBX与规范网格数量和面数一致": true,
+    "规范网格逐顶点纹理坐标与当前FBX一致": true,
+    "速射炮动作组件已绑定现役挂点": true,
+    "旋转俯仰后座与自转层级完整": true,
+    "底座独立于旋转上装": true,
+    "炮口朝向模型正前方": true,
+    "炮口位于炮管前端": true,
+    "无缺失网格材质或脚本": true,
+    "保留选择碰撞体": true,
+    "网格不超过100000三角面": true,
+    "材质不超过六种且着色器有效": true,
+    "各子网格都有对应的生产版材质槽": true,
+    "每种材质的实体色与表面参数有效": true,
+    "纯色材质或有效的颜色纹理": true,
+    "游戏材质与清单图集和色彩空间一致": true,
+    "共享颜色图集采用正确的颜色空间": true,
+    "共享金属光滑图集采用线性空间且启用材质采样": true,
+    "网格轴缩放统一": true,
+    "其他炮塔未绑定速射炮组件": true
+  },
+  "observations": {
+    "triangles": 99248,
+    "meshCount": 9,
+    "materialMode": "带颜色纹理的表面材质",
+    "materials": [
+      {
+        "path": "Assets/Defend/Content/Art/FuxiTurret/Materials/Fuxi_Steel.mat",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "metallic": 1.0,
+        "smoothness": 1.0
+      },
+      {
+        "path": "Assets/Defend/Content/Art/FuxiTurret/Materials/Fuxi_Graphite.mat",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "metallic": 1.0,
+        "smoothness": 1.0
+      },
+      {
+        "path": "Assets/Defend/Content/Art/FuxiTurret/Materials/Fuxi_Armor.mat",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "metallic": 1.0,
+        "smoothness": 1.0
+      },
+      {
+        "path": "Assets/Defend/Content/Art/FuxiTurret/Materials/Fuxi_Amber.mat",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "metallic": 1.0,
+        "smoothness": 1.0
+      },
+      {
+        "path": "Assets/Defend/Content/Art/FuxiTurret/Materials/Fuxi_Accent.mat",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "metallic": 1.0,
+        "smoothness": 1.0
+      },
+      {
+        "path": "Assets/Defend/Content/Art/FuxiTurret/Materials/Fuxi_Glass.mat",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "metallic": 1.0,
+        "smoothness": 1.0
+      }
+    ],
+    "textures": [
+      {
+        "path": "Assets/Defend/Content/Art/FuxiTurret/Textures/FuxiTurret_BaseColor.png",
+        "width": 2048,
+        "height": 2048
+      }
+    ]
+  }
+}

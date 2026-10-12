@@ -1,0 +1,95 @@
+{
+  "asset": "FuxiTurret",
+  "reviewStage": "Final 644-part secondary-detail model with packed surface atlas version 3",
+  "verdict": "MECHANICAL_PASS_WITH_REFERENCE_DIFFERENCES_DOCUMENTED",
+  "numericSimilarity": null,
+  "similarityNote": "The 90 percent likeness target is not an objectively measured or confirmed percentage. Reference fidelity is described through the visible features and remaining differences below.",
+  "source": "ArtSource/Production/FuxiTurret/FuxiTurret.blend",
+  "sourceLastWriteLocal": "2026-10-12 14:32:02",
+  "editableMeshParts": 644,
+  "sourceTriangles": 99248,
+  "addedSecondaryParts": 120,
+  "viewsIndependentlyInspected": [
+    {
+      "view": "Front",
+      "render": "../Previews/Front.png",
+      "renderedLocal": "2026-10-12 14:38:03",
+      "reference": "E:/夸克下载/fuxi_turret_4views/c428fd2b-571e-41f1-b68d-1efbb4b88c9c.png"
+    },
+    {
+      "view": "Rear",
+      "render": "../Previews/Rear.png",
+      "renderedLocal": "2026-10-12 14:38:52",
+      "reference": "E:/夸克下载/fuxi_turret_4views/17e38d6b-8d32-4fd1-9b39-86e94a1aa1ce.png"
+    },
+    {
+      "view": "Left",
+      "render": "../Previews/Left.png",
+      "renderedLocal": "2026-10-12 14:39:45",
+      "reference": "E:/夸克下载/fuxi_turret_4views/d2f7a8cb-d1c7-42b2-bc83-0530c3ea2a4d.png"
+    },
+    {
+      "view": "Right",
+      "render": "../Previews/Right.png",
+      "renderedLocal": "2026-10-12 14:40:26",
+      "reference": "E:/夸克下载/fuxi_turret_4views/50e22db2-e2f8-437d-93f4-84fa158edfd7.png"
+    }
+  ],
+  "additionalViewsInspected": [
+    {
+      "render": "../Previews/FrontThreeQuarter.png",
+      "renderedLocal": "2026-10-12 14:41:21",
+      "finding": "Confirms perforated shell thickness, new shoulder seam inlays, recessed fasteners, side compression bands and visible coating wear."
+    },
+    {
+      "render": "../Previews/RearThreeQuarter.png",
+      "renderedLocal": "2026-10-12 14:42:22",
+      "finding": "Confirms the rear service armor, radar support, optical shell seams and visible surface variation. No new exterior interpenetration was found in the neutral oblique views."
+    }
+  ],
+  "cameraScope": "Matched front, rear and side orthographic photography, plus two actual oblique renders. The asset remains one coherent model; minor inconsistencies among the reference images are not reproduced through per-view deformation.",
+  "confirmedReferenceFeatures": [
+    "Broad shallow ivory skirt, separated sloped panels, lower notches, dark anchor recesses, diagonal braces and open anchor eyes.",
+    "Large circular side armor inside stepped octagonal frames; the final pass adds concentric segmented compression bands and chamfered service covers.",
+    "Eight long dark tubes, retaining hoops and a continuous thick perforated tapering guard with real apertures.",
+    "Asymmetric thin radar disc and spherical optical head, separate forks/journals and newly visible optical shell seams.",
+    "Front and rear folded shoulder armor now has inset perimeter seams, recessed edge fasteners, return clips and small frame fittings.",
+    "Rear grille and service plates, warm ivory and graphite separation, amber fixtures and a gold geometric emblem on one side.",
+    "The final shared atlas has visible localized wear, coating variation and dark contact tones; the former nearly uniform surface is superseded."
+  ],
+  "remainingReferenceDifferences": [
+    {
+      "topic": "Local form and support density",
+      "observation": "The central front aperture is still wider and more regular than the reference. Lower braces, rear armor layering and sensor brackets retain simpler forms despite the added secondary fittings."
+    },
+    {
+      "topic": "Individual cutout and hardware layout",
+      "observation": "Shroud holes use a coherent repeated layout rather than the exact irregular reference pattern. Fine fastener placement, small panel borders and retaining-ring details are interpretive."
+    },
+    {
+      "topic": "Surface wear character",
+      "observation": "Visible wear and coating variation are now present, but their grain, distribution and contrast differ from the reference. The reference has denser sharp scratches and irregular edge damage; the current game atlas reads as softer mottling and local edge wear."
+    },
+    {
+      "topic": "Optics and illuminated recesses",
+      "observation": "The optical lens, its surrounding housing and amber fixture sockets remain less deeply layered than the reference."
+    }
+  ],
+  "mechanicalConclusion": {
+    "verdict": "PASS",
+    "report": "MechanicalReview.json",
+    "visualReport": "MechanicalVisualReview.json",
+    "checksPassed": 18,
+    "checksTotal": 18,
+    "evidence": [
+      "../Previews/MechanicalSideNeutral.png",
+      "../Previews/MechanicalSideDownRecoil.png",
+      "../Previews/MechanicalSideUpRecoil.png",
+      "../Previews/MechanicalExploded.png"
+    ],
+    "note": "The reviewed game-art geometry is coherent across the required four motion groups. This does not certify real engineering or Unity runtime behavior.",
+    "secondaryDetailReview": "SecondaryDetailMechanicalReview.json"
+  },
+  "previousStageReport": "FinalVisualReview_BeforeSecondaryDetails.json",
+  "deliveryLanguage": "Describe the rebuilt reference features, the actual secondary-detail and surface improvements, and the verified game-art mechanical motion. Retain the specific visual differences; do not label 90 percent likeness as measured or confirmed."
+}

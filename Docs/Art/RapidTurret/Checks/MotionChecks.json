@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "checkCount": 14,
+  "checks": {
+    "转向平滑并最终指向目标": true,
+    "跨越180度采用最短方向": true,
+    "俯仰限制为下俯6度上仰18度": true,
+    "零时间或负时间冻结全部动作": true,
+    "开火后座沿炮轴后退12毫米并恢复": true,
+    "开火触发炮管自转": true,
+    "停火后炮管减速至静止": true,
+    "所有运动保持底座固定": true,
+    "回收复用恢复全部关节姿态": true,
+    "复用没有旧目标后座或自转残留": true,
+    "复用后仍可再次射击": true,
+    "炮口特效归还不会覆盖连续机械动作": true,
+    "BurstTurret原有瞄准后座和归还行为保留": true,
+    "AreaTurret原有瞄准后座和归还行为保留": true
+  },
+  "observations": {
+    "firstYaw": 1.06328368,
+    "wrapStep": 0.05895996,
+    "maximumElevation": 18.0,
+    "minimumElevation": -5.99999952,
+    "recoilMeters": 0.012,
+    "firstSpinDegrees": 0.71981746
+  }
+}

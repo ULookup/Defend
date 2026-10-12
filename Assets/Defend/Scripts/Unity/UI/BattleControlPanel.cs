@@ -63,7 +63,7 @@ namespace Defend.Unity
             sellButton.onClick.AddListener(session.SellSelected);
             repairButton.onClick.AddListener(session.RepairSelected);
             pauseButton.onClick.AddListener(session.TogglePause);
-            startWaveButton.onClick.AddListener(session.StartWave);
+            startWaveButton.onClick.AddListener(AdvanceWave);
             restartButton.onClick.AddListener(session.Restart);
             cancelButton.onClick.AddListener(Cancel);
             for (int index = 0; index < placementButtons.Length; index++)
@@ -80,9 +80,9 @@ namespace Defend.Unity
             BattleSystem battle = session.Battle;
             bool finished = battle.State == BattleState.Victory || battle.State == BattleState.Defeat;
             int buildings = 0, enemies = 0;
-            foreach (BuildingState building in session.World.Buildings) if (!building.IsSold) buildings++;
+            foreach (BuildingState building in session.World.Buildings) if (!building.IsSold && building.IsAlive) buildings++;
             foreach (EnemyState enemy in battle.Enemies) if (enemy.IsAlive) enemies++;
-            resourcesText.text = "资金  " + session.World.Credits + "     建筑  " + buildings + " / " + battle.Settings.MaximumBuildings;
+            resourcesText.text = "资金  " + session.World.Credits + "     建筑  " + buildings;
             waveText.text = "第 " + battle.WaveNumber + " / " + battle.Settings.Waves.Count + " 波    敌人 " + enemies + "    尚未到达 " + battle.RemainingToSpawn;
             BuildingState core = session.World.FindBuilding(battle.CoreBuildingId);
             coreText.text = core == null ? "核心未部署" : "核心耐久  " + core.Health + " / " + core.Definition.MaximumHealth +
@@ -102,11 +102,11 @@ namespace Defend.Unity
             feedbackText.text = session.Feedback;
             modeText.text = session.GridInput.ModeDescription;
             pauseLabel.text = session.Paused ? "继续战斗" : "暂停";
-            waveButtonLabel.text = battle.State == BattleState.Preparing ? "开始第一波" : "开始下一波";
-            startWaveButton.interactable = !session.Paused && (battle.State == BattleState.Preparing || battle.State == BattleState.WaveCleared);
+            waveButtonLabel.text = battle.State == BattleState.WaveCleared ? "继续准备" : "开始第 " + (battle.WaveNumber + 1) + " 波";
+            startWaveButton.interactable = battle.State == BattleState.Preparing || battle.State == BattleState.WaveCleared;
             pauseButton.interactable = !finished;
             cancelButton.interactable = session.GridInput.HasPlacement;
-            foreach (Button button in placementButtons) button.interactable = !finished && buildings < battle.Settings.MaximumBuildings;
+            foreach (Button button in placementButtons) button.interactable = session.World.CanEditBuildings;
             RefreshSelection(finished);
             RefreshEnemyIntent();
         }
@@ -114,23 +114,24 @@ namespace Defend.Unity
         private void RefreshSelection(bool finished)
         {
             BuildingState building = session.SelectedBuilding;
-            bool available = !finished && building != null && !building.IsSold;
+            bool available = session.World.CanEditBuildings && building != null && !building.IsSold && building.IsAlive;
             moveButton.interactable = available && building.Kind != BuildingKind.Core;
             sellButton.interactable = available && building.Kind != BuildingKind.Core;
-            repairButton.interactable = available && building.Health < building.Definition.MaximumHealth;
+            var quote = session.World.RepairQuote(building?.Id ?? 0);
+            repairButton.interactable = available && quote.CanRepair && quote.Cost <= session.World.Credits;
             foreach (Button button in priorityButtons) button.interactable = available && building.IsConsumer && building.IsAlive;
-            if (building == null || building.IsSold)
+            if (building == null || building.IsSold || !building.IsAlive)
             {
                 selectionTitle.text = "未选择建筑";
                 selectionText.text = "单击建筑查看供电与实际到货。\n圆环：传输或攻击范围\n亮线：选中建筑的供电连接\n\n连射炮：持续拦截快速敌人\n重击炮：集中打击高耐久敌人\n范围炮：打击密集敌群\n\n红色敌人：普通\n黄色敌人：快速\n紫色大体型：重装\n\n维修即时付费，波末不补耐久。\n岩体不能建造或拆除。\n预览绿色可放置，红色不可放置。";
                 if (session.Battle.Settings.EnemyBehavior.Enabled)
-                    selectionText.text = "单击建筑查看供电与重装目标。\n圆环：传输或攻击范围\n亮线：选中建筑的供电连接\n\n重装会寻找附近暴露的能源设施，\n也可能压制持续开火的炮塔。\n\n中继损毁会影响后续供给，\n炮塔仍可消耗已有缓存。\n\n提高供给优先级只调整能源份额；\n炮塔仍攻击射程内最近的敌人。\n\n保护节点或建立独立备用路线。\n维修即时付费，波末不补耐久。\n岩体不能建造或拆除。";
+                    selectionText.text = "单击建筑查看供电与重装目标。\n圆环：传输或攻击范围\n亮线：选中建筑的供电连接\n\n镇载者始终向核心推进；\n其他敌人按类型选择战略目标。\n\n中继损毁会影响后续供给，\n炮塔仍可消耗已有缓存。\n\n提高供给优先级只调整能源份额；\n炮塔仍攻击射程内最近的敌人。\n\n保护节点或建立独立备用路线。\n维修即时付费，波末不补耐久。\n岩体不能建造或拆除。";
                 energyFill.fillAmount = 0;
                 return;
             }
             selectionTitle.text = building.Definition.DisplayName;
             buffer.Clear();
-            buffer.Append(building.IsAlive ? "运行中" : "已损毁，等待维修");
+            buffer.Append("运行中");
             buffer.Append("\n耐久  ").Append(building.Health).Append(" / ").Append(building.Definition.MaximumHealth);
             buffer.Append("\n储能  ").Append(Energy(building.StoredEnergy)).Append(" / ").Append(Energy(building.Definition.EnergyCapacity));
             buffer.Append("\n已预约供给  ").Append(Energy(building.IsConsumer ? building.CommittedIncoming : building.ReservedIncoming)).Append("（尚未到货）");
@@ -154,7 +155,7 @@ namespace Defend.Unity
             }
             if (building.IsConsumer)
                 buffer.Append("\n供给优先级  ").Append(building.PriorityWeight == 4 ? "高" : building.PriorityWeight == 2 ? "中" : "低");
-            buffer.Append("\n维修 ").Append(building.Definition.RepairCost);
+            buffer.Append("\n维修 ").Append(quote.Cost);
             if (building.Kind != BuildingKind.Core) buffer.Append(" · 出售 ").Append(building.Definition.SaleRefund);
             selectionText.text = buffer.ToString();
             energyFill.fillAmount = building.Definition.EnergyCapacity == 0 ? 0 : (float)building.StoredEnergy / building.Definition.EnergyCapacity;
@@ -213,7 +214,7 @@ namespace Defend.Unity
                     .Append("：实际伤害 ").Append(damage).Append(" · 射击 ").Append(shots).Append(" · 缺能等待 ").Append((wait / (double)session.World.Settings.TicksPerSecond).ToString("0.#")).Append("秒");
             }
             buffer.Append("\n\n能源损耗：传输 ").Append(Energy(totals.TransmissionLoss)).Append(" · 损毁与断跳 ").Append(Energy(totals.DestructionLoss)).Append(" · 滞留超时 ").Append(Energy(totals.ExpiredLoss));
-            buffer.Append("\n缺能时间为各炮塔等待时间之和；损毁次数包括修复后再次损毁。");
+            buffer.Append("\n缺能时间为各炮塔等待时间之和；已摧毁建筑永久损失。");
             buffer.Append("\n\n").Append(waiting > session.World.Settings.TicksPerSecond * 10 ? "缺能等待明显：缩短线路、增加反应堆，并为拥堵中继增设备用通道。" :
                 destroyed > 0 ? "防线有建筑损毁：把供电建筑移到炮塔后方，保留维修资金。" : "供电稳定：比较各类炮塔的实际输出，尝试另一种布置与建设顺序。");
             buffer.Append("\n点击下方“重新开始”，恢复场景保存的初始防线。");
@@ -225,8 +226,8 @@ namespace Defend.Unity
             switch (battle.State)
             {
                 case BattleState.Preparing: return "准备防线\n布置建筑，等待储能充足后迎敌。";
-                case BattleState.Combat: return "守住核心\n战斗中仍可建造、移动和维修。";
-                case BattleState.WaveCleared: return "本波已清场\n获得 " + battle.LastWaveReward + " 资金。维修并补充防线后继续。";
+                case BattleState.Combat: return "守住核心\n战斗期间不可建设、维修或调整供能优先级。";
+                case BattleState.WaveCleared: return "本波已清场\n获得 " + battle.LastWaveReward + " 资金。继续准备后可维修并补充防线。";
                 case BattleState.Victory: return "防守成功\n所有来袭敌人已被击败。可重新开始。";
                 case BattleState.Defeat: return "核心已被摧毁\n本次防守结束。重新部署，再次迎敌。";
                 default: return string.Empty;
@@ -253,6 +254,7 @@ namespace Defend.Unity
         private void HighPriority() => session.SetSelectedPriority(4);
         private void Move() => session.GridInput.BeginMove();
         private void Cancel() => session.GridInput.Cancel();
+        private void AdvanceWave() { if (session.Battle.State == BattleState.WaveCleared) session.Submit(WorldCommand.ContinuePreparing()); else session.StartWave(); }
         private void OnDestroy() { Unbind(); }
         private void Unbind()
         {
@@ -272,7 +274,7 @@ namespace Defend.Unity
             sellButton.onClick.RemoveListener(session.SellSelected);
             repairButton.onClick.RemoveListener(session.RepairSelected);
             pauseButton.onClick.RemoveListener(session.TogglePause);
-            startWaveButton.onClick.RemoveListener(session.StartWave);
+            startWaveButton.onClick.RemoveListener(AdvanceWave);
             restartButton.onClick.RemoveListener(session.Restart);
             cancelButton.onClick.RemoveListener(Cancel);
             session = null;

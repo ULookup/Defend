@@ -1,0 +1,76 @@
+{
+  "study_only": true,
+  "original_triangles": 17731,
+  "parts": {
+    "FixedBase": {
+      "vertices": 1364,
+      "triangles": 2131
+    },
+    "TurretHousing": {
+      "vertices": 8356,
+      "triangles": 13272
+    },
+    "GunSleeve": {
+      "vertices": 444,
+      "triangles": 922
+    },
+    "RotatingBarrels": {
+      "vertices": 943,
+      "triangles": 1406
+    }
+  },
+  "pivots": {
+    "TurretYaw": {
+      "world_position": [
+        0.0,
+        0.0,
+        0.10152402520179749
+      ],
+      "parent": "RapidTurret_Research"
+    },
+    "BarrelPitch": {
+      "world_position": [
+        0.0,
+        -0.12574076652526855,
+        0.27709540724754333
+      ],
+      "parent": "TurretYaw"
+    },
+    "BarrelRecoil": {
+      "world_position": [
+        0.0,
+        -0.12574076652526855,
+        0.27709540724754333
+      ],
+      "parent": "BarrelPitch"
+    },
+    "BarrelSpin": {
+      "world_position": [
+        0.0,
+        -0.26358991861343384,
+        0.27709540724754333
+      ],
+      "parent": "BarrelRecoil"
+    },
+    "Muzzle": {
+      "world_position": [
+        0.0,
+        -0.5374253392219543,
+        0.27709540724754333
+      ],
+      "parent": "BarrelRecoil"
+    }
+  },
+  "pitch_limits_degrees": [
+    -6,
+    18
+  ],
+  "recoil_distance": 0.012,
+  "shot_interval_seconds": 0.3,
+  "notes": [
+    "Connected islands are selected by spatial bounds; original mesh is not mechanically authored.",
+    "Original base color texture is preserved. Added dark joint collar is a study proxy.",
+    "No production prefab, Unity scene, simulation parameter, or runtime code is modified."
+  ],
+  "scale_from_original": 0.9314131023280996
+}

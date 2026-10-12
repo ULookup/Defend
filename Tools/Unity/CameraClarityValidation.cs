@@ -47,18 +47,18 @@ public static class CameraClarityValidation
         var data=new SerializedObject(controller);
         float originalZoom=data.FindProperty("zoomFactor").floatValue;
         var position=camera.transform.position;
-        float size=camera.orthographicSize;
+        float size=ViewSize(camera);
         var behavior=InputSystem.settings.backgroundBehavior;
         try {
             InputSystem.settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
             InputSystem.QueueStateEvent(Mouse.current,new MouseState {position=camera.pixelRect.center,scroll=new Vector2(0,1)});
             InputSystem.Update();controller.SendMessage("LateUpdate");
-            return new { before=size,after=camera.orthographicSize,reductionPercent=100*(1-camera.orthographicSize/size),scroll=Mouse.current.scroll.ReadValue().y,setting=InputSystem.settings.scrollDeltaBehavior.ToString() };
+            return new { before=size,after=ViewSize(camera),reductionPercent=100*(1-ViewSize(camera)/size),scroll=Mouse.current.scroll.ReadValue().y,setting=InputSystem.settings.scrollDeltaBehavior.ToString() };
         } finally {
             InputSystem.QueueStateEvent(Mouse.current,new MouseState {position=camera.pixelRect.center});InputSystem.Update();
             InputSystem.settings.backgroundBehavior=behavior;
             data.Update();data.FindProperty("zoomFactor").floatValue=originalZoom;data.ApplyModifiedPropertiesWithoutUndo();
-            camera.transform.position=position;camera.orthographicSize=size;
+            camera.transform.position=position;if(camera.orthographic)camera.orthographicSize=size;
         }
     }
     public static object DisableLowResolutionPreview()
@@ -107,7 +107,7 @@ public static class CameraClarityValidation
         float originalZoom=data.FindProperty("zoomFactor").floatValue;
         var originalPosition=camera.transform.position;
         var originalRotation=camera.transform.rotation;
-        float originalSize=camera.orthographicSize;
+        float originalSize=ViewSize(camera);
         var originalBackground=InputSystem.settings.backgroundBehavior;
         var originalScroll=InputSystem.settings.scrollDeltaBehavior;
         bool originalPaused=session.Paused;
@@ -120,24 +120,24 @@ public static class CameraClarityValidation
             InputSystem.settings.scrollDeltaBehavior=InputSettings.ScrollDeltaBehavior.UniformAcrossAllPlatforms;
             Vector3 anchored=Ground(camera,point);
             SendScroll(controller,point,1);
-            float normalizedSize=camera.orthographicSize;
+            float normalizedSize=ViewSize(camera);
             Require(normalizedSize/originalSize > .75f && normalizedSize/originalSize < .85f,"单格缩放应约为20%");
             float anchorError=Vector3.Distance(anchored,Ground(camera,point));
-            Require(anchorError < .001f,"缩放没有保持鼠标指向");
+            Require(anchorError < .001f,"缩放没有保持鼠标指向: " + anchorError + " before=" + anchored + " after=" + Ground(camera,point));
             SendScroll(controller,point,-1);
-            Require(Mathf.Abs(camera.orthographicSize-originalSize)<.001f,"反向缩放没有恢复视野");
+            Require(Mathf.Abs(ViewSize(camera)-originalSize)<.001f,"反向缩放没有恢复视野");
             for(int i=0;i<4;i++)SendScroll(controller,point,.25f);
-            Require(Mathf.Abs(camera.orthographicSize-normalizedSize)<.001f,"细分滚轮输入不连续");
+            Require(Mathf.Abs(ViewSize(camera)-normalizedSize)<.001f,"细分滚轮输入不连续");
             SendScroll(controller,point,-1);
             if(Application.platform==RuntimePlatform.WindowsEditor) {
                 InputSystem.settings.scrollDeltaBehavior=InputSettings.ScrollDeltaBehavior.KeepPlatformSpecificInputRange;
                 SendScroll(controller,point,120);
-                Require(Mathf.Abs(camera.orthographicSize-normalizedSize)<.001f,"Windows原始滚轮单位换算错误");
+                Require(Mathf.Abs(ViewSize(camera)-normalizedSize)<.001f,"Windows原始滚轮单位换算错误");
                 SendScroll(controller,point,-120);
             }
             InputSystem.settings.scrollDeltaBehavior=InputSettings.ScrollDeltaBehavior.UniformAcrossAllPlatforms;
             SendScroll(controller,new Vector2(camera.pixelRect.xMin-10,point.y),1);
-            Require(Mathf.Abs(camera.orthographicSize-originalSize)<.001f,"界面区域滚轮影响了地图");
+            Require(Mathf.Abs(ViewSize(camera)-originalSize)<.001f,"界面区域滚轮影响了地图");
             SendScroll(controller,camera.pixelRect.center,30);
             data.Update();float minimumZoom=data.FindProperty("zoomFactor").floatValue;
             Require(Mathf.Abs(minimumZoom-.28f)<.001f,"近景范围限位错误");
@@ -153,10 +153,11 @@ public static class CameraClarityValidation
             InputSystem.settings.backgroundBehavior=originalBackground;
             InputSystem.settings.scrollDeltaBehavior=originalScroll;
             data.Update();data.FindProperty("zoomFactor").floatValue=originalZoom;data.ApplyModifiedPropertiesWithoutUndo();
-            camera.transform.SetPositionAndRotation(originalPosition,originalRotation);camera.orthographicSize=originalSize;
+            camera.transform.SetPositionAndRotation(originalPosition,originalRotation);if(camera.orthographic)camera.orthographicSize=originalSize;
             if(session.Paused!=originalPaused)session.TogglePause();
         }
     }
+    static float ViewSize(Camera camera) => camera.orthographic ? camera.orthographicSize : Vector3.Distance(camera.transform.position, Ground(camera, camera.pixelRect.center)) * Mathf.Tan(camera.fieldOfView * Mathf.Deg2Rad * .5f);
     static void SendScroll(WorldCameraViewport controller,Vector2 position,float amount)
     {
         InputSystem.QueueStateEvent(Mouse.current,new MouseState {position=position,scroll=new Vector2(0,amount)});

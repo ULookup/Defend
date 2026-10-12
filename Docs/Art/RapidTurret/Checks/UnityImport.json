@@ -1,0 +1,30 @@
+{
+  "unityVersion": "6000.6.5f1",
+  "source": "Assets/Defend/Content/Art/RapidTurret/Models/RapidTurret.fbx",
+  "canonicalPrefab": "Assets/Defend/Content/Art/RapidTurret/Prefabs/RapidTurret.prefab",
+  "combatPrefab": "Assets/Defend/Content/PhaseFiveCombat/Buildings/Turret.prefab",
+  "triangles": 5900,
+  "renderers": 6,
+  "materialSlots": 9,
+  "materials": [
+    "RapidTurret_Armor",
+    "RapidTurret_DarkMetal",
+    "RapidTurret_EnergyCyan"
+  ],
+  "dimensions": [
+    0.83480835,
+    0.5540775,
+    0.9291007
+  ],
+  "muzzle": [
+    0.0,
+    0.3160953,
+    0.537425339
+  ],
+  "normalizedTransforms": true,
+  "sourceForward": [
+    0.0,
+    5.96046448E-08,
+    -0.49999997
+  ]
+}

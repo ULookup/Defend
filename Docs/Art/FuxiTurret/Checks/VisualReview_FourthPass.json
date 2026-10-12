@@ -1,0 +1,46 @@
+{
+  "asset": "FuxiTurret",
+  "reviewStage": "Fourth calibrated four-view geometry draft before surface baking",
+  "verdict": "TWO_FOCUSED_GEOMETRY_REFINEMENTS_RECOMMENDED",
+  "numericSimilarity": null,
+  "similarityNote": "No measured percentage is asserted. The four-view reference target is reviewed by specific visible features, separately from mechanical acceptance.",
+  "viewsInspected": ["FourthPassViews/Front.png", "FourthPassViews/Rear.png", "FourthPassViews/Left.png", "FourthPassViews/Right.png"],
+  "referenceMapping": "Same four original reference files listed in VisualReview_ThirdPass.json; all four compared independently.",
+  "confirmedChanges": [
+    "Front and rear shoulder plates now have sloped end sections and narrow adjoining seams.",
+    "The fixed octagonal side armor now has a stepped axial section; the front and rear outside edges are thicker than the previous blade-like outline.",
+    "Base feet have actual inclined supports, dark recesses and open anchor eyes.",
+    "The optical assembly has visible side journals and paired supports; the radar has paired support members.",
+    "The lower front armor is a connected U shape with a dark central opening.",
+    "The gold geometric emblem appears on the barrel-right side view.",
+    "The perforated shroud is a continuous thick plate with actual apertures."
+  ],
+  "remainingShapeFindings": [
+    {
+      "priority": 1,
+      "topic": "Forward projection of lower front brace",
+      "observation": "In both side references the low angled front brace projects visibly forward of the main side cabinet. In the fourth draft the new lower jaw is almost entirely concealed behind that cabinet, so the side silhouette still lacks this feature.",
+      "requestedChange": "Extend the low exterior part forward toward Y=-0.170 m from its current approximately -0.118 m front edge. Keep the center bridge top at or below 0.168 m and the high side regions outside |X|=0.110 m to preserve the proven downward pitch clearance."
+    },
+    {
+      "priority": 2,
+      "topic": "Central ivory pitch bezel",
+      "observation": "The front view still has a broad continuous ivory circle. The reference reads as narrower faceted armor transitioning into the perforated guard, with stronger angular structure around the aperture.",
+      "requestedChange": "Narrow the ivory band and use a faceted or segmented outer transition while retaining the inner opening and the rotor's clearance. A modest outer radius reduction from 0.097 m toward 0.091 m is one available route, subject to the art lead's final geometry choice."
+    }
+  ],
+  "surfaceReviewStillRequired": [
+    "The current clean coating, dark metals and optical lens do not yet have the reference's surface depth and small wear treatment.",
+    "Fine seam layout, fastener distribution and individual shroud cutout shapes remain interpretive differences rather than exact reconstruction."
+  ],
+  "mechanicalAcceptance": {
+    "status": "PASS_FOR_REVIEWED_GEOMETRY",
+    "report": "MechanicalReview.json",
+    "passed": 18,
+    "total": 18,
+    "sourceLastWriteLocal": "2026-10-12 13:43:56",
+    "evidence": "../Previews/MechanicalExploded.png",
+    "scope": "All five movement groups, closed editable meshes, sampled yaw/pitch/recoil/spin, actual front and rear bearing swept envelopes, trunnion seating, recoil rail engagement, and selected external armor/sensor surface intersections including the revised lower jaw.",
+    "limits": "Concealed axle seating and sub-millimeter circular armor back-face seating are classified separately from visible interpenetration. This is a game-art coherence review; it is not a real engineering certification or complete continuous collision solver. Further geometry changes require another check."
+  }
+}

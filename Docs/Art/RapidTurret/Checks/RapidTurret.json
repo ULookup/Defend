@@ -1,0 +1,695 @@
+{
+  "asset": "RapidTurret",
+  "blender_version": "5.2.2 LTS",
+  "source": "ArtSource\\Production\\RapidTurret\\RapidTurret.blend",
+  "export": "Assets\\Defend\\Content\\Art\\RapidTurret\\Models\\RapidTurret.fbx",
+  "texture": "Assets\\Defend\\Content\\Art\\RapidTurret\\Textures\\RapidTurret_BaseColor.png",
+  "texture_resolution": [
+    2048,
+    2048
+  ],
+  "original_triangles": 17731,
+  "reduction_by_part": {
+    "FixedBase": {
+      "before_reduction": 2131,
+      "after_reduction": 799
+    },
+    "TurretHousing": {
+      "before_reduction": 13272,
+      "after_reduction": 2799
+    },
+    "GunSleeve": {
+      "before_reduction": 922,
+      "after_reduction": 390
+    },
+    "RotatingBarrels": {
+      "before_reduction": 1406,
+      "after_reduction": 649
+    }
+  },
+  "source_reopened": {
+    "bounds_min": [
+      -0.41732513904571533,
+      -0.5350000262260437,
+      1.9507569959387183e-05
+    ],
+    "bounds_max": [
+      0.41748321056365967,
+      0.39410069584846497,
+      0.5540969967842102
+    ],
+    "dimensions": [
+      0.834808349609375,
+      0.9291007220745087,
+      0.5540774892142508
+    ],
+    "triangles": 5900,
+    "mesh_count": 6,
+    "material_names": [
+      "RapidTurret_Armor",
+      "RapidTurret_DarkMetal",
+      "RapidTurret_EnergyCyan"
+    ],
+    "material_slot_count": 9,
+    "meshes": [
+      {
+        "name": "FixedBase",
+        "triangles": 799,
+        "vertices": 620,
+        "material_slots": 2,
+        "materials": [
+          "RapidTurret_Armor",
+          "RapidTurret_DarkMetal"
+        ],
+        "boundary_edges": 357,
+        "non_manifold_edges": 357,
+        "degenerate_faces": 0,
+        "signed_volume": 0.059309608691621975,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "RotatingBarrels",
+        "triangles": 952,
+        "vertices": 480,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurret_DarkMetal"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.000818385205923931,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.26358991861343384,
+          0.27709540724754333
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "RecoilCarriage",
+        "triangles": 320,
+        "vertices": 160,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurret_DarkMetal"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0003219832626288073,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.12574076652526855,
+          0.27709540724754333
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "PitchHousing",
+        "triangles": 746,
+        "vertices": 358,
+        "material_slots": 2,
+        "materials": [
+          "RapidTurret_Armor",
+          "RapidTurret_DarkMetal"
+        ],
+        "boundary_edges": 11,
+        "non_manifold_edges": 13,
+        "degenerate_faces": 0,
+        "signed_volume": 0.002994891236070725,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.12574076652526855,
+          0.27709540724754333
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "StatusLamps",
+        "triangles": 88,
+        "vertices": 48,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurret_EnergyCyan"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 6.757330228810913e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.10152402520179749
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "TurretHousing",
+        "triangles": 2995,
+        "vertices": 2446,
+        "material_slots": 2,
+        "materials": [
+          "RapidTurret_Armor",
+          "RapidTurret_DarkMetal"
+        ],
+        "boundary_edges": 1577,
+        "non_manifold_edges": 1630,
+        "degenerate_faces": 0,
+        "signed_volume": 0.07510184787869972,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.10152402520179749
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ],
+    "pivots": [
+      {
+        "name": "RapidTurret",
+        "parent": null,
+        "world_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "ForwardReference",
+        "parent": "RapidTurret",
+        "world_position": [
+          0.0,
+          -0.5,
+          0.0
+        ],
+        "local_position": [
+          0.0,
+          -0.5,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "TurretYaw",
+        "parent": "RapidTurret",
+        "world_position": [
+          0.0,
+          0.0,
+          0.10152402520179749
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.10152402520179749
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "BarrelPitch",
+        "parent": "TurretYaw",
+        "world_position": [
+          0.0,
+          -0.12574076652526855,
+          0.27709540724754333
+        ],
+        "local_position": [
+          0.0,
+          -0.12574076652526855,
+          0.17557138204574585
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "BarrelRecoil",
+        "parent": "BarrelPitch",
+        "world_position": [
+          0.0,
+          -0.12574076652526855,
+          0.27709540724754333
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "BarrelSpin",
+        "parent": "BarrelRecoil",
+        "world_position": [
+          0.0,
+          -0.26358991861343384,
+          0.27709540724754333
+        ],
+        "local_position": [
+          0.0,
+          -0.13784915208816528,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Muzzle",
+        "parent": "BarrelSpin",
+        "world_position": [
+          0.0,
+          -0.5374253392219543,
+          0.31609541177749634
+        ],
+        "local_position": [
+          0.0,
+          -0.2738354206085205,
+          0.039000004529953
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ]
+  },
+  "fbx_reimported": {
+    "bounds_min": [
+      -0.41732513904571533,
+      -0.5349999666213989,
+      1.945690019056201e-05
+    ],
+    "bounds_max": [
+      0.41748321056365967,
+      0.39410069584846497,
+      0.5540969967842102
+    ],
+    "dimensions": [
+      0.834808349609375,
+      0.9291006624698639,
+      0.5540775398840196
+    ],
+    "triangles": 5900,
+    "mesh_count": 6,
+    "material_names": [
+      "RapidTurret_Armor",
+      "RapidTurret_DarkMetal",
+      "RapidTurret_EnergyCyan"
+    ],
+    "material_slot_count": 9,
+    "meshes": [
+      {
+        "name": "FixedBase",
+        "triangles": 799,
+        "vertices": 620,
+        "material_slots": 2,
+        "materials": [
+          "RapidTurret_Armor",
+          "RapidTurret_DarkMetal"
+        ],
+        "boundary_edges": 357,
+        "non_manifold_edges": 357,
+        "degenerate_faces": 0,
+        "signed_volume": 0.059309608691621975,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "RotatingBarrels",
+        "triangles": 952,
+        "vertices": 480,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurret_DarkMetal"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0008183852095253971,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.26358985900878906,
+          0.2770954668521881
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "RecoilCarriage",
+        "triangles": 320,
+        "vertices": 160,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurret_DarkMetal"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00032198326262880756,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.12574072182178497,
+          0.2770954370498657
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "PitchHousing",
+        "triangles": 746,
+        "vertices": 358,
+        "material_slots": 2,
+        "materials": [
+          "RapidTurret_Armor",
+          "RapidTurret_DarkMetal"
+        ],
+        "boundary_edges": 11,
+        "non_manifold_edges": 13,
+        "degenerate_faces": 0,
+        "signed_volume": 0.002994891237475352,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.12574072182178497,
+          0.2770954370498657
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "StatusLamps",
+        "triangles": 88,
+        "vertices": 48,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurret_EnergyCyan"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 6.757330228810947e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          1.6540363745320974e-08,
+          0.10152402520179749
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "TurretHousing",
+        "triangles": 2995,
+        "vertices": 2446,
+        "material_slots": 2,
+        "materials": [
+          "RapidTurret_Armor",
+          "RapidTurret_DarkMetal"
+        ],
+        "boundary_edges": 1577,
+        "non_manifold_edges": 1613,
+        "degenerate_faces": 0,
+        "signed_volume": 0.07510184787869971,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          1.6540363745320974e-08,
+          0.10152402520179749
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ],
+    "pivots": [
+      {
+        "name": "ForwardReference",
+        "parent": "RapidTurret",
+        "world_position": [
+          0.0,
+          -0.5,
+          8.146034247147327e-08
+        ],
+        "local_position": [
+          0.0,
+          -0.5,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Muzzle",
+        "parent": "BarrelSpin",
+        "world_position": [
+          0.0,
+          -0.5374252796173096,
+          0.3160955011844635
+        ],
+        "local_position": [
+          0.0,
+          -0.2738354206085205,
+          0.039000004529953
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "BarrelSpin",
+        "parent": "BarrelRecoil",
+        "world_position": [
+          0.0,
+          -0.26358985900878906,
+          0.2770954668521881
+        ],
+        "local_position": [
+          0.0,
+          -0.13784915208816528,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "BarrelRecoil",
+        "parent": "BarrelPitch",
+        "world_position": [
+          0.0,
+          -0.12574072182178497,
+          0.2770954370498657
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "BarrelPitch",
+        "parent": "TurretYaw",
+        "world_position": [
+          0.0,
+          -0.12574072182178497,
+          0.2770954370498657
+        ],
+        "local_position": [
+          0.0,
+          -0.12574076652526855,
+          0.17557138204574585
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "TurretYaw",
+        "parent": "RapidTurret",
+        "world_position": [
+          0.0,
+          1.6540363745320974e-08,
+          0.10152402520179749
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.10152402520179749
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "RapidTurret",
+        "parent": null,
+        "world_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ]
+  },
+  "mechanical_envelope": {
+    "pitch_degrees": [
+      -6,
+      18
+    ],
+    "recoil_meters": 0.012,
+    "pitch_sleeve_inner_radius": 0.045,
+    "recoil_slide_outer_radius": 0.044,
+    "recoil_slide_y_range": [
+      -0.302,
+      -0.208
+    ],
+    "pitch_sleeve_y_range": [
+      -0.2555,
+      -0.1365
+    ],
+    "minimum_slide_overlap_meters": 0.0475,
+    "inspection": "Real rendered neutral and endpoint views; not a collision solver."
+  },
+  "checks": {
+    "source_reopened": true,
+    "fbx_reimported": true,
+    "save_reopen_dimensions_equal": true,
+    "export_bounds_maximum_difference": 5.960464477539063e-08,
+    "export_bounds_match": true,
+    "triangles_match": true,
+    "mesh_count_match": true,
+    "material_names_match": true,
+    "within_triangle_budget": true,
+    "uv_present": true,
+    "all_unit_scales": true,
+    "degenerate_faces": 0,
+    "non_finite_normals": 0,
+    "muzzle_follows_barrel_spin": true
+  }
+}

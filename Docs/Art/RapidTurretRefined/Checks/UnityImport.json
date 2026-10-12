@@ -1,0 +1,32 @@
+{
+  "unityVersion": "6000.6.5f1",
+  "source": "Assets/Defend/Content/Art/RapidTurretRefined/Models/RapidTurretRefined.fbx",
+  "canonicalPrefab": "Assets/Defend/Content/Art/RapidTurretRefined/Prefabs/RapidTurretRefined.prefab",
+  "combatPrefab": "Assets/Defend/Content/PhaseFiveCombat/Buildings/Turret.prefab",
+  "triangles": 28496,
+  "renderers": 9,
+  "materialSlots": 30,
+  "materials": [
+    "RapidTurretRefined_Steel",
+    "RapidTurretRefined_Graphite",
+    "RapidTurretRefined_Armor",
+    "RapidTurretRefined_Copper",
+    "RapidTurretRefined_Cyan"
+  ],
+  "dimensions": [
+    0.840999961,
+    0.6165,
+    0.9555
+  ],
+  "muzzle": [
+    0.0,
+    0.432999969,
+    0.5375
+  ],
+  "normalizedTransforms": true,
+  "sourceForward": [
+    0.0,
+    5.96046448E-08,
+    -0.49999997
+  ]
+}

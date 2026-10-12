@@ -1,0 +1,57 @@
+{
+  "passed": true,
+  "checkCount": 12,
+  "checks": {
+    "现役实例使用新模型与动作组件": true,
+    "真实射击对齐后触发后座": true,
+    "真实炮口闪光使用当前炮口": true,
+    "会话暂停冻结动作与表现时钟": true,
+    "1倍速驱动实际表现时钟": true,
+    "2倍速驱动实际表现时钟": true,
+    "4倍速驱动实际表现时钟": true,
+    "真实战斗转向不移动底座": true,
+    "真实战斗已推动炮管转动": true,
+    "运行时继续使用资产材质": true,
+    "动作录制期间真实速射炮持续开火": true,
+    "会话重开恢复初始关节姿态": true
+  },
+  "observations": {
+    "Id": 4,
+    "ShotsFired": 31,
+    "observedShots": 42,
+    "playedRapidShots": 41,
+    "tick": 348,
+    "rates": [
+      {
+        "speed": 1,
+        "realSeconds": 0.4081199000002016,
+        "advanced": 0.40838410053402185,
+        "rate": 1.0006473600866317
+      },
+      {
+        "speed": 2,
+        "realSeconds": 0.40026639999996405,
+        "advanced": 0.8006240064278245,
+        "rate": 2.0002278643121092
+      },
+      {
+        "speed": 4,
+        "realSeconds": 0.40843180000001666,
+        "advanced": 1.6333772130310535,
+        "rate": 3.9991430956918315
+      }
+    ],
+    "screenshot": "E:\\UnityProject\\Defend\\Logs\\RapidTurret\\CombatClose.png",
+    "recording": {
+      "source": "实际工业防线 GameSessionRoot.Update",
+      "width": 640,
+      "height": 560,
+      "frameCount": 60,
+      "targetFramesPerSecond": 20,
+      "realDurationSeconds": 5.2668657999997777,
+      "speed": 1.0,
+      "buildingId": 4,
+      "timingReport": "E:\\UnityProject\\Defend\\Logs\\RapidTurret\\MotionFrames.json"
+    }
+  }
+}

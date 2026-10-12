@@ -16,6 +16,7 @@ namespace Defend.Unity
         [SerializeField, Min(0)] private long productionPerTick;
         [SerializeField, Min(0)] private long consumptionPerTick;
         [SerializeField, Min(0)] private long outputAmount = 8000;
+        [SerializeField, Min(1)] private long maximumChargePerTick = 8000;
         [SerializeField, Min(1)] private int outputIntervalTicks = 4;
         [SerializeField, Min(0)] private float transmissionRange = 7;
         [Header("白盒经济与耐久参数")]
@@ -31,9 +32,12 @@ namespace Defend.Unity
 
         public BuildingDefinition CreateDefinition()
         {
+            // 正式资产不允许维修比出售重买更贵；历史纯模拟定义保留兼容。
+            if (kind != BuildingKind.Core && repairCost > purchaseCost - saleRefund)
+                throw new System.InvalidOperationException($"{displayName} 的维修基价不能超过购买价格减出售返还。");
             return new BuildingDefinition(kind, displayName, width, depth, energyCapacity,
                 productionPerTick, consumptionPerTick, outputAmount, outputIntervalTicks,
-                transmissionRange, maximumHealth, purchaseCost, saleRefund, repairCost);
+                transmissionRange, maximumHealth, purchaseCost, saleRefund, repairCost, maximumChargePerTick);
         }
 
         /// <summary>仅供资产首次制作时赋初值；不会在游戏运行中修改共享配置。</summary>

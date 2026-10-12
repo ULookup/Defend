@@ -1,0 +1,37 @@
+[
+  {
+    "file": "MotionOverview.gif",
+    "source_frames": 160,
+    "gif_frames": 160,
+    "milliseconds": 8000,
+    "bytes": 15280664
+  },
+  {
+    "file": "Yaw.gif",
+    "source_frames": 40,
+    "gif_frames": 40,
+    "milliseconds": 2000,
+    "bytes": 3959559
+  },
+  {
+    "file": "Pitch.gif",
+    "source_frames": 40,
+    "gif_frames": 40,
+    "milliseconds": 2000,
+    "bytes": 3672597
+  },
+  {
+    "file": "Recoil.gif",
+    "source_frames": 40,
+    "gif_frames": 40,
+    "milliseconds": 2000,
+    "bytes": 3739472
+  },
+  {
+    "file": "Combined.gif",
+    "source_frames": 40,
+    "gif_frames": 40,
+    "milliseconds": 2000,
+    "bytes": 3922572
+  }
+]

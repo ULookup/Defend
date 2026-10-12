@@ -1,0 +1,645 @@
+{
+  "asset_source": "E:\\UnityProject\\Defend\\ArtSource\\Production\\RapidTurretRefined\\RapidTurretRefined.blend",
+  "review_kind": "Independent editable-mesh, hierarchy, analytical-clearance and sampled-pose game-art review",
+  "checks": [
+    {
+      "name": "Hierarchy_TurretYaw",
+      "passed": true,
+      "details": {
+        "required_parent": "RapidTurretRefined",
+        "actual_parent": "RapidTurretRefined"
+      }
+    },
+    {
+      "name": "Hierarchy_BarrelPitch",
+      "passed": true,
+      "details": {
+        "required_parent": "TurretYaw",
+        "actual_parent": "TurretYaw"
+      }
+    },
+    {
+      "name": "Hierarchy_BarrelRecoil",
+      "passed": true,
+      "details": {
+        "required_parent": "BarrelPitch",
+        "actual_parent": "BarrelPitch"
+      }
+    },
+    {
+      "name": "Hierarchy_BarrelSpin",
+      "passed": true,
+      "details": {
+        "required_parent": "BarrelRecoil",
+        "actual_parent": "BarrelRecoil"
+      }
+    },
+    {
+      "name": "Hierarchy_Muzzle",
+      "passed": true,
+      "details": {
+        "required_parent": "BarrelSpin",
+        "actual_parent": "BarrelSpin"
+      }
+    },
+    {
+      "name": "Closed_non_degenerate_editable_parts",
+      "passed": true,
+      "details": {
+        "problem_objects": []
+      }
+    },
+    {
+      "name": "Fixed_base_unchanged_by_all_four_motions",
+      "passed": true,
+      "details": {
+        "maximum_vertex_displacement_m": 0.0
+      }
+    },
+    {
+      "name": "Spin_does_not_rotate_bearing_outers_or_non_rotor_parts",
+      "passed": true,
+      "details": {
+        "maximum_vertex_displacement_m": 0.0
+      }
+    },
+    {
+      "name": "Full_360_spin_returns_to_same_geometry",
+      "passed": true,
+      "details": {
+        "maximum_vertex_difference_m": 3.0719530773294423e-08
+      }
+    },
+    {
+      "name": "Recoil_moves_slide_and_rotor_together_while_pitch_frame_stays",
+      "passed": true,
+      "details": {
+        "slide_displacement_error_m": 6.51925802230835e-08,
+        "pitch_frame_vertex_displacement_m": 0.0
+      }
+    },
+    {
+      "name": "Rear_rotor_full_sweep_radial_clearance",
+      "passed": true,
+      "details": {
+        "inner_bearing_radius_m": 0.0709999940139456,
+        "maximum_rotor_radius_m": 0.06800000987870469,
+        "minimum_radial_clearance_m": 0.002999984135240913,
+        "note": "Maximum over ALL actual rotor vertices, including braces, journals and spokes; invariant under full axial rotation."
+      }
+    },
+    {
+      "name": "Rear_rotor_journal_engaged_axially",
+      "passed": true,
+      "details": {
+        "journal_race_axial_overlap_m": 0.02000001072883606
+      }
+    },
+    {
+      "name": "Front_rotor_full_sweep_radial_clearance",
+      "passed": true,
+      "details": {
+        "inner_bearing_radius_m": 0.0709999940139456,
+        "maximum_rotor_radius_m": 0.06800000987870469,
+        "minimum_radial_clearance_m": 0.002999984135240913,
+        "note": "Maximum over ALL actual rotor vertices, including braces, journals and spokes; invariant under full axial rotation."
+      }
+    },
+    {
+      "name": "Front_rotor_journal_engaged_axially",
+      "passed": true,
+      "details": {
+        "journal_race_axial_overlap_m": 0.019999980926513672
+      }
+    },
+    {
+      "name": "Left_tie_beam_outside_rotor_sweep",
+      "passed": true,
+      "details": {
+        "inner_beam_abs_x_m": 0.07699999958276749,
+        "rotor_radius_m": 0.06800000987870469,
+        "minimum_clearance_m": 0.008999989704062794
+      }
+    },
+    {
+      "name": "Left_trunnion_coaxial_and_engaged",
+      "passed": true,
+      "details": {
+        "off_axis_error_m": 3.725290298461914e-09,
+        "axial_journal_bearing_overlap_m": 0.027000010013580322
+      }
+    },
+    {
+      "name": "Left_slide_shoe_supported_for_entire_recoil",
+      "passed": true,
+      "details": {
+        "axial_overlap_at_rest_and_recoil_m": [
+          0.11800000071525574,
+          0.11800000071525574
+        ],
+        "minimum_shoe_to_rail_end_margin_m": 0.0494999885559082,
+        "note": "Rail/shoe overlap is an intended sliding fit, not an unwanted intersection."
+      }
+    },
+    {
+      "name": "Right_tie_beam_outside_rotor_sweep",
+      "passed": true,
+      "details": {
+        "inner_beam_abs_x_m": 0.07699999958276749,
+        "rotor_radius_m": 0.06800000987870469,
+        "minimum_clearance_m": 0.008999989704062794
+      }
+    },
+    {
+      "name": "Right_trunnion_coaxial_and_engaged",
+      "passed": true,
+      "details": {
+        "off_axis_error_m": 3.725290298461914e-09,
+        "axial_journal_bearing_overlap_m": 0.027000010013580322
+      }
+    },
+    {
+      "name": "Right_slide_shoe_supported_for_entire_recoil",
+      "passed": true,
+      "details": {
+        "axial_overlap_at_rest_and_recoil_m": [
+          0.11800000071525574,
+          0.11800000071525574
+        ],
+        "minimum_shoe_to_rail_end_margin_m": 0.0494999885559082,
+        "note": "Rail/shoe overlap is an intended sliding fit, not an unwanted intersection."
+      }
+    },
+    {
+      "name": "Pitch_and_recoil_armor_clear_of_yaw_sensor_and_rear_cabinet",
+      "passed": true,
+      "details": {
+        "sampled_elevations_degrees": [
+          -6,
+          0,
+          6,
+          12,
+          18
+        ],
+        "stroke_ends_m": [
+          0,
+          0.012
+        ],
+        "unexpected_boundary_crossings": []
+      }
+    },
+    {
+      "name": "Recoil_bearing_clears_fixed_rail_front_stops",
+      "passed": true,
+      "details": {
+        "unexpected_boundary_crossings": []
+      }
+    },
+    {
+      "name": "Sampled_motion_stays_above_fixed_base_top",
+      "passed": true,
+      "details": {
+        "samples": 72,
+        "minimum_height_m": 0.2652633488178253,
+        "reference_base_top_m": 0.16
+      }
+    }
+  ],
+  "all_automated_checks_pass": true,
+  "sampled_poses": [
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 0,
+      "minimum_moving_part_z_m": 0.2652633488178253
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 30,
+      "minimum_moving_part_z_m": 0.2652633488178253
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 60,
+      "minimum_moving_part_z_m": 0.2652633488178253
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 90,
+      "minimum_moving_part_z_m": 0.2652633488178253
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 120,
+      "minimum_moving_part_z_m": 0.2652633488178253
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 150,
+      "minimum_moving_part_z_m": 0.2652633488178253
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 180,
+      "minimum_moving_part_z_m": 0.2652633488178253
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 210,
+      "minimum_moving_part_z_m": 0.2652633488178253
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 240,
+      "minimum_moving_part_z_m": 0.2652633488178253
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 270,
+      "minimum_moving_part_z_m": 0.2652633488178253
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 300,
+      "minimum_moving_part_z_m": 0.2652633488178253
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 330,
+      "minimum_moving_part_z_m": 0.2652633488178253
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 0,
+      "minimum_moving_part_z_m": 0.266517698764801
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 30,
+      "minimum_moving_part_z_m": 0.266517698764801
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 60,
+      "minimum_moving_part_z_m": 0.266517698764801
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 90,
+      "minimum_moving_part_z_m": 0.266517698764801
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 120,
+      "minimum_moving_part_z_m": 0.266517698764801
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 150,
+      "minimum_moving_part_z_m": 0.266517698764801
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 180,
+      "minimum_moving_part_z_m": 0.266517698764801
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 210,
+      "minimum_moving_part_z_m": 0.266517698764801
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 240,
+      "minimum_moving_part_z_m": 0.266517698764801
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 270,
+      "minimum_moving_part_z_m": 0.266517698764801
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 300,
+      "minimum_moving_part_z_m": 0.266517698764801
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 330,
+      "minimum_moving_part_z_m": 0.266517698764801
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 0,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 30,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 60,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 90,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 120,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 150,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 180,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 210,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 240,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 270,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 300,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 330,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 0,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 30,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 60,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 90,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 120,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 150,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 180,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 210,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 240,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 270,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 300,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 330,
+      "minimum_moving_part_z_m": 0.2919999957084656
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 0,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 30,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 60,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 90,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 120,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 150,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 180,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 210,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 240,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 270,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 300,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 330,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 0,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 30,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 60,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 90,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 120,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 150,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 180,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 210,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 240,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 270,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 300,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 330,
+      "minimum_moving_part_z_m": 0.2703680396080017
+    }
+  ],
+  "evidence_images": [],
+  "limits": "Dimensional checks cover intended bearing and sliding interfaces. These are not a complete triangle intersection or physical simulation. Independent review of the rendered views is required for the final verdict."
+}

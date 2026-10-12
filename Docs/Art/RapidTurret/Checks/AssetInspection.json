@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "checkCount": 14,
+  "checks": {
+    "现役模型引用生产版规范轴向预制体网格": true,
+    "源FBX与规范网格数量和面数一致": true,
+    "速射炮动作组件已绑定现役挂点": true,
+    "旋转俯仰后座与自转层级完整": true,
+    "底座独立于旋转上装": true,
+    "炮口朝向模型正前方": true,
+    "炮口位于炮管前端": true,
+    "无缺失网格材质或脚本": true,
+    "保留选择碰撞体": true,
+    "网格不超过6500三角面": true,
+    "材质不超过三种且着色器有效": true,
+    "颜色纹理不超过2048": true,
+    "网格轴缩放统一": true,
+    "其他炮塔未绑定速射炮组件": true
+  },
+  "observations": {
+    "triangles": 5900,
+    "meshCount": 6,
+    "materials": [
+      "Assets/Defend/Content/Art/RapidTurret/Materials/RapidTurret_Armor.mat",
+      "Assets/Defend/Content/Art/RapidTurret/Materials/RapidTurret_DarkMetal.mat",
+      "Assets/Defend/Content/Art/RapidTurret/Materials/RapidTurret_EnergyCyan.mat"
+    ],
+    "textures": [
+      {
+        "path": "Assets/Defend/Content/Art/RapidTurret/Textures/RapidTurret_BaseColor.png",
+        "width": 2048,
+        "height": 2048
+      }
+    ]
+  }
+}
