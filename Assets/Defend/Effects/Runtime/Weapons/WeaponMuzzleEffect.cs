@@ -11,6 +11,7 @@ namespace Defend.PhaseFiveEffects
         [SerializeField] private float recoilDistance = 0.028f;
         [SerializeField] private bool radialDischarge;
         private WeaponMotionRig motionRig;
+        private RapidTurretMotion rapidMotion;
         private uint motionToken;
         private float intensity;
 
@@ -31,11 +32,18 @@ namespace Defend.PhaseFiveEffects
             intensity = Mathf.Clamp(Context.Intensity, 0.25f, 1.5f);
             if (Context.Subject != null)
             {
-                motionRig = Context.Subject.GetComponent<WeaponMotionRig>();
-                if (motionRig == null)
-                    motionRig = Context.Subject.gameObject.AddComponent<WeaponMotionRig>();
-                motionToken = motionRig.Acquire(Context.Destination);
-                motionRig.SetRecoil(motionToken, recoilDistance * intensity);
+                rapidMotion = Context.Subject.GetComponent<RapidTurretMotion>();
+                if (rapidMotion != null && rapidMotion.IsConfigured)
+                    transform.SetPositionAndRotation(rapidMotion.MuzzlePosition, rapidMotion.MuzzleRotation);
+                else
+                {
+                    rapidMotion = null;
+                    motionRig = Context.Subject.GetComponent<WeaponMotionRig>();
+                    if (motionRig == null)
+                        motionRig = Context.Subject.gameObject.AddComponent<WeaponMotionRig>();
+                    motionToken = motionRig.Acquire(Context.Destination);
+                    motionRig.SetRecoil(motionToken, recoilDistance * intensity);
+                }
             }
             if (radialDischarge) transform.rotation = Quaternion.identity;
             if (flashGeometry != null)
@@ -48,6 +56,8 @@ namespace Defend.PhaseFiveEffects
 
         protected override void OnAdvance(float normalizedTime, float deltaTime)
         {
+            if (rapidMotion != null)
+                transform.SetPositionAndRotation(rapidMotion.MuzzlePosition, rapidMotion.MuzzleRotation);
             float flashAge = normalizedTime * Lifetime / Mathf.Max(0.001f, flashDuration);
             if (flashGeometry != null)
             {
@@ -72,6 +82,7 @@ namespace Defend.PhaseFiveEffects
         {
             if (motionRig != null) motionRig.Release(motionToken);
             motionRig = null;
+            rapidMotion = null;
             motionToken = 0;
             if (flashGeometry != null)
             {

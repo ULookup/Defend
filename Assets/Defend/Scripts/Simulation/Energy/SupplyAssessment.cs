@@ -6,6 +6,7 @@ namespace Defend.Simulation
     public sealed class SupplyAssessment
     {
         public bool Connected { get; private set; }
+        public bool BatterySupportAvailable { get; private set; }
         public bool GenerationInsufficient { get; private set; }
         public bool RelayCongested { get; private set; }
         public int IncomingConnections { get; private set; }
@@ -30,6 +31,8 @@ namespace Defend.Simulation
             foreach (var building in world.Buildings)
             {
                 if (!building.IsAlive || building.IsSold || !upstream.Contains(building.Id)) continue;
+                if (building.Kind == BuildingKind.Battery && building.StoredEnergy > 0)
+                    result.BatterySupportAvailable = true;
                 if (building.Kind == BuildingKind.Reactor)
                 {
                     result.Connected = true;
@@ -57,7 +60,7 @@ namespace Defend.Simulation
                 if (edge.TargetId == selected.Id) result.IncomingConnections++;
             }
             result.GenerationInsufficient = result.Connected && result.GenerationPerSecond < result.FullFireDemandPerSecond;
-            result.Summary = !result.Connected ? "线路中断：未连接存活反应堆" :
+            result.Summary = !result.Connected ? (result.BatterySupportAvailable ? "电池储能支援：当前没有持续发电" : "线路中断：未连接存活反应堆或有储能的电池") :
                 result.RelayCongested ? "中继拥堵：上游能量正在滞留" :
                 result.GenerationInsufficient ? "发电不足风险：按满速攻击估算" :
                 selected.CombatState == TurretCombatState.WaitingForEnergy ? "等待充能：尚未凑足一次攻击" :

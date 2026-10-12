@@ -19,6 +19,7 @@ namespace Defend.Editor
         public const string Content = "Assets/Defend/Content/PhaseFiveCombat";
         private const string Models = "Assets/Defend/Content/Art/PhaseFiveEffects/Prefabs/Models/";
         private const string Environment = "Assets/Defend/Content/Art/PhaseFive/Prefabs/";
+        private const string RapidModel = "Assets/Defend/Content/Art/FuxiTurret/Prefabs/FuxiTurret.prefab";
 
         [MenuItem("涌现防线/创建或打开工业防线关卡")]
         public static void CreateOrOpen()
@@ -79,8 +80,14 @@ namespace Defend.Editor
                 PrefabUtility.RecordPrefabInstancePropertyModifications(text);
             }
             var viewportData = new SerializedObject(Find<WorldCameraViewport>(scene));
-            viewportData.FindProperty("zoomFactor").floatValue = .55f;
+            viewportData.FindProperty("zoomFactor").floatValue = .4f;
             viewportData.ApplyModifiedPropertiesWithoutUndo();
+            var camera = (Camera)viewportData.FindProperty("worldCamera").objectReferenceValue;
+            camera.name = "主摄像机 · 60度透视俯视";
+            camera.orthographic = false;
+            camera.fieldOfView = 50;
+            camera.transform.rotation = Quaternion.Euler(60, 0, 0);
+            camera.transform.position = new Vector3(26, 0, 20) - camera.transform.forward * (8.4f / Mathf.Tan(25 * Mathf.Deg2Rad));
             EditorSceneManager.MarkSceneDirty(scene);
             if (!EditorSceneManager.SaveScene(scene)) throw new InvalidOperationException("工业防线未能保存。");
             AssetDatabase.SaveAssets();
@@ -103,14 +110,16 @@ namespace Defend.Editor
                 if (feedback != null && !feedback.transform.IsChildOf(old)) Object.DestroyImmediate(feedback.gameObject);
                 Object.DestroyImmediate(old.gameObject);
                 string[] names = { "Reactor", "Relay", "RapidTurret", "Core", "HeavyTurret", "AreaTurret" };
-                var model = InstantiateModel(Models + names[(int)source.Definition.Kind] + "EffectModel.prefab", root.transform);
-                var anchors = model.AddComponent<CombatModelAnchors>();
+                bool useRapidModel = source.Definition.Kind == BuildingKind.Turret && AssetDatabase.LoadAssetAtPath<GameObject>(RapidModel) != null;
+                var model = InstantiateModel(useRapidModel ? RapidModel : Models + names[(int)source.Definition.Kind] + "EffectModel.prefab", root.transform);
+                var anchors = model.GetComponent<CombatModelAnchors>() ?? model.AddComponent<CombatModelAnchors>();
                 anchors.TurretYaw = Pivot(model.transform, "TurretYaw");
                 anchors.Muzzle = Pivot(model.transform, "Muzzle") ?? Pivot(model.transform, "MuzzleLeft");
                 anchors.AlternateMuzzle = Pivot(model.transform, "MuzzleRight");
                 anchors.EnergyPort = Pivot(model.transform, "EnergyPort");
                 anchors.StatusAnchor = Pivot(model.transform, "StatusAnchor");
-                if (anchors.Muzzle != null) model.AddComponent<WeaponMotionRig>();
+                anchors.RapidMotion = model.GetComponent<RapidTurretMotion>();
+                if (anchors.Muzzle != null && anchors.RapidMotion == null && model.GetComponent<WeaponMotionRig>() == null) model.AddComponent<WeaponMotionRig>();
                 DisableBarShadows(root, model.transform);
                 data.Update(); Set(data, "visualRoot", model.transform); data.ApplyModifiedPropertiesWithoutUndo();
                 return PrefabUtility.SaveAsPrefabAsset(root, path).GetComponent<BuildingView>();

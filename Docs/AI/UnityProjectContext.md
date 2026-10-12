@@ -2,7 +2,9 @@
 
 <!-- unity-onboarding:generated:start -->
 
-核对日期：2026-10-10，Asia/Shanghai。工作区：`E:\UnityProject\Defend`。第三阶段已加入双隘防线、三类炮塔与三类敌人、能源诊断和结算。第二阶段用户验收已经结束，不重新启动旧长时间测试。第三阶段最终证据见 `Docs/Validation/PhaseThreeReport.md`。未代替用户提交或推送。
+当前规则核对日期：2026-10-13，Asia/Shanghai。工作区：`E:/UnityProject/Defend`。本轮完整玩法已接入工业防线，Unity 编译和限定的 8 个核心基础用例通过；编辑器正常八波完成 186 次击杀，简短自然失败、重开和返回流程已确认。当前依据为 [已确认玩法开发规格与阶段计划](../Planning/已确认玩法开发规格与阶段计划.md) 及用户后续正式开发授权；实际进度与证据见 [已确认玩法开发进度](../Planning/已确认玩法开发进度.md)。规格内“只写文档”的旧任务边界已被正式开发授权替代。未提交、推送、发布或制作新安装包。
+
+本文后半部分的第一至第五阶段指历史开发批次，与本轮六阶段计划不同。历史测试数量、压力检查和旧安装包均不作为当前玩法通过证据，也不授权本轮重跑。美术与镜头记录保留。
 
 ## 已确认的工程事实
 
@@ -11,17 +13,26 @@
 | Unity | 6000.6.5f1，revision 3ff58d469c8a | `ProjectSettings/ProjectVersion.txt`，CLI editor_status |
 | 渲染 | URP 17.6.0；QualitySettings 的质量档引用 PC/Mobile RPAsset；全局 Graphics 字段为空不等于使用 Built-in | manifest，GraphicsSettings，QualitySettings，Assets/Settings |
 | 输入 | Input System 1.20.0，activeInputHandler=1 | manifest，ProjectSettings.asset |
-| UI | uGUI 2.6.0；EnergyWhiteboxPanel 与 CombatWhiteboxPanel 均完整保存，运行时只绑定和更新 | manifest，Content/Prefabs/UI |
+| UI | uGUI 2.6.0；正式 DefenseInterface.prefab 已保存并接入 IndustrialDefense，运行时只绑定、更新和显隐；旧面板保留 | manifest，Content/Prefabs/UI，IndustrialDefense.unity |
 | 测试 | Test Framework 1.8.0；Defend.Simulation.EditModeTests 行为测试 | manifest，Tests/EditMode |
 | 其他包 | AI Navigation 2.0.15、Timeline 6.6.0、Visual Scripting 1.9.12 | manifest；不能据此判定已用于游戏架构 |
 | 工具桥接 | Pipeline 0.8.0-exp.1，Unity CLI 1.0.0-beta.8，现有 Editor 连接可用 | manifest，CLI version/status/命令响应 |
-| 构建 | 当前目标 StandaloneWindows64；模板 Build Settings 保留 SampleScene，白盒构建显式指定开发场景 | CLI get_build_settings，EditorBuildSettings.asset，白盒验证报告 |
+| 启动与构建 | EditorBuildSettings 已启用 IndustrialDefense；SampleScene 和 CombatStress 保留但停用。本轮不制作安装包 | ProjectSettings/EditorBuildSettings.asset |
 | 序列化 | Force Text、Visible Meta Files | EditorSettings.asset，VersionControlSettings.asset |
 | 版本管理 | 已有 Unity YAML 合并及 LFS 规则；本机 Git LFS 3.0.1；未查询到 unityyamlmerge 驱动配置 | .gitattributes，git config，git lfs version |
 
 最初接手时 Editor ready、未播放、未编译，Console 0 错误、0 警告。这是历史快照。第一阶段证据见 `Docs/Validation/PhaseOneWhiteboxReport.md`；第二阶段最终结果集中在 [PhaseTwoWhiteboxReport.md](../Validation/PhaseTwoWhiteboxReport.md)，不要用初始环境、编译通过或旧版结果代替当前验收。
 
-## 第一方内容与启动
+## 当前正式入口与本轮验证
+
+- 正式入口：`Assets/Defend/Content/Scenes/Dev/IndustrialDefense.unity`。保留现役 FuxiTurret、工业模型、特效和透视镜头，接入已保存的 `Assets/Defend/Content/Prefabs/UI/DefenseInterface.prefab`。
+- 场景注册 7 种建筑（含核心、电池及三种炮塔）和 5 类敌人表现。底部商店提供反应堆、中继器、电池、闪哨机、崩岩机、荡尘机；核心不作为商品。
+- 正式波次为 8 波，敌人数依次为 12 / 16 / 18 / 20 / 24 / 28 / 32 / 36，共 186 名。默认同时在场上限为可配置 200；被占位或上限延后的敌人保留原队列和间隔，不补刷或丢失。
+- `ConfirmedDefenseAuthoring` 接入正式内容，`DefenseInterfaceAuthoring` 制作完整可编辑界面。所有 UI 控件预存在场景或 Prefab，运行时不创建或实例化 UI 控件。
+- 本轮 Unity 编译通过，限定的 8 个核心基础用例全部通过。不是全套历史测试通过，也不是完整玩法或性能结论。
+- 已实测暂停准备时购买电池：资金从 840 变为 680，逻辑时间保持第 181 步。其余实际交互、普通清波和整局流程仍由主代理继续验收；不得据此宣称全部波次已试玩通过。
+
+## 第一方内容与历史启动
 
 - `Assets/Defend/Content/Scenes/Dev/EnergyWhitebox.unity` 是第一阶段启动场景；原 SampleScene 保留。
 - `Assets/Defend/Content/Scenes/Dev/CombatWhitebox.unity` 是第二阶段可玩场景，初始 13 栋建筑。`CombatStress.unity` 是单独的 100 建筑、200 敌人压力场景，使用独立参数，不把其高耐久和高资金当作普通玩法。
@@ -29,21 +40,31 @@
 - `Assets/Defend/Scripts` 分为无 Unity 依赖的 Simulation、Unity 表现/输入/配置和 Editor 制作工具；各有程序集定义。第一阶段七个 Prefab 保留复用，第二阶段新增战斗面板、敌人及射击表现 Prefab。
 - 最初工程检查未发现已有 AGENTS.md、CLAUDE.md、CONTRIBUTING.md 或 .github 工作流；祖先目录亦未找到 AGENTS.md。用户在消息中提供的规则继续有效，当前架构文档已保存在 Docs。
 - manifest 无 Entities、Addressables 或联机框架的直接声明；没有第一方使用证据。不能因间接依赖含 Burst/Collections 就宣称项目已采用 DOTS。
-- `GameSessionRoot` 显式组合 `GameWorld`、输入、表现和面板；不使用全局单例或字符串事件总线。`GameWorld.Enqueue` 只排队；每步先执行命令，再执行可选测试耗能、战斗、能源，最后生成敌人及结算波次。战斗模式关闭并拒绝开启测试耗能。
+- `GameSessionRoot` 显式组合 `GameWorld`、输入、表现和面板；不使用全局单例或字符串事件总线。`GameWorld.Submit` 立即验证并执行事务，`ProcessCommands` 不推进时间；`Enqueue` 先落实较早输入，再按当前阶段拒绝非法建设。逻辑步执行战斗、能源以及完整出怪与结算，整局结束停止推进。暂停由会话时钟控制。正式页面不提供测试伤害、测试负载或单步入口；旧开发工具保留。
 
 ## 已确认的产品方向
 
-游戏为自动基地防御与能源网络玩法。地图约 40×40，建筑可多格占地；源头为反应堆，中继负责转发，炮塔/核心是终端。详细原始内容参考用户提供的团队评审 HTML 和共享讨论；后续用户明确修订优先于旧方案。
+游戏为自动基地防御与能源网络玩法。正式地图以 40×40 为起点，建筑可多格占地；反应堆产生能量，中继延伸网络，炮塔和核心消耗能量，电池保存批次并可同时充放电。详细原始内容参考用户提供的团队评审 HTML 和共享讨论；后续用户明确修订优先于旧方案。
 
 能源按终端收到的有效量加权分配，缓冲池有缺口就补；自动规划低损耗路线，拥堵允许备用路线；旧能量可改道换目标但不得重访建筑。累计滞留超时包含断路和持续拥堵，正常运输及正常输出间隔不计；恢复运输不清零预算。
 
 已经确认依附建筑运输：建筑被毁/出售，其内部能量损失；当前一跳失去接收节点而无法完成时，批次损失；存活节点中的旧能量可继续分配。终端自用缓存不退回运输网。核心护盾有限容量，无额外独立回复速度上限。
 
-允许战斗中调整优先级、修复及其他已提供的建设操作。能源跨波次持续运行，波次切换不重置缓存、在途能量、预约或滞留预算。UI 必须在编辑器场景/Prefab 内完整可编辑，禁止运行时拼装界面。技术选择需告知用户。
+只有准备阶段允许购买、移动、出售、单座维修、全部维修和供能优先级调整；准备暂停时合法事务立即生效且不推进时间。战斗及暂停战斗立即拒绝建设，不延后到下一准备阶段执行。普通清波先进入结算，点击“继续准备”后才恢复建设权限，下一波必须主动开始。
 
-用户已选择中型规模：最多 100 栋未出售建筑（包含损毁建筑），同时存活敌人最多 200 个；先在当前电脑 i9-14900HX、RTX 4060 Laptop、32 GB 内存上验收。战斗镜头为相对水平面向下约 70°，保存的 Unity Euler X 为 70°，保留正交投影。该确认不等于性能已经达标，也不等于确定最低发行配置。
+普通建筑被毁后永久消失，不能维修、移动或出售；重新购买获得新的稳定身份。存活普通建筑的维修价为满额维修基价乘缺失耐久比例并向上取整；全部维修先逐座报价再合计，资金不足完全不执行。维修保留库存、历史和身份。核心唯一，不能移动、出售或维修生命。
 
-## 工程设计与实施边界
+核心护盾只由正常实际到货补充。准备、战斗和普通波次结算持续运行能源；主动暂停停止游戏时间，整局胜负确定后停止模拟。清波不补满护盾、不恢复生命，不取消预约或增加外部供给。击杀奖励累计至成功清波统一发放，失败波不发奖励。初始总预算包含初始布局成本。
+
+电池以实际库存和有效充电承诺参与同一个加权调度，可经中继支援全网合法可达终端；电池互补按储能比例差及启停阈值限额。新到货最早在下一逻辑步输出，同一份能量不能重访已访问建筑，正常电池存放不累计运输滞留。
+
+五类敌人为巡猎者、拆迁者、收束者、拭净者、镇载者，分别使用独立属性和行为配置。全图目标候选共享实际伤害与实际供能收益，路线同时比较风险、路程、拆除及拥堵；最终目标与当前挡路建筑分开保存。敌人具有体积、相互阻挡、避让排队、攻击站位及出生占位，镇载者不强推同类。
+
+开始页、准备、战斗、暂停、说明、三栏档案、声音设置、普通清波及整局结算已经接入。建筑与敌人使用同一个详情侧栏；敌人资料与档案共用定义，详情另读实时生命、属性、行动和目标，并提供定位。声音设置持久化，对局不跨启动续玩。UI 必须预存在场景或 Prefab，运行时只绑定、更新及显隐。
+
+当前已取消 100 座建筑硬上限和分类上限，建设仅受阶段、资金、完整占地及合法位置约束；同时在场敌人以可配置 200 为起点。本轮不做性能跑分、压力测试或规模验收。2026-10-12 按用户最新要求，工业防线主关卡改为 60° 透视俯视、50° 垂直视场角，默认缩放系数 0.4，聚焦基地附近 (26, 0, 20)；旧白盒关卡保留原镜头配置。滚轮沿视线移动镜头，中键拖动保持地面指向。验证见 `Docs/Validation/PerspectiveCameraReport.md`。该确认不等于性能已经达标，也不等于确定最低发行配置。
+
+## 历史工程设计与实施记录
 
 2026-10-09 用户确认损失规则并要求工程设计；2026-10-10 先完成第一阶段能源白盒，随后用户确认中型规模及斜俯视镜头，并授权团队实施第二阶段。设计入口：
 
@@ -51,6 +72,8 @@
 - `Docs/Architecture/EnergyNetwork.md`：数据模型、守恒、预约、寻路、加权调度、状态机、动态操作、性能及验收矩阵。
 
 第一阶段接口说明见 `Docs/Architecture/WhiteboxDevelopmentContract.md`，第二阶段调用与顺序见 `EngineeringDesign.md`。已实现纯 C# 模拟、固定逻辑步、整数能量、共享访问历史、按目标共享的反向 Dijkstra 路径树，以及使用已完成路径树下界的受约束 A* 搜索。第二阶段补充二叉最小堆、临时工作集合复用、局部更新中继可用状态，以及长期加权余额修复；几何拓扑变化仍会重建全图，不能称为完全局部更新。详细证据见 `Tools/Performance/README.md`。
+
+以下直到“工具使用”段的历史第一至第五阶段记录只用于追溯；其中敌人可重叠、局部候选、绕行硬限制、旧波次和旧验证规模均已被本轮规则替代。
 
 第一阶段的历史范围为可交互能源试验场，含建筑网格、生命周期、费用、测试负载、核心有限护盾、优先级及调试控制；当时没有敌人与波次。第二阶段已加入以下工程实现，这些具体战斗规则仍是可调整的白盒方案，不代表最终玩法平衡：
 
@@ -64,7 +87,7 @@
 
 美术继续采用白盒。即时付费修满耐久、空初始缓存、每 1000 小单位表示 1 点能量、1 点能量抵消 1 点核心伤害仍是可编辑或可调整的白盒参数。尚未实现存档、正式美术、多地图和科技树；第三阶段已加入三种敌人类型。
 
-## 第三阶段当前入口
+## 历史第三阶段入口
 
 - 主关卡 `Assets/Defend/Content/Scenes/Dev/TwinPassDefense.unity`，六栋初始建筑、双入口、68 岩体格、八波共 374 敌人。旧 `EnergyWhitebox`、`CombatWhitebox` 与 `CombatStress` 保留。
 - `Content/Definitions/PhaseThree` 保存独立建筑、波次与能源参数；`Content/Prefabs/PhaseThree`、`PhaseThreePanel.prefab`、`PhaseThreeEnemy.prefab` 保存可编辑表现。UI 57 个 RectTransform、15 个按钮，运行时不创建或实例化 UI。
@@ -79,7 +102,7 @@
 - 首次可见窗口关闭时暴露对象池清理空引用，随后修复并重新构建。九个对象池均通过子物体先销毁的回归；八波运行记录早于此退出清理修复，战斗及能源参数保持一致。运行中正常回收与场景退出的对象销毁顺序必须分别验证。
 - 修复构建的可见战斗及退出复查通过，退出码 0、无 Exception，证据在 `Logs/PhaseThree/PlayerVisibleFinal`。URP 后处理着色器提示与引擎关闭时内存诊断仍保留，不能宣称所有后处理可用或没有任何资源泄漏。
 
-## 第四阶段当前入口
+## 历史第四阶段入口
 
 - 用户于 2026-10-10 确认局部感知与能源破坏方向，并授权团队开发。主关卡为 `Assets/Defend/Content/Scenes/Dev/EnergyFrontDefense.unity`；第三阶段内容保留，旧配置默认关闭新行为。
 - 设计及最终评分公式在 `Docs/Architecture/PhaseFourEnemyBehavior.md`。重装独立观察最近 3 秒现场伤害和实际完成传输；两端均须可感知，不读取隐藏拓扑或预约作为收益。普通与快速沿用核心推进。
@@ -117,6 +140,26 @@
 - 2026-10-10 镜头修正：新版 Input System 默认滚轮每格为 1，`WorldCameraViewport` 使用 0.22 灵敏度（每格缩小视野约 19.75%），仅 Windows 原始输入模式换算 120 单位。本机 Game 窗口已关闭低分辨率预览，150% 屏幕缩放下由 979×498 提升到 1468×748，按 1:1 显示。Play Mode 输入与画面对比已验证；未重建独立程序。详见 `Docs/Validation/CameraClarityReport.md`。
 - 随后应用户要求重新构建试玩包：`Builds/Defend-Windows-Trial-20261010.zip`，342 个文件、88,461,927 字节，包含上述镜头修正。解压后运行 `Start-Defend.cmd`，默认 1920×1080 窗口。Windows 构建 0 错误，独立程序诊断波次 13.52 秒通过，含暂停及三次重开，退出码 0；不代表完整八波或可见帧率验收。记录在 `Logs/WindowsTrial20261010`，包内有使用说明与验证报告；旧包保留。
 
+## 现役速射炮模型与动作
+
+- 2026-10-11 按批准方案使用下载的重型火炮机器人制作游戏版本。源文件在 `ArtSource/Production/RapidTurret/RapidTurret.blend`，Unity 资源在 `Assets/Defend/Content/Art/RapidTurret`，交付入口为 `Docs/Art/RapidTurret/Delivery.html`。
+- 生产版为 5900 三角面、6 网格、3 材质、9 材质槽和一张 2048×2048 颜色贴图；原模型 17731 三角面。重建八根中空炮管、俯仰耳轴及后座套筒。规范预制体采用 +Y 向上、+Z 向前，所有活动节点单位缩放、零初始旋转。
+- `Content/PhaseFiveCombat/Buildings/Turret.prefab` 已替换显示模型；选择碰撞体和建筑配置保留。`PhaseFiveCombatSceneBuilder` 后续生成关卡时也优先引用新模型。原研究资源、旧模型和既有试玩包保留。
+- `RapidTurretMotion` 接收战斗表现时钟，驱动平滑水平转向、下俯 6 度至上仰 18 度、12 毫米后座和 1080 度/秒持续开火自转。炮口挂在真实炮管前端，随全部关节运动；停火后自转自然减速。暂停冻结，显式单步与倍速按模拟时间推进。
+- 大角度换目标使用单条待播射击快照，在水平方向对齐后才触发射击表现，转向过久会合并部分视觉射击，避免积压补播。Simulation 的命中、射速、伤害和能源结算不受这层门控影响。移动、损毁、复用和重开须清除旧待播状态。
+- 验证脚本为 `Tools/Unity/RapidTurretValidation.cs`，只检查本次资源与动作。实际结果保存在 `Docs/Art/RapidTurret/Checks`；真实 Update 画面在 `Previews/UnityMotion.gif`，按采集时间间隔编码，不能作为帧率或长时间性能验收。本次没有重打 Windows 程序。
+
+## 按四视图重建的伏羲速射炮（当前现役）
+
+- 2026-10-12 按用户提供的正面、背面、左右侧面参考，在 Blender 5.2.2 中重新制作 `FuxiTurret`。当前现役连射炮及 `PhaseFiveCombatSceneBuilder` 均引用 `Assets/Defend/Content/Art/FuxiTurret/Prefabs/FuxiTurret.prefab`；此前 `RapidTurret`、中间版 `RapidTurretRefined`、研究文件和旧试玩包保留。
+- 可编辑源文件在 `ArtSource/Production/FuxiTurret/FuxiTurret.blend`，独立四动作展示为同目录 `MotionShowcase.blend`，对照与录像入口为 `Docs/Art/FuxiTurret/Delivery.html`。四张参考已随制作源保存，参考图仅作为造型依据，没有把参考图当贴片替代几何。
+- 最终 99,248 三角面、644 个闭合可编辑零件，导出为 9 个功能网格、6 材质、27 材质槽。两张共享 2048×2048 图集保存颜色和金属度/光滑度；Blender 源文件内已打包，Unity 使用同一套图集。两侧圆盘装甲、八角护框、斜裙底座、八管转子、24 孔厚壁护罩、偏置雷达与光学组件均为真实网格。
+- 固定底座 → 水平转台 → 俯仰炮架 → 后座滑架 → 炮管转子依次独立。规范预制体保持 +Y 向上、+Z 向前、零初始旋转和单位缩放；沿用 `RapidTurretMotion` 的平滑跟踪、下俯 6°/上仰 18°、12 毫米后座和自转启停。伤害及能源结算仍由 Simulation 决定，本轮未改变战斗数值。
+- 最终源文件保存重开、FBX 再导入和独立拓扑检查通过；644 个零件均闭合，未发现退化面、异常法线、塌缩 UV 或同向共面重叠。机械检查 18/18 通过，额外核对新增低位细节与运动件至少 8.15 毫米的竖向间隙。此结论不等于把多个零件组成的整机认定为单一实体，也不代表现实武器工程认证。
+- Unity 最终定向检查 56/56 通过：资产 20、动作 14、大角度瞄准 10、实际战斗 12。工业防线真实 Update 录像、1/2/4 倍速、暂停、移动取消待播、复用和重开均有记录；退出播放后 Console 为 0 错误、0 警告。未重新构建 Windows 包，也未做大量炮塔的长时间渲染性能验收。
+- 最终画面复核曾发现重复导入后的图集错位：CPU 中纹理坐标已更新，而同名规范网格保留旧显示缓冲。`FuxiTurretAssetBuilder` 更新现有 Mesh 时现先清空原缓冲，再复制数据、显式提交新纹理坐标并上传。修复后再次正常导入、播放和录制的截图已目视确认；新增逐顶点纹理坐标检查，并保留 `BeforeMeshBufferFix.png` 失败对照。Blender→FBX 的 297,744 个三角角点纹理坐标及打包图集另有独立一致性记录。
+- 用户的 90% 相似度是外观目标，不是已测得的百分比。最终四视图及 `Checks/FinalVisualReview.json` 保留可见差异：中央前框、个别护罩孔形、传感器细部与表面旧化仍是重建而非逐像素复现。不得用机械或代码检查通过数代替外观相似度结论。
+
 CLI：`C:\Users\legion\AppData\Local\Unity\bin\unity.exe`。
 
 Editor：此前已确认位于 `C:\Program Files\Unity\Hub\Editor\6000.6.5f1\Editor\Unity.exe`；本轮通过 CLI 实际连接版本再次核对。
@@ -142,8 +185,8 @@ Editor：此前已确认位于 `C:\Program Files\Unity\Hub\Editor\6000.6.5f1\Edi
  M ProjectSettings/QualitySettings.asset
 ```
 
-先在当前电脑按中型规模验证；最终最低硬件与发行性能承诺、容量和超时等平衡数值、修复成本与耗时、复杂拆障策略和正式美术规格仍未最终确定。Windows64 是当前 Editor 目标，不等于已经承诺唯一发行平台。团队全部机器的 Smart Merge、LFS 和包缓存状态尚未验证。
+本轮六阶段开发及简短实际玩法验收已完成，不重新验证历史规模。价格、阈值、敌人属性和波次均已有可调配置起点；一次正常通关不是最终平衡结论。真实触屏设备、最低硬件与发行性能尚未验证。Windows64 是当前 Editor 目标，不等于已经承诺唯一发行平台。团队全部机器的 Smart Merge、LFS 和包缓存状态尚未验证。
 
-用户要求：禁止哈希值校验；代码和注释用规范、清晰的完整术语，不创造无通用意义的缩写。验证直接比较状态字段、预约和数量。版本管理已有 OTF/TTF 的 LFS 规则；开源中文字体连同许可和 `.meta` 交付。性能测量必须报告场景、硬件、实际到货与等待情况，不能只看耗时下降。
+用户要求：禁止哈希值校验；代码和注释用规范、清晰的完整术语，不创造无通用意义的缩写。验证直接比较状态字段、预约和数量。版本管理已有 OTF/TTF 的 LFS 规则；开源中文字体连同许可和 `.meta` 交付。本轮新增或实质改写的核心单元用例总计最多 8 个，已达到上限；仅正常编译、这 8 个基础用例及必要简短玩法验收。禁止基准校验、性能跑分、压力测试、旧大规模探针及长时间自动挂机，不以旧技能或历史记录扩张验证范围。不得自行提交、推送、发布或打包。
 
 <!-- unity-onboarding:generated:end -->

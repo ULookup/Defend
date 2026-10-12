@@ -1,0 +1,38 @@
+{
+  "method": "Direct byte comparison against the beginning-of-turn material snapshot",
+  "files": [
+    {
+      "path": "Assets\\Defend\\Content\\Art\\PhaseFive\\Materials\\PhaseFive_ArmorIvory.mat",
+      "equal": true
+    },
+    {
+      "path": "Assets\\Defend\\Content\\Art\\PhaseFive\\Materials\\PhaseFive_EnemyOrange.mat",
+      "equal": true
+    },
+    {
+      "path": "Assets\\Defend\\Content\\Art\\PhaseFive\\Materials\\PhaseFive_EnergyCyan.mat",
+      "equal": true
+    },
+    {
+      "path": "Assets\\Defend\\Content\\Art\\PhaseFive\\Materials\\PhaseFive_GroundConcrete.mat",
+      "equal": true
+    },
+    {
+      "path": "Assets\\Defend\\Content\\Art\\PhaseFive\\Materials\\PhaseFive_MetalSteel.mat",
+      "equal": true
+    },
+    {
+      "path": "Assets\\Defend\\Content\\Art\\PhaseFive\\Materials\\PhaseFive_RockSlate.mat",
+      "equal": true
+    },
+    {
+      "path": "Assets\\Defend\\Content\\Art\\PhaseFive\\Materials\\PhaseFive_RubberDark.mat",
+      "equal": true
+    },
+    {
+      "path": "Assets\\Defend\\Content\\Art\\PhaseFive\\Materials\\PhaseFive_StructureDark.mat",
+      "equal": true
+    }
+  ],
+  "passed": true
+}

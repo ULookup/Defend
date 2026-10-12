@@ -9,10 +9,12 @@ namespace Defend.Simulation
         Repair,
         SetPriority,
         SetTestLoad,
-        StartWave
+        StartWave,
+        RepairAll,
+        ContinuePreparing
     }
 
-    /// <summary>输入提交的不可变操作意图。世界在下一逻辑步统一验证和执行，不允许视图直接写状态。</summary>
+    /// <summary>输入提交的不可变意图。命令事务与时间推进分开，暂停时也由世界验证和执行。</summary>
     public readonly struct WorldCommand
     {
         public WorldCommandKind Kind { get; }
@@ -48,5 +50,7 @@ namespace Defend.Simulation
         public static WorldCommand SetTestLoad(bool enabled) =>
             new WorldCommand(WorldCommandKind.SetTestLoad, value: enabled ? 1 : 0);
         public static WorldCommand StartWave() => new WorldCommand(WorldCommandKind.StartWave);
+        public static WorldCommand RepairAll() => new WorldCommand(WorldCommandKind.RepairAll);
+        public static WorldCommand ContinuePreparing() => new WorldCommand(WorldCommandKind.ContinuePreparing);
     }
 }

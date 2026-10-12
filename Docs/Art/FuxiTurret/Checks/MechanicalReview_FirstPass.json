@@ -1,0 +1,729 @@
+{
+  "asset_source": "E:\\UnityProject\\Defend\\ArtSource\\Production\\FuxiTurret\\FuxiTurret.blend",
+  "review_kind": "Independent editable-mesh, hierarchy, analytical-clearance and sampled-pose game-art review",
+  "checks": [
+    {
+      "name": "Hierarchy_TurretYaw",
+      "passed": true,
+      "details": {
+        "required_parent": "FuxiTurret",
+        "actual_parent": "FuxiTurret"
+      }
+    },
+    {
+      "name": "Hierarchy_BarrelPitch",
+      "passed": true,
+      "details": {
+        "required_parent": "TurretYaw",
+        "actual_parent": "TurretYaw"
+      }
+    },
+    {
+      "name": "Hierarchy_BarrelRecoil",
+      "passed": true,
+      "details": {
+        "required_parent": "BarrelPitch",
+        "actual_parent": "BarrelPitch"
+      }
+    },
+    {
+      "name": "Hierarchy_BarrelSpin",
+      "passed": true,
+      "details": {
+        "required_parent": "BarrelRecoil",
+        "actual_parent": "BarrelRecoil"
+      }
+    },
+    {
+      "name": "Hierarchy_Muzzle",
+      "passed": true,
+      "details": {
+        "required_parent": "BarrelSpin",
+        "actual_parent": "BarrelSpin"
+      }
+    },
+    {
+      "name": "Closed_non_degenerate_editable_parts",
+      "passed": true,
+      "details": {
+        "problem_objects": []
+      }
+    },
+    {
+      "name": "Fixed_base_unchanged_by_all_four_motions",
+      "passed": true,
+      "details": {
+        "maximum_vertex_displacement_m": 0.0
+      }
+    },
+    {
+      "name": "Spin_does_not_rotate_bearing_outers_or_non_rotor_parts",
+      "passed": true,
+      "details": {
+        "maximum_vertex_displacement_m": 0.0
+      }
+    },
+    {
+      "name": "Full_360_spin_returns_to_same_geometry",
+      "passed": true,
+      "details": {
+        "maximum_vertex_difference_m": 3.122362236350814e-08
+      }
+    },
+    {
+      "name": "Recoil_moves_slide_and_rotor_together_while_pitch_frame_stays",
+      "passed": true,
+      "details": {
+        "slide_displacement_error_m": 3.5390257835388184e-08,
+        "pitch_frame_vertex_displacement_m": 0.0
+      }
+    },
+    {
+      "name": "Rear_rotor_sweep_clearance_inside_actual_bearing_slab",
+      "passed": true,
+      "details": {
+        "bearing_inner_radius_m": 0.056699987368501986,
+        "swept_rotor_radius_in_bearing_slab_m": 0.054900020360946655,
+        "minimum_radial_clearance_m": 0.001799967007555331,
+        "note": "Actual edges are clipped to the bearing axial slab; remote muzzle hoops are excluded."
+      }
+    },
+    {
+      "name": "Front_rotor_sweep_clearance_inside_actual_bearing_slab",
+      "passed": false,
+      "details": {
+        "bearing_inner_radius_m": 0.056699987368501986,
+        "swept_rotor_radius_in_bearing_slab_m": 0.06000001125011965,
+        "minimum_radial_clearance_m": -0.003300023881617667,
+        "note": "Actual edges are clipped to the bearing axial slab; remote muzzle hoops are excluded."
+      }
+    },
+    {
+      "name": "Left_true_trunnion_coaxial_and_axially_engaged",
+      "passed": true,
+      "details": {
+        "off_axis_error_m": 7.450580596923828e-09,
+        "axial_overlap_m": 0.024000003933906555
+      }
+    },
+    {
+      "name": "Left_slide_supported_for_entire_recoil",
+      "passed": true,
+      "details": {
+        "minimum_end_margin_m": 0.020000003278255463,
+        "end_pose_engagement_m": [
+          0.09600000083446503,
+          0.09600000083446503
+        ],
+        "note": "Rail/shoe nested fit is intentional."
+      }
+    },
+    {
+      "name": "Right_true_trunnion_coaxial_and_axially_engaged",
+      "passed": true,
+      "details": {
+        "off_axis_error_m": 7.450580596923828e-09,
+        "axial_overlap_m": 0.024000003933906555
+      }
+    },
+    {
+      "name": "Right_slide_supported_for_entire_recoil",
+      "passed": true,
+      "details": {
+        "minimum_end_margin_m": 0.020000003278255463,
+        "end_pose_engagement_m": [
+          0.09600000083446503,
+          0.09600000083446503
+        ],
+        "note": "Rail/shoe nested fit is intentional."
+      }
+    },
+    {
+      "name": "Pitch_and_recoil_clear_of_fixed_sensor_and_rear_housing",
+      "passed": false,
+      "details": {
+        "unexpected_boundary_intersections": [
+          {
+            "elevation_degrees": 6,
+            "recoil_m": 0,
+            "moving_part": "Pitch_FrontArmorFrame",
+            "fixed_part": "Sensor_BaseTurntable",
+            "crossing_edges": 24
+          },
+          {
+            "elevation_degrees": 6,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_FrontArmorFrame",
+            "fixed_part": "Sensor_BaseTurntable",
+            "crossing_edges": 24
+          },
+          {
+            "elevation_degrees": 12,
+            "recoil_m": 0,
+            "moving_part": "Pitch_FrontArmorFrame",
+            "fixed_part": "Sensor_BaseTurntable",
+            "crossing_edges": 28
+          },
+          {
+            "elevation_degrees": 12,
+            "recoil_m": 0,
+            "moving_part": "Pitch_FrontArmorFrame",
+            "fixed_part": "Sensor_OpticSphericalArmor",
+            "crossing_edges": 60
+          },
+          {
+            "elevation_degrees": 12,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_FrontArmorFrame",
+            "fixed_part": "Sensor_BaseTurntable",
+            "crossing_edges": 28
+          },
+          {
+            "elevation_degrees": 12,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_FrontArmorFrame",
+            "fixed_part": "Sensor_OpticSphericalArmor",
+            "crossing_edges": 60
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0,
+            "moving_part": "Pitch_FrontArmorFrame",
+            "fixed_part": "Sensor_BaseTurntable",
+            "crossing_edges": 21
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0,
+            "moving_part": "Pitch_FrontArmorFrame",
+            "fixed_part": "Sensor_OpticSupport",
+            "crossing_edges": 12
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0,
+            "moving_part": "Pitch_FrontArmorFrame",
+            "fixed_part": "Sensor_OpticSphericalArmor",
+            "crossing_edges": 101
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0,
+            "moving_part": "Guard_DiagonalRib_7",
+            "fixed_part": "Sensor_BaseTurntable",
+            "crossing_edges": 12
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0,
+            "moving_part": "Guard_LongRib_0",
+            "fixed_part": "Sensor_BaseTurntable",
+            "crossing_edges": 13
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0,
+            "moving_part": "Guard_RearRim",
+            "fixed_part": "Sensor_BaseTurntable",
+            "crossing_edges": 34
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_FrontArmorFrame",
+            "fixed_part": "Sensor_BaseTurntable",
+            "crossing_edges": 21
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_FrontArmorFrame",
+            "fixed_part": "Sensor_OpticSupport",
+            "crossing_edges": 12
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0.012,
+            "moving_part": "Pitch_FrontArmorFrame",
+            "fixed_part": "Sensor_OpticSphericalArmor",
+            "crossing_edges": 101
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0.012,
+            "moving_part": "Guard_DiagonalRib_7",
+            "fixed_part": "Sensor_BaseTurntable",
+            "crossing_edges": 13
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0.012,
+            "moving_part": "Guard_EndFastener_0_-0.079",
+            "fixed_part": "Sensor_BaseTurntable",
+            "crossing_edges": 9
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0.012,
+            "moving_part": "Guard_LongRib_0",
+            "fixed_part": "Sensor_BaseTurntable",
+            "crossing_edges": 19
+          },
+          {
+            "elevation_degrees": 18,
+            "recoil_m": 0.012,
+            "moving_part": "Guard_RearRim",
+            "fixed_part": "Sensor_BaseTurntable",
+            "crossing_edges": 22
+          }
+        ]
+      }
+    },
+    {
+      "name": "Sampled_motion_stays_above_fixed_base_top",
+      "passed": true,
+      "details": {
+        "samples": 72,
+        "minimum_height_m": 0.11164087802171707,
+        "measured_fixed_base_top_m": 0.09849999845027924
+      }
+    }
+  ],
+  "all_automated_checks_pass": false,
+  "sampled_poses": [
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 0,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 30,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 60,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 90,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 120,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 150,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 180,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 210,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 240,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 270,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 300,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0,
+      "spin_degrees": 330,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 0,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 30,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 60,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 90,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 120,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 150,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 180,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 210,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 240,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 270,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 300,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": -6,
+      "recoil_m": 0.012,
+      "spin_degrees": 330,
+      "minimum_moving_part_z_m": 0.11164087802171707
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 0,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 30,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 60,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 90,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 120,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 150,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 180,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 210,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 240,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 270,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 300,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0,
+      "spin_degrees": 330,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 0,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 30,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 60,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 90,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 120,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 150,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 180,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 210,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 240,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 270,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 300,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 0,
+      "recoil_m": 0.012,
+      "spin_degrees": 330,
+      "minimum_moving_part_z_m": 0.12999998033046722
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 0,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 30,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 60,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 90,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 120,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 150,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 180,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 210,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 240,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 270,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 300,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0,
+      "spin_degrees": 330,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 0,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 30,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 60,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 90,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 120,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 150,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 180,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 210,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 240,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 270,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 300,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    },
+    {
+      "pitch_degrees": 18,
+      "recoil_m": 0.012,
+      "spin_degrees": 330,
+      "minimum_moving_part_z_m": 0.1300109475851059
+    }
+  ],
+  "evidence_images": [],
+  "limits": "Dimensional checks cover intended bearing and sliding interfaces. These are not a complete triangle intersection or physical simulation. Independent review of the rendered views is required for the final verdict."
+}

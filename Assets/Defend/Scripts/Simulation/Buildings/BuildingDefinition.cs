@@ -9,7 +9,8 @@ namespace Defend.Simulation
         Turret,
         Core,
         BurstTurret,
-        AreaTurret
+        AreaTurret,
+        Battery = 6
     }
 
     /// <summary>
@@ -26,6 +27,7 @@ namespace Defend.Simulation
         public long ProductionPerTick { get; }
         public long ConsumptionPerTick { get; }
         public long OutputAmount { get; }
+        public long MaximumChargePerTick { get; }
         public int OutputIntervalTicks { get; }
         public double TransmissionRange { get; }
         public int MaximumHealth { get; }
@@ -36,7 +38,7 @@ namespace Defend.Simulation
         public BuildingDefinition(BuildingKind kind, string displayName, int width, int depth,
             long energyCapacity, long productionPerTick, long consumptionPerTick,
             long outputAmount, int outputIntervalTicks, double transmissionRange,
-            int maximumHealth, int purchaseCost, int saleRefund, int repairCost)
+            int maximumHealth, int purchaseCost, int saleRefund, int repairCost, long maximumChargePerTick = 8000)
         {
             if (!Enum.IsDefined(typeof(BuildingKind), kind))
                 throw new ArgumentOutOfRangeException(nameof(kind));
@@ -61,7 +63,9 @@ namespace Defend.Simulation
             if (purchaseCost < 0 || saleRefund < 0 || saleRefund > purchaseCost || repairCost < 0)
                 throw new ArgumentOutOfRangeException(nameof(purchaseCost), "费用必须非负，出售返还不能超过购买价格。");
 
-            bool isSupplier = kind == BuildingKind.Reactor || kind == BuildingKind.Relay;
+            bool isSupplier = kind == BuildingKind.Reactor || kind == BuildingKind.Relay || kind == BuildingKind.Battery;
+            if (maximumChargePerTick <= 0 || maximumChargePerTick > EnergyArithmetic.MaximumAmount)
+                throw new ArgumentOutOfRangeException(nameof(maximumChargePerTick));
             if (isSupplier && (outputAmount == 0 || transmissionRange == 0))
                 throw new ArgumentException("供能建筑必须具有正的输出量和传输范围。");
             if (kind != BuildingKind.Reactor && productionPerTick != 0)
@@ -79,6 +83,7 @@ namespace Defend.Simulation
             ProductionPerTick = productionPerTick;
             ConsumptionPerTick = consumptionPerTick;
             OutputAmount = outputAmount;
+            MaximumChargePerTick = maximumChargePerTick;
             OutputIntervalTicks = outputIntervalTicks;
             TransmissionRange = transmissionRange;
             MaximumHealth = maximumHealth;

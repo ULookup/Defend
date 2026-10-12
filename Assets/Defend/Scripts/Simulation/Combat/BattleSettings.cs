@@ -20,6 +20,8 @@ namespace Defend.Simulation
         public int ShotDisplayTicks { get; }
         public IReadOnlyList<SpawnPoint> BlockedCells { get; }
         public EnemyBehaviorSettings EnemyBehavior { get; }
+        private readonly Dictionary<EnemyKind, EnemyDefinition> enemies = new Dictionary<EnemyKind, EnemyDefinition>();
+        public EnemyDefinition GetEnemy(EnemyKind kind) => enemies[kind];
         private readonly Dictionary<BuildingKind, TurretDefinition> turrets = new Dictionary<BuildingKind, TurretDefinition>();
         public TurretDefinition GetTurret(BuildingKind kind) => turrets[kind];
 
@@ -29,7 +31,7 @@ namespace Defend.Simulation
             int turretDamage = 20, long turretEnergyPerShot = 2000, int turretCooldownTicks = 8,
             int shotDisplayTicks = 6, IEnumerable<SpawnPoint> spawnPoints = null,
             IEnumerable<TurretDefinition> turretDefinitions = null, IEnumerable<SpawnPoint> blockedCells = null,
-            EnemyBehaviorSettings enemyBehavior = null)
+            EnemyBehaviorSettings enemyBehavior = null, IEnumerable<EnemyDefinition> enemyDefinitions = null)
         {
             if (maximumBuildings <= 0 || maximumBuildings > 10000) throw new ArgumentOutOfRangeException(nameof(maximumBuildings));
             if (maximumLivingEnemies <= 0 || maximumLivingEnemies > 10000) throw new ArgumentOutOfRangeException(nameof(maximumLivingEnemies));
@@ -66,6 +68,9 @@ namespace Defend.Simulation
             ShotDisplayTicks = shotDisplayTicks;
             BlockedCells = new List<SpawnPoint>(blockedCells ?? Array.Empty<SpawnPoint>()).AsReadOnly();
             EnemyBehavior = enemyBehavior ?? new EnemyBehaviorSettings();
+            foreach (EnemyKind kind in Enum.GetValues(typeof(EnemyKind)))
+                enemies.Add(kind, EnemyDefinition.Default(kind, enemySpeedCellsPerSecond, enemyAttackDamage, enemyAttackIntervalTicks));
+            if (enemyDefinitions != null) foreach (var enemy in enemyDefinitions) enemies[enemy.Kind] = enemy;
             turrets.Add(BuildingKind.Turret, new TurretDefinition(BuildingKind.Turret, turretRange, turretDamage, turretEnergyPerShot, turretCooldownTicks));
             turrets.Add(BuildingKind.BurstTurret, new TurretDefinition(BuildingKind.BurstTurret, 9, 100, 10000, 50));
             turrets.Add(BuildingKind.AreaTurret, new TurretDefinition(BuildingKind.AreaTurret, 7, 32, 8000, 32, 2.2));

@@ -1,0 +1,5627 @@
+{
+  "asset": "RapidTurretRefined",
+  "blenderVersion": "5.2.2 LTS",
+  "source": "E:\\UnityProject\\Defend\\ArtSource\\Production\\RapidTurretRefined\\RapidTurretRefined.blend",
+  "export": "E:\\UnityProject\\Defend\\Assets\\Defend\\Content\\Art\\RapidTurretRefined\\Models\\RapidTurretRefined.fbx",
+  "sourceReopened": {
+    "bounds_min": [
+      -0.4204999804496765,
+      -0.5350000262260437,
+      0.0
+    ],
+    "bounds_max": [
+      0.4204999804496765,
+      0.4204999804496765,
+      0.6164999604225159
+    ],
+    "dimensions": [
+      0.840999960899353,
+      0.9555000066757202,
+      0.6164999604225159
+    ],
+    "triangles": 28496,
+    "mesh_count": 185,
+    "material_names": [
+      "RapidTurretRefined_Armor",
+      "RapidTurretRefined_Copper",
+      "RapidTurretRefined_Cyan",
+      "RapidTurretRefined_Graphite",
+      "RapidTurretRefined_Steel"
+    ],
+    "material_slot_count": 185,
+    "meshes": [
+      {
+        "name": "Base_AnchorBolt_01",
+        "triangles": 20,
+        "vertices": 12,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 5.819691503127517e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.3840000033378601,
+          0.057999998331069946
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_AnchorBolt_02",
+        "triangles": 20,
+        "vertices": 12,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 5.819691503127517e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.2715289890766144,
+          0.2715289890766144,
+          0.057999998331069946
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_AnchorBolt_03",
+        "triangles": 20,
+        "vertices": 12,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 5.819691503127517e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.3840000033378601,
+          2.351321771675065e-17,
+          0.057999998331069946
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_AnchorBolt_04",
+        "triangles": 20,
+        "vertices": 12,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 5.819691503127517e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.2715289890766144,
+          -0.2715289890766144,
+          0.057999998331069946
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_AnchorBolt_05",
+        "triangles": 20,
+        "vertices": 12,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 5.819691503127517e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          4.70264354335013e-17,
+          -0.3840000033378601,
+          0.057999998331069946
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_AnchorBolt_06",
+        "triangles": 20,
+        "vertices": 12,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 5.819691503127517e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.2715289890766144,
+          -0.2715289890766144,
+          0.057999998331069946
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_AnchorBolt_07",
+        "triangles": 20,
+        "vertices": 12,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 5.819691503127517e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.3840000033378601,
+          -7.053965315025195e-17,
+          0.057999998331069946
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_AnchorBolt_08",
+        "triangles": 20,
+        "vertices": 12,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 5.819691503127517e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.2715289890766144,
+          0.2715289890766144,
+          0.057999998331069946
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_CorePlinth",
+        "triangles": 572,
+        "vertices": 288,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.028572982226661953,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.05000000074505806
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_Foot_01",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0005369324930309077,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.3619999885559082,
+          0.02199999988079071
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_Foot_02",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0005369324755456417,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.25597265362739563,
+          0.25597265362739563,
+          0.02199999988079071
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_Foot_03",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0005369324914615781,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.3619999885559082,
+          2.2166107767093742e-17,
+          0.02199999988079071
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_Foot_04",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0005369324755456417,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.25597265362739563,
+          -0.25597265362739563,
+          0.02199999988079071
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_Foot_05",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0005369324914615781,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          4.4332215534187484e-17,
+          -0.3619999885559082,
+          0.02199999988079071
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_Foot_06",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0005369324796555318,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.25597265362739563,
+          -0.25597265362739563,
+          0.02199999988079071
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_Foot_07",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0005369324930309077,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.3619999885559082,
+          -6.649831999255878e-17,
+          0.02199999988079071
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_Foot_08",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.000536932480294286,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.25597265362739563,
+          0.25597265362739563,
+          0.02199999988079071
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_FootCover_01",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00010396356389673036,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.3619999885559082,
+          0.04600000008940697
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_FootCover_02",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00010396355118284949,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.25597265362739563,
+          0.25597265362739563,
+          0.04600000008940697
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_FootCover_03",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00010396356607953095,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.3619999885559082,
+          2.2166107767093742e-17,
+          0.04600000008940697
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_FootCover_04",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00010396355118284949,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.25597265362739563,
+          -0.25597265362739563,
+          0.04600000008940697
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_FootCover_05",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00010396356607953169,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          4.4332215534187484e-17,
+          -0.3619999885559082,
+          0.04600000008940697
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_FootCover_06",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0001039635517598804,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.25597265362739563,
+          -0.25597265362739563,
+          0.04600000008940697
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_FootCover_07",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00010396356389673036,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.3619999885559082,
+          -6.649831999255878e-17,
+          0.04600000008940697
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_FootCover_08",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00010396355228043079,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.25597265362739563,
+          0.25597265362739563,
+          0.04600000008940697
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_OuterIsolationBand",
+        "triangles": 768,
+        "vertices": 384,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0006610102995358595,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_SkirtInset_01",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 5.205421439877452e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.3319999873638153,
+          0.0560000017285347
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_SkirtInset_02",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 5.2054253323585916e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.23475944995880127,
+          0.23475944995880127,
+          0.0560000017285347
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_SkirtInset_03",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 5.205421440583768e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.3319999873638153,
+          2.0329136495599255e-17,
+          0.0560000017285347
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_SkirtInset_04",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 5.2054253323585916e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.23475944995880127,
+          -0.23475944995880127,
+          0.0560000017285347
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_SkirtInset_05",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 5.205421440583768e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          4.065827299119851e-17,
+          -0.3319999873638153,
+          0.0560000017285347
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_SkirtInset_06",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 5.20542533235859e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.23475944995880127,
+          -0.23475944995880127,
+          0.0560000017285347
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_SkirtInset_07",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 5.205421438703987e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.3319999873638153,
+          -6.098741114115899e-17,
+          0.0560000017285347
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_SkirtInset_08",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 5.20542047512869e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.23475944995880127,
+          0.23475944995880127,
+          0.0560000017285347
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_SkirtPanel_01",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00032982300228304184,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.3160000145435333,
+          0.05400000140070915
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_SkirtPanel_02",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0003298230632795884,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.22344574332237244,
+          0.22344574332237244,
+          0.05400000140070915
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_SkirtPanel_03",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0003298230019588565,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.3160000145435333,
+          1.9349418815007774e-17,
+          0.05400000140070915
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_SkirtPanel_04",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0003298230632795884,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.22344574332237244,
+          -0.22344574332237244,
+          0.05400000140070915
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_SkirtPanel_05",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0003298230018778985,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          3.869883763001555e-17,
+          -0.3160000145435333,
+          0.05400000140070915
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_SkirtPanel_06",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00032982297122224533,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.22344574332237244,
+          -0.22344574332237244,
+          0.05400000140070915
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_SkirtPanel_07",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00032982300009514744,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.3160000145435333,
+          -5.804825975374577e-17,
+          0.05400000140070915
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_SkirtPanel_08",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0003298229508915198,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.22344574332237244,
+          0.22344574332237244,
+          0.05400000140070915
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Base_UpperFlange",
+        "triangles": 572,
+        "vertices": 288,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.006475106258372729,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.09600000083446503
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_Barrel_01",
+        "triangles": 432,
+        "vertices": 216,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 9.446603951448257e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_Barrel_02",
+        "triangles": 432,
+        "vertices": 216,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 9.446616043816357e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_Barrel_03",
+        "triangles": 432,
+        "vertices": 216,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 9.446604737776828e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_Barrel_04",
+        "triangles": 432,
+        "vertices": 216,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 9.446616043816246e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_Barrel_05",
+        "triangles": 432,
+        "vertices": 216,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 9.44660395144828e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_Barrel_06",
+        "triangles": 432,
+        "vertices": 216,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 9.446616043816248e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_Barrel_07",
+        "triangles": 432,
+        "vertices": 216,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 9.446604737776869e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_Barrel_08",
+        "triangles": 432,
+        "vertices": 216,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 9.446616043816362e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_BoreDepth_01",
+        "triangles": 124,
+        "vertices": 64,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.0196293694634342e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.4860000014305115,
+          0.43299999833106995
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_BoreDepth_02",
+        "triangles": 124,
+        "vertices": 64,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.0196293694634342e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.03606244549155235,
+          -0.4860000014305115,
+          0.4180624485015869
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_BoreDepth_03",
+        "triangles": 124,
+        "vertices": 64,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.0196293694634342e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.050999999046325684,
+          -0.4860000014305115,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_BoreDepth_04",
+        "triangles": 124,
+        "vertices": 64,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.0196293694634342e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.03606244549155235,
+          -0.4860000014305115,
+          0.3459375500679016
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_BoreDepth_05",
+        "triangles": 124,
+        "vertices": 64,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.0196293694634342e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          6.245698766204621e-18,
+          -0.4860000014305115,
+          0.3310000002384186
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_BoreDepth_06",
+        "triangles": 124,
+        "vertices": 64,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.0196293694634342e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.03606244549155235,
+          -0.4860000014305115,
+          0.3459375500679016
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_BoreDepth_07",
+        "triangles": 124,
+        "vertices": 64,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.0196293694634342e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.050999999046325684,
+          -0.4860000014305115,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_BoreDepth_08",
+        "triangles": 124,
+        "vertices": 64,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.0196293694634342e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.03606244549155235,
+          -0.4860000014305115,
+          0.4180624485015869
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_CenterDriveShaft",
+        "triangles": 188,
+        "vertices": 96,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00015512232540564695,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.3529999852180481,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_CenterNose",
+        "triangles": 124,
+        "vertices": 64,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Copper"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 7.1643965568789815e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.5180000066757202,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_FrontBearingJournal",
+        "triangles": 512,
+        "vertices": 256,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 4.829681057437972e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_FrontOuterBrace",
+        "triangles": 512,
+        "vertices": 256,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.35668937835073e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_FrontRadialSpoke_01",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.5516158431348197e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.014350628480315208,
+          -0.5120000243186951,
+          0.41664546728134155
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_FrontRadialSpoke_02",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.5516161193278468e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.034645482897758484,
+          -0.5120000243186951,
+          0.396350622177124
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_FrontRadialSpoke_03",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.551616867015236e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.034645482897758484,
+          -0.5120000243186951,
+          0.3676493763923645
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_FrontRadialSpoke_04",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.551615892403809e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.014350628480315208,
+          -0.5120000243186951,
+          0.347354531288147
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_FrontRadialSpoke_05",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.5516161193278464e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.014350628480315208,
+          -0.5120000243186951,
+          0.347354531288147
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_FrontRadialSpoke_06",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.551615988323994e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.034645482897758484,
+          -0.5120000243186951,
+          0.3676493763923645
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_FrontRadialSpoke_07",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.5516158023191505e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.034645482897758484,
+          -0.5120000243186951,
+          0.396350622177124
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_FrontRadialSpoke_08",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.551616867015236e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.014350628480315208,
+          -0.5120000243186951,
+          0.41664546728134155
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_RearBearingJournal",
+        "triangles": 512,
+        "vertices": 256,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 4.82968746694801e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_RearOuterBrace",
+        "triangles": 512,
+        "vertices": 256,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.3566748662506504e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_RearRadialSpoke_01",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.5516158431348197e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.014350628480315208,
+          -0.25999999046325684,
+          0.41664546728134155
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_RearRadialSpoke_02",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.5516161193278468e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.034645482897758484,
+          -0.25999999046325684,
+          0.396350622177124
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_RearRadialSpoke_03",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.551616867015236e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.034645482897758484,
+          -0.25999999046325684,
+          0.3676493763923645
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_RearRadialSpoke_04",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.551615892403809e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.014350628480315208,
+          -0.25999999046325684,
+          0.347354531288147
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_RearRadialSpoke_05",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.5516161193278464e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.014350628480315208,
+          -0.25999999046325684,
+          0.347354531288147
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_RearRadialSpoke_06",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.551615988323994e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.034645482897758484,
+          -0.25999999046325684,
+          0.3676493763923645
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_RearRadialSpoke_07",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.5516158023191505e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.034645482897758484,
+          -0.25999999046325684,
+          0.396350622177124
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Rotor_RearRadialSpoke_08",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.551616867015236e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.014350628480315208,
+          -0.25999999046325684,
+          0.41664546728134155
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Recoil_DriveRearCover",
+        "triangles": 188,
+        "vertices": 96,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00016897550867312608,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.1080000028014183,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Recoil_FrontBearingFaceSeal",
+        "triangles": 256,
+        "vertices": 128,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Copper"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.775490697237423e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Recoil_FrontRotorBearingHousing",
+        "triangles": 512,
+        "vertices": 256,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00019887671676970588,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Recoil_FrontRotorBearingRace",
+        "triangles": 512,
+        "vertices": 256,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00011359248852556944,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Recoil_LeftBearingTieBeam",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 2.6646056208931585e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.08399999886751175,
+          -0.2540000081062317,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Recoil_LeftNoseArmor",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 9.131366813563129e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.09099999815225601,
+          -0.25200000405311584,
+          0.3919999897480011
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Recoil_LeftShoeWitnessStrip",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Copper"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 7.072750685562251e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.11900000274181366,
+          -0.09000000357627869,
+          0.3499999940395355
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Recoil_LeftSlideShoe",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0001494499716736357,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.10199999809265137,
+          -0.09000000357627869,
+          0.3490000069141388
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Recoil_NoseTopVent_1",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.1577163099502176e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.029999999329447746,
+          -0.24799999594688416,
+          0.4790000021457672
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Recoil_NoseTopVent_2",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.1577163099502176e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.24799999594688416,
+          0.4790000021457672
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Recoil_NoseTopVent_3",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.1577163099502176e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.029999999329447746,
+          -0.24799999594688416,
+          0.4790000021457672
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Recoil_NoseUpperShield",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00021536642762767075,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.24799999594688416,
+          0.4699999988079071
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Recoil_RearBearingFaceSeal",
+        "triangles": 256,
+        "vertices": 128,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Copper"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.7754730594453994e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Recoil_RearRotorBearingHousing",
+        "triangles": 512,
+        "vertices": 256,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00019887654383383938,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Recoil_RearRotorBearingRace",
+        "triangles": 512,
+        "vertices": 256,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00011359250257249188,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Recoil_ReceiverBlock",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0034025262631848714,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.07400000095367432,
+          0.38999998569488525
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Recoil_RightBearingTieBeam",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 2.6646056208931585e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.08399999886751175,
+          -0.2540000081062317,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Recoil_RightNoseArmor",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 9.131366813563129e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.09099999815225601,
+          -0.25200000405311584,
+          0.3919999897480011
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Recoil_RightShoeWitnessStrip",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Copper"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 7.072750685562251e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.11900000274181366,
+          -0.09000000357627869,
+          0.3499999940395355
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Recoil_RightSlideShoe",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0001494499716736357,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.10199999809265137,
+          -0.09000000357627869,
+          0.3490000069141388
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Recoil_RotorDriveBody",
+        "triangles": 252,
+        "vertices": 128,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0014762732899229092,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.1509999930858612,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Pitch_LeftBridgeFastener",
+        "triangles": 20,
+        "vertices": 12,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 2.2733167123837472e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.07199999690055847,
+          -0.12099999934434891,
+          0.4909999966621399
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Pitch_LeftBridgeSideTrim",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 8.042543192570389e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.0989999994635582,
+          -0.05900000035762787,
+          0.46799999475479126
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Pitch_LeftJournalShoulder",
+        "triangles": 384,
+        "vertices": 192,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Copper"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 4.2003230859107687e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Pitch_LeftRailAnchor",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.33245564091118e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.10199999809265137,
+          0.0729999989271164,
+          0.3490000069141388
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Pitch_LeftRailFrontStop",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Copper"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 2.2560394212547365e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.1120000034570694,
+          -0.19900000095367432,
+          0.3490000069141388
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Pitch_LeftRecoilRail",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00013289955889028503,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.10199999809265137,
+          -0.06599999964237213,
+          0.3490000069141388
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Pitch_LeftTrunnionJournal",
+        "triangles": 188,
+        "vertices": 96,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00030514822689131643,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.13899999856948853,
+          -0.05999999865889549,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Pitch_MainCrossDrum",
+        "triangles": 252,
+        "vertices": 128,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.005088164779452842,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.05999999865889549,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Pitch_RearCover",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0003557886949860134,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.08900000154972076,
+          0.3880000114440918
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Pitch_RearRecoilEnclosure",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0025335954826347573,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.041999999433755875,
+          0.3880000114440918
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Pitch_RightBridgeFastener",
+        "triangles": 20,
+        "vertices": 12,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 2.2733167123837472e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.07199999690055847,
+          -0.12099999934434891,
+          0.4909999966621399
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Pitch_RightBridgeSideTrim",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 8.042543192570389e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0989999994635582,
+          -0.05900000035762787,
+          0.46799999475479126
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Pitch_RightJournalShoulder",
+        "triangles": 384,
+        "vertices": 192,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Copper"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 4.200323085910774e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Pitch_RightRailAnchor",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.33245564091118e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.10199999809265137,
+          0.0729999989271164,
+          0.3490000069141388
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Pitch_RightRailFrontStop",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Copper"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 2.2560394212547365e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.1120000034570694,
+          -0.19900000095367432,
+          0.3490000069141388
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Pitch_RightRecoilRail",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00013289955889028503,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.10199999809265137,
+          -0.06599999964237213,
+          0.3490000069141388
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Pitch_RightTrunnionJournal",
+        "triangles": 188,
+        "vertices": 96,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00030514822689131643,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.13899999856948853,
+          -0.05999999865889549,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Pitch_UpperBridge",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0014098819670339535,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.06199999898672104,
+          0.4749999940395355
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Sensor_BaseSwivel",
+        "triangles": 188,
+        "vertices": 96,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00018923506244969402,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.19699999690055847,
+          0.5120000243186951
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Sensor_HeadCore",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0019287991979121508,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.17900000512599945,
+          0.5600000023841858
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Sensor_HeadTopArmor",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00042928102404447615,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.18400000035762787,
+          0.6079999804496765
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Sensor_OpticBezel",
+        "triangles": 188,
+        "vertices": 96,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 7.554374717952828e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.03799999877810478,
+          0.10300000011920929,
+          0.5649999976158142
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Sensor_OpticCyanGlass",
+        "triangles": 188,
+        "vertices": 96,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Cyan"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.3212128591999665e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.03799999877810478,
+          0.08579999953508377,
+          0.5649999976158142
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Sensor_OpticDarkRecess",
+        "triangles": 188,
+        "vertices": 96,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 7.688544851517541e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.03799999877810478,
+          0.08900000154972076,
+          0.5649999976158142
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Sensor_Pedestal",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00047996488049937826,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.19699999690055847,
+          0.47200000286102295
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Sensor_SecondaryLight",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Cyan"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 4.907026891773859e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0430000014603138,
+          0.09700000286102295,
+          0.5649999976158142
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Sensor_SecondaryOptic",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.5941665091937404e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0430000014603138,
+          0.10599999874830246,
+          0.5649999976158142
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Sensor_SideArmor_-1",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00011270007627117894,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.08699999749660492,
+          0.17900000512599945,
+          0.5619999766349792
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Sensor_SideArmor_1",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00011270007627117894,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.08699999749660492,
+          0.17900000512599945,
+          0.5619999766349792
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_BearingWitnessRing",
+        "triangles": 384,
+        "vertices": 192,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Copper"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00022625387465800975,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_LeftArmorCover",
+        "triangles": 164,
+        "vertices": 84,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0013171540710437838,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_LeftBearingCap",
+        "triangles": 252,
+        "vertices": 128,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0001230080339994528,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.2639999985694885,
+          -0.05999999865889549,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_LeftBearingCapBolt_1",
+        "triangles": 20,
+        "vertices": 12,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.4549228757818797e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.2709999978542328,
+          -0.01099999900907278,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_LeftBearingCapBolt_2",
+        "triangles": 20,
+        "vertices": 12,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.4549228757818797e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.2709999978542328,
+          -0.035499997437000275,
+          0.42443525791168213
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_LeftBearingCapBolt_3",
+        "triangles": 20,
+        "vertices": 12,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.4549228757818797e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.2709999978542328,
+          -0.08449999988079071,
+          0.42443525791168213
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_LeftBearingCapBolt_4",
+        "triangles": 20,
+        "vertices": 12,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.4549228757818797e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.2709999978542328,
+          -0.10899999737739563,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_LeftBearingCapBolt_5",
+        "triangles": 20,
+        "vertices": 12,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.4549228757818797e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.2709999978542328,
+          -0.08449999988079071,
+          0.3395647406578064
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_LeftBearingCapBolt_6",
+        "triangles": 20,
+        "vertices": 12,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.4549228757818797e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.2709999978542328,
+          -0.035499997437000275,
+          0.3395647406578064
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_LeftBearingCover",
+        "triangles": 252,
+        "vertices": 128,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00028771311188464336,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.2529999911785126,
+          -0.05999999865889549,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_LeftCapCenter",
+        "triangles": 124,
+        "vertices": 64,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Copper"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.4722205876301686e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.2720000147819519,
+          -0.05999999865889549,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_LeftCapInset",
+        "triangles": 188,
+        "vertices": 96,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 9.469385338221594e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.27000001072883606,
+          -0.05999999865889549,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_LeftLoadFrame",
+        "triangles": 148,
+        "vertices": 76,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0074849479550256805,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_LeftRearVent_1",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.2673333615697866e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.25099998712539673,
+          0.10199999809265137,
+          0.26100000739097595
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_LeftRearVent_2",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.2673333615697866e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.25099998712539673,
+          0.10199999809265137,
+          0.2800000011920929
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_LeftRearVent_3",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.2673333615697866e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.25099998712539673,
+          0.10199999809265137,
+          0.29899999499320984
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_LeftServicePlate",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 9.177256890246284e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.25200000405311584,
+          0.03500000014901161,
+          0.20800000429153442
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_LeftTrunnionBearing",
+        "triangles": 512,
+        "vertices": 256,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00021316174873775115,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_LeftTrunnionSeal",
+        "triangles": 256,
+        "vertices": 128,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.1813772391154835e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_LowerBearing",
+        "triangles": 768,
+        "vertices": 384,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0013865765547150062,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RearCoolingFin_1",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.131133325049277e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.28299999237060547,
+          0.2529999911785126
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RearCoolingFin_2",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.131133325049277e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.28299999237060547,
+          0.27300000190734863
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RearCoolingFin_3",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.131133325049277e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.28299999237060547,
+          0.2930000126361847
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RearCoolingFin_4",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.131133325049277e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.28299999237060547,
+          0.31299999356269836
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RearCoolingFin_5",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.131133325049277e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.28299999237060547,
+          0.3330000042915344
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RearDriveArmor",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0016806239677261679,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.2630000114440918,
+          0.30300000309944153
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RearDriveChassis",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.009769001602458596,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.19699999690055847,
+          0.2930000126361847
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RearPowerSocket_-1",
+        "triangles": 124,
+        "vertices": 64,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.5760395482603915e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.07800000160932541,
+          0.28700000047683716,
+          0.20600000023841858
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RearPowerSocket_1",
+        "triangles": 124,
+        "vertices": 64,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.5760395482603915e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.07800000160932541,
+          0.28700000047683716,
+          0.20600000023841858
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RearSocketInsulator_-1",
+        "triangles": 128,
+        "vertices": 64,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Copper"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.23989739523266e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RearSocketInsulator_1",
+        "triangles": 128,
+        "vertices": 64,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Copper"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.239897395232639e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RearUpperArmor",
+        "triangles": 108,
+        "vertices": 56,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0005283370675555419,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.20499999821186066,
+          0.4269999861717224
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RightArmorCover",
+        "triangles": 164,
+        "vertices": 84,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0013171540086636775,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RightBearingCap",
+        "triangles": 252,
+        "vertices": 128,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0001230080339994528,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.2639999985694885,
+          -0.05999999865889549,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RightBearingCapBolt_1",
+        "triangles": 20,
+        "vertices": 12,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.4549228757818797e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.2709999978542328,
+          -0.01099999900907278,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RightBearingCapBolt_2",
+        "triangles": 20,
+        "vertices": 12,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.4549228757818797e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.2709999978542328,
+          -0.035499997437000275,
+          0.42443525791168213
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RightBearingCapBolt_3",
+        "triangles": 20,
+        "vertices": 12,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.4549228757818797e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.2709999978542328,
+          -0.08449999988079071,
+          0.42443525791168213
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RightBearingCapBolt_4",
+        "triangles": 20,
+        "vertices": 12,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.4549228757818797e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.2709999978542328,
+          -0.10899999737739563,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RightBearingCapBolt_5",
+        "triangles": 20,
+        "vertices": 12,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.4549228757818797e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.2709999978542328,
+          -0.08449999988079071,
+          0.3395647406578064
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RightBearingCapBolt_6",
+        "triangles": 20,
+        "vertices": 12,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.4549228757818797e-07,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.2709999978542328,
+          -0.035499997437000275,
+          0.3395647406578064
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RightBearingCover",
+        "triangles": 252,
+        "vertices": 128,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00028771311188464336,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.2529999911785126,
+          -0.05999999865889549,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RightCapCenter",
+        "triangles": 124,
+        "vertices": 64,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Copper"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.4722205876301686e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.2720000147819519,
+          -0.05999999865889549,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RightCapInset",
+        "triangles": 188,
+        "vertices": 96,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 9.469385338221594e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.27000001072883606,
+          -0.05999999865889549,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RightLoadFrame",
+        "triangles": 148,
+        "vertices": 76,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0074849479602437305,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RightRearVent_1",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.2673333615697866e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.25099998712539673,
+          0.10199999809265137,
+          0.26100000739097595
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RightRearVent_2",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.2673333615697866e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.25099998712539673,
+          0.10199999809265137,
+          0.2800000011920929
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RightRearVent_3",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.2673333615697866e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.25099998712539673,
+          0.10199999809265137,
+          0.29899999499320984
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RightServicePlate",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 9.177256890246284e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.25200000405311584,
+          0.03500000014901161,
+          0.20800000429153442
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RightTrunnionBearing",
+        "triangles": 512,
+        "vertices": 256,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00021316174873775185,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_RightTrunnionSeal",
+        "triangles": 256,
+        "vertices": 128,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 3.181377239115486e-05,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_StatusLight_-1",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Cyan"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.9513331678410372e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          -0.19499999284744263,
+          -0.17399999499320984,
+          0.28200000524520874
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_StatusLight_1",
+        "triangles": 44,
+        "vertices": 24,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Cyan"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 1.9513331678410372e-06,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.19499999284744263,
+          -0.17399999499320984,
+          0.28200000524520874
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_Turntable",
+        "triangles": 572,
+        "vertices": 288,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.006036254367111399,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.14100000262260437
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Yaw_TurntableTopPlate",
+        "triangles": 572,
+        "vertices": 288,
+        "material_slots": 1,
+        "materials": [
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.00221261712327715,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.15700000524520874
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ],
+    "pivots": [
+      {
+        "name": "RapidTurretRefined",
+        "parent": null,
+        "world_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "ForwardReference",
+        "parent": "RapidTurretRefined",
+        "world_position": [
+          0.0,
+          -0.5,
+          0.0
+        ],
+        "local_position": [
+          0.0,
+          -0.5,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "TurretYaw",
+        "parent": "RapidTurretRefined",
+        "world_position": [
+          0.0,
+          0.0,
+          0.13300000131130219
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.13300000131130219
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "BarrelPitch",
+        "parent": "TurretYaw",
+        "world_position": [
+          0.0,
+          -0.05999999865889549,
+          0.38199999928474426
+        ],
+        "local_position": [
+          0.0,
+          -0.05999999865889549,
+          0.24899999797344208
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "BarrelRecoil",
+        "parent": "BarrelPitch",
+        "world_position": [
+          0.0,
+          -0.05999999865889549,
+          0.38199999928474426
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "BarrelSpin",
+        "parent": "BarrelRecoil",
+        "world_position": [
+          0.0,
+          -0.19499999284744263,
+          0.38199999928474426
+        ],
+        "local_position": [
+          0.0,
+          -0.13499999046325684,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Muzzle",
+        "parent": "BarrelSpin",
+        "world_position": [
+          0.0,
+          -0.5375000238418579,
+          0.43299999833106995
+        ],
+        "local_position": [
+          0.0,
+          -0.3425000309944153,
+          0.050999999046325684
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ]
+  },
+  "consolidatedExport": {
+    "bounds_min": [
+      -0.4204999804496765,
+      -0.5350000262260437,
+      0.0
+    ],
+    "bounds_max": [
+      0.4204999804496765,
+      0.4204999804496765,
+      0.6164999604225159
+    ],
+    "dimensions": [
+      0.840999960899353,
+      0.9555000066757202,
+      0.6164999604225159
+    ],
+    "triangles": 28496,
+    "mesh_count": 9,
+    "material_names": [
+      "RapidTurretRefined_Armor",
+      "RapidTurretRefined_Copper",
+      "RapidTurretRefined_Cyan",
+      "RapidTurretRefined_Graphite",
+      "RapidTurretRefined_Steel"
+    ],
+    "material_slot_count": 30,
+    "meshes": [
+      {
+        "name": "FixedBase",
+        "triangles": 5016,
+        "vertices": 2592,
+        "material_slots": 3,
+        "materials": [
+          "RapidTurretRefined_Steel",
+          "RapidTurretRefined_Graphite",
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.043521152172627295,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "RotatingBarrels",
+        "triangles": 7512,
+        "vertices": 3808,
+        "material_slots": 3,
+        "materials": [
+          "RapidTurretRefined_Steel",
+          "RapidTurretRefined_Graphite",
+          "RapidTurretRefined_Copper"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.001146725853740422,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.19499999284744263,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "RecoilCarriage",
+        "triangles": 852,
+        "vertices": 440,
+        "material_slots": 3,
+        "materials": [
+          "RapidTurretRefined_Steel",
+          "RapidTurretRefined_Graphite",
+          "RapidTurretRefined_Copper"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.005360820514294017,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.05999999865889549,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "RotorBearings",
+        "triangles": 3232,
+        "vertices": 1632,
+        "material_slots": 4,
+        "materials": [
+          "RapidTurretRefined_Copper",
+          "RapidTurretRefined_Graphite",
+          "RapidTurretRefined_Steel",
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0011152065605265211,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.05999999865889549,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "PitchArmor",
+        "triangles": 472,
+        "vertices": 248,
+        "material_slots": 3,
+        "materials": [
+          "RapidTurretRefined_Steel",
+          "RapidTurretRefined_Armor",
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.001926975871274356,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.05999999865889549,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "PitchHousing",
+        "triangles": 2152,
+        "vertices": 1096,
+        "material_slots": 3,
+        "materials": [
+          "RapidTurretRefined_Copper",
+          "RapidTurretRefined_Graphite",
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.008693631974102221,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.05999999865889549,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "StatusLamps",
+        "triangles": 1532,
+        "vertices": 792,
+        "material_slots": 4,
+        "materials": [
+          "RapidTurretRefined_Steel",
+          "RapidTurretRefined_Graphite",
+          "RapidTurretRefined_Armor",
+          "RapidTurretRefined_Cyan"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.003359568849831477,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.13300000131130219
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "TurretHousing",
+        "triangles": 5048,
+        "vertices": 2544,
+        "material_slots": 3,
+        "materials": [
+          "RapidTurretRefined_Copper",
+          "RapidTurretRefined_Graphite",
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.03350629973902874,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.13300000131130219
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "YawArmor",
+        "triangles": 2680,
+        "vertices": 1408,
+        "material_slots": 4,
+        "materials": [
+          "RapidTurretRefined_Armor",
+          "RapidTurretRefined_Copper",
+          "RapidTurretRefined_Steel",
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.007405105440234197,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.13300000131130219
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ],
+    "pivots": [
+      {
+        "name": "RapidTurretRefined",
+        "parent": null,
+        "world_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "ForwardReference",
+        "parent": "RapidTurretRefined",
+        "world_position": [
+          0.0,
+          -0.5,
+          0.0
+        ],
+        "local_position": [
+          0.0,
+          -0.5,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "TurretYaw",
+        "parent": "RapidTurretRefined",
+        "world_position": [
+          0.0,
+          0.0,
+          0.13300000131130219
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.13300000131130219
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "BarrelPitch",
+        "parent": "TurretYaw",
+        "world_position": [
+          0.0,
+          -0.05999999865889549,
+          0.38199999928474426
+        ],
+        "local_position": [
+          0.0,
+          -0.05999999865889549,
+          0.24899999797344208
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "BarrelRecoil",
+        "parent": "BarrelPitch",
+        "world_position": [
+          0.0,
+          -0.05999999865889549,
+          0.38199999928474426
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "BarrelSpin",
+        "parent": "BarrelRecoil",
+        "world_position": [
+          0.0,
+          -0.19499999284744263,
+          0.38199999928474426
+        ],
+        "local_position": [
+          0.0,
+          -0.13499999046325684,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Muzzle",
+        "parent": "BarrelSpin",
+        "world_position": [
+          0.0,
+          -0.5375000238418579,
+          0.43299999833106995
+        ],
+        "local_position": [
+          0.0,
+          -0.3425000309944153,
+          0.050999999046325684
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ]
+  },
+  "fbxReimported": {
+    "bounds_min": [
+      -0.4204999804496765,
+      -0.5349999666213989,
+      -6.720478040733724e-08
+    ],
+    "bounds_max": [
+      0.4204999804496765,
+      0.4204999804496765,
+      0.6164999604225159
+    ],
+    "dimensions": [
+      0.840999960899353,
+      0.9554999470710754,
+      0.6165000276272963
+    ],
+    "triangles": 28496,
+    "mesh_count": 9,
+    "material_names": [
+      "RapidTurretRefined_Armor",
+      "RapidTurretRefined_Copper",
+      "RapidTurretRefined_Cyan",
+      "RapidTurretRefined_Graphite",
+      "RapidTurretRefined_Steel"
+    ],
+    "material_slot_count": 30,
+    "meshes": [
+      {
+        "name": "FixedBase",
+        "triangles": 5016,
+        "vertices": 2592,
+        "material_slots": 3,
+        "materials": [
+          "RapidTurretRefined_Steel",
+          "RapidTurretRefined_Graphite",
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.043521902204102694,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "RotatingBarrels",
+        "triangles": 7512,
+        "vertices": 3808,
+        "material_slots": 3,
+        "materials": [
+          "RapidTurretRefined_Steel",
+          "RapidTurretRefined_Graphite",
+          "RapidTurretRefined_Copper"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0011467258509732057,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.19499993324279785,
+          0.38200002908706665
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "RecoilCarriage",
+        "triangles": 852,
+        "vertices": 440,
+        "material_slots": 3,
+        "materials": [
+          "RapidTurretRefined_Steel",
+          "RapidTurretRefined_Graphite",
+          "RapidTurretRefined_Copper"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.005360946042659831,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.05999993532896042,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "RotorBearings",
+        "triangles": 3232,
+        "vertices": 1632,
+        "material_slots": 4,
+        "materials": [
+          "RapidTurretRefined_Copper",
+          "RapidTurretRefined_Graphite",
+          "RapidTurretRefined_Steel",
+          "RapidTurretRefined_Armor"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.001115229255716124,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.05999993532896042,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "PitchArmor",
+        "triangles": 472,
+        "vertices": 248,
+        "material_slots": 3,
+        "materials": [
+          "RapidTurretRefined_Steel",
+          "RapidTurretRefined_Armor",
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0019270223065784315,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.05999993532896042,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "PitchHousing",
+        "triangles": 2152,
+        "vertices": 1096,
+        "material_slots": 3,
+        "materials": [
+          "RapidTurretRefined_Copper",
+          "RapidTurretRefined_Graphite",
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.008693835593097898,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          -0.05999993532896042,
+          0.38199999928474426
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "StatusLamps",
+        "triangles": 1532,
+        "vertices": 792,
+        "material_slots": 4,
+        "materials": [
+          "RapidTurretRefined_Steel",
+          "RapidTurretRefined_Graphite",
+          "RapidTurretRefined_Armor",
+          "RapidTurretRefined_Cyan"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.0033598361996153166,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          2.1668451921641463e-08,
+          0.13300000131130219
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "TurretHousing",
+        "triangles": 5048,
+        "vertices": 2544,
+        "material_slots": 3,
+        "materials": [
+          "RapidTurretRefined_Copper",
+          "RapidTurretRefined_Graphite",
+          "RapidTurretRefined_Steel"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.03350683999989642,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          2.1668451921641463e-08,
+          0.13300000131130219
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "YawArmor",
+        "triangles": 2680,
+        "vertices": 1408,
+        "material_slots": 4,
+        "materials": [
+          "RapidTurretRefined_Armor",
+          "RapidTurretRefined_Copper",
+          "RapidTurretRefined_Steel",
+          "RapidTurretRefined_Graphite"
+        ],
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume": 0.007405138291343687,
+        "non_finite_normals": 0,
+        "negative_determinant": false,
+        "world_origin": [
+          0.0,
+          2.1668451921641463e-08,
+          0.13300000131130219
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ],
+    "pivots": [
+      {
+        "name": "ForwardReference",
+        "parent": "RapidTurretRefined",
+        "world_position": [
+          0.0,
+          -0.5,
+          8.146034247147327e-08
+        ],
+        "local_position": [
+          0.0,
+          -0.5,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Muzzle",
+        "parent": "BarrelSpin",
+        "world_position": [
+          0.0,
+          -0.5374999642372131,
+          0.4330000877380371
+        ],
+        "local_position": [
+          0.0,
+          -0.3425000309944153,
+          0.050999999046325684
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "BarrelSpin",
+        "parent": "BarrelRecoil",
+        "world_position": [
+          0.0,
+          -0.19499993324279785,
+          0.38200002908706665
+        ],
+        "local_position": [
+          0.0,
+          -0.13499999046325684,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "BarrelRecoil",
+        "parent": "BarrelPitch",
+        "world_position": [
+          0.0,
+          -0.05999993532896042,
+          0.38199999928474426
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "BarrelPitch",
+        "parent": "TurretYaw",
+        "world_position": [
+          0.0,
+          -0.05999993532896042,
+          0.38199999928474426
+        ],
+        "local_position": [
+          0.0,
+          -0.05999999865889549,
+          0.24899999797344208
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "TurretYaw",
+        "parent": "RapidTurretRefined",
+        "world_position": [
+          0.0,
+          2.1668451921641463e-08,
+          0.13300000131130219
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.13300000131130219
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "name": "RapidTurretRefined",
+        "parent": null,
+        "world_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "noInheritedSourceMeshes": true,
+    "sourceReopened": true,
+    "fbxReimported": true,
+    "triangleCountMatches": true,
+    "allUVPresent": true,
+    "materialNamesMatch": true,
+    "allSourcePartsClosed": true,
+    "zeroDegenerateFaces": true,
+    "allPositiveVolume": true,
+    "unitScale": true
+  }
+}

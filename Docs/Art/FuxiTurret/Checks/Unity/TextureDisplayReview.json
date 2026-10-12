@@ -1,0 +1,27 @@
+{
+  "asset": "FuxiTurret",
+  "passed": true,
+  "issue": "Repeated import updated the CPU mesh data while already-rendered canonical meshes retained old texture-coordinate buffers. The final atlas was sampled at old positions in the game view.",
+  "isolation": {
+    "blenderToFbxUvCornersCompared": 297744,
+    "blenderToFbxUvMismatches": 0,
+    "sourcePackedImagesEqualExternalPngByDirectBytes": true,
+    "unitySourceAndCanonicalCpuUvEqualForAllNineGroups": true,
+    "importedGpuAtlasVisuallyMatchesExternalPng": true,
+    "resubmittingCanonicalUvAndUploadingMeshRestoredTheRenderedAppearance": true
+  },
+  "fix": "When replacing an existing canonical Mesh, clear its old native data before CopySerialized, explicitly assign the new UV array, then UploadMeshData(false) and save the existing asset. The asset identity remains intact.",
+  "verification": {
+    "normalAssetBuilderRunAfterFix": true,
+    "normalPlayModeAndActualUpdateCaptureAfterBuilder": true,
+    "finalGameScreenshotViewed": true,
+    "finalTextureMappingVisuallyCorrect": true,
+    "assetChecksPassed": 20,
+    "motionChecksPassed": 14,
+    "alignmentChecksPassed": 10,
+    "combatChecksPassed": 12
+  },
+  "before": "BeforeMeshBufferFix.png",
+  "after": "CombatClose.png",
+  "scope": "The new CPU coordinate assertion does not by itself detect a stale GPU buffer. Actual rendered before/after images are retained as the display evidence. No hash verification was used."
+}

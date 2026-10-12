@@ -38,6 +38,9 @@ namespace Defend.Unity
         private long lastAppliedTick = -1;
         private long lastSelectedId = -1;
         public IReadOnlyList<BuildingView> AuthoredBuildings => authoredBuildings;
+        public void Invalidate() { lastAppliedTick = -1; }
+        public bool ShowNetwork { get; set; } = true;
+        public bool ShowRanges { get; set; } = true;
 
         public void Configure(BuildingView[] prefabs, BuildingView[] placed, EnergyTransferView energyPrefab,
             LineRenderer linePrefab, Transform buildings, Transform energy, Transform connections,
@@ -120,7 +123,7 @@ namespace Defend.Unity
                 RefreshConnections(world);
                 var selected = world.FindBuilding(selectedId);
                 DrawRange(selectionRange, selected == null ? 0 : selected.CenterX, selected == null ? 0 : selected.CenterZ,
-                    selected == null ? 0 : Range(world, selected.Definition), selected != null && !selected.IsSold);
+                    selected == null ? 0 : Range(world, selected.Definition), ShowRanges && selected != null && selected.IsAlive && !selected.IsSold);
                 lastAppliedTick = world.CurrentTick;
                 lastSelectedId = selectedId;
             }
@@ -133,7 +136,7 @@ namespace Defend.Unity
             foreach (KeyValuePair<long, BuildingView> item in buildingViews)
             {
                 BuildingState state = world.FindBuilding(item.Key);
-                if (state == null || state.IsSold)
+                if (state == null || state.IsSold || !state.IsAlive)
                 {
                     if (authoredViews.Contains(item.Value)) item.Value.gameObject.SetActive(false);
                     else buildingPools[item.Value.Definition.Kind].Release(item.Value);
@@ -144,7 +147,7 @@ namespace Defend.Unity
             for (int index = 0; index < world.Buildings.Count; index++)
             {
                 BuildingState state = world.Buildings[index];
-                if (state.IsSold) continue;
+                if (state.IsSold || !state.IsAlive) continue;
                 if (!buildingViews.TryGetValue(state.Id, out BuildingView view))
                 {
                     view = buildingPools[state.Kind].Get();
@@ -171,7 +174,7 @@ namespace Defend.Unity
             => DrawRange(previewRange, x + definition.Width * 0.5, z + definition.Depth * 0.5, Range(world, definition), visible);
 
         private static double Range(GameWorld world, BuildingDefinition definition) =>
-            definition.Kind == BuildingKind.Reactor || definition.Kind == BuildingKind.Relay ? definition.TransmissionRange :
+            definition.Kind == BuildingKind.Reactor || definition.Kind == BuildingKind.Relay || definition.Kind == BuildingKind.Battery ? definition.TransmissionRange :
             world.Battle != null && definition.Kind != BuildingKind.Core ? world.Battle.Settings.GetTurret(definition.Kind).Range : 0;
 
         private static void DrawRange(LineRenderer line, double x, double z, double radius, bool visible)
@@ -206,7 +209,7 @@ namespace Defend.Unity
             for (int index = 0; index < connectionViews.Count; index++)
             {
                 LineRenderer line = connectionViews[index];
-                line.gameObject.SetActive(index < count);
+                line.gameObject.SetActive(ShowNetwork && index < count);
                 if (index >= count) continue;
                 EnergyConnection connection = world.Energy.Connections[index];
                 BuildingState source = world.FindBuilding(connection.SourceId);

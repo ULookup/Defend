@@ -1,0 +1,20 @@
+{
+  "transient_weld_diagnostic_only": true,
+  "weld_distance": 1e-06,
+  "vertices_after_weld": 11107,
+  "components_after_weld": 293,
+  "boundary_edges_after_weld": 4130,
+  "non_manifold_edges_after_weld": 4170,
+  "extreme_pose_renders": [
+    {
+      "elevation_degrees": -6,
+      "recoil_meters": 0.012,
+      "view": "right side"
+    },
+    {
+      "elevation_degrees": 18,
+      "recoil_meters": 0.012,
+      "view": "right side"
+    }
+  ]
+}

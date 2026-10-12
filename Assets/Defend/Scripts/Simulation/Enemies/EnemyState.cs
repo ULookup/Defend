@@ -2,14 +2,29 @@ using System;
 
 namespace Defend.Simulation
 {
-    public enum EnemyKind { Normal, Fast, Heavy }
+    public enum EnemyKind { Normal = 0, Fast = 1, Heavy = 2, Demolisher = 3, Converger = 4 }
+    public enum EnemyAction { Advancing, Detouring, WaitingForPassage, Attacking }
     /// <summary>敌人的权威位置以格子为单位；表现对象只读取，不参与移动或伤害结算。</summary>
     public sealed class EnemyState
     {
         public long Id { get; }
         public EnemyKind Kind { get; }
-        public double SpeedMultiplier => Kind == EnemyKind.Fast ? 1.8 : Kind == EnemyKind.Heavy ? 0.55 : 1;
-        public int DamageMultiplier => Kind == EnemyKind.Heavy ? 3 : 1;
+        public EnemyDefinition Definition { get; }
+        public long FinalTargetBuildingId => TargetBuildingId;
+        public long CurrentAttackBuildingId { get; internal set; }
+        public EnemyAction CurrentAction { get; internal set; }
+        public double Radius => Definition.Radius;
+        internal EnemyRoute Route;
+        internal int RouteCursor;
+        internal long NextEvaluationTick;
+        internal long RouteRevision = -1;
+        internal long BlockedSinceTick = -1;
+        internal long YieldUntilTick;
+        internal long YieldForEnemyId;
+        internal double YieldX, YieldZ;
+        internal double TargetScore;
+        public double AttackPositionX { get; internal set; }
+        public double AttackPositionZ { get; internal set; }
         public double X { get; internal set; }
         public double Z { get; internal set; }
         public int Health { get; internal set; }
@@ -30,17 +45,17 @@ namespace Defend.Simulation
         internal int CellZ;
         internal int NextCellX;
         internal int NextCellZ;
-        internal EnemyBehaviorMemory BehaviorMemory;
 
-        internal EnemyState(long id, SpawnPoint spawn, int health, EnemyKind kind = EnemyKind.Normal)
+        internal EnemyState(long id, SpawnPoint spawn, int health, EnemyKind kind = EnemyKind.Normal, EnemyDefinition definition = null)
         {
             Id = id;
             Kind = kind;
+            Definition = definition ?? EnemyDefinition.Default(kind);
             CellX = NextCellX = spawn.X;
             CellZ = NextCellZ = spawn.Z;
             X = spawn.X + 0.5;
             Z = spawn.Z + 0.5;
-            Health = MaximumHealth = kind == EnemyKind.Heavy ? checked(health * 5) : kind == EnemyKind.Fast ? Math.Max(1, health * 2 / 3) : health;
+            Health = MaximumHealth = Math.Max(1, (int)Math.Min(int.MaxValue, (long)health * Definition.BaseHealth / 60));
         }
     }
 }

@@ -165,6 +165,7 @@ namespace Defend.Simulation
                     if (!settled.Add(current.Node.Id)) continue;
                     if (!reverse && current.Node.Id == target.Id) { Completed = true; break; }
                     // 被拥堵标记的节点仍可作为出发点，但反向树不能让上游把它当作过路节点。
+                    if (reverse && current.Node.Id != target.Id && current.Node.IsEnergyDestination) continue;
                     if (reverse && current.Node.Id != target.Id && blocked != null && blocked.Contains(current.Node.Id)) continue;
                     if (!adjacency.TryGetValue(current.Node.Id, out currentEdges)) continue;
                     currentEdge = 0;
@@ -175,7 +176,7 @@ namespace Defend.Simulation
                 used++;
                 BuildingState next = reverse ? edge.Source : edge.Target;
                 if (settled.Contains(next.Id)) continue;
-                if (!reverse && next.IsConsumer && next.Id != target.Id) continue;
+                if (!reverse && next.IsEnergyDestination && next.Id != target.Id) continue;
                 if (!reverse && forbidden != null && forbidden.Contains(next.Id)) continue;
                 if (!reverse && next.Id != target.Id && blocked != null && blocked.Contains(next.Id)) continue;
                 double cost = current.Cost + edge.Cost;

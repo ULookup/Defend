@@ -1,0 +1,128 @@
+{
+  "asset": "RapidTurretRefined",
+  "materials": [
+    {
+      "name": "RapidTurretRefined_Armor",
+      "baseColor": [
+        0.63,
+        0.625,
+        0.59,
+        1
+      ],
+      "metallic": 0.22,
+      "roughness": 0.32,
+      "emissionStrength": 0
+    },
+    {
+      "name": "RapidTurretRefined_Graphite",
+      "baseColor": [
+        0.025,
+        0.033,
+        0.041,
+        1
+      ],
+      "metallic": 0.55,
+      "roughness": 0.34,
+      "emissionStrength": 0
+    },
+    {
+      "name": "RapidTurretRefined_Steel",
+      "baseColor": [
+        0.22,
+        0.27,
+        0.3,
+        1
+      ],
+      "metallic": 0.88,
+      "roughness": 0.23,
+      "emissionStrength": 0
+    },
+    {
+      "name": "RapidTurretRefined_Copper",
+      "baseColor": [
+        0.38,
+        0.16,
+        0.061,
+        1
+      ],
+      "metallic": 0.72,
+      "roughness": 0.28,
+      "emissionStrength": 0
+    },
+    {
+      "name": "RapidTurretRefined_Cyan",
+      "baseColor": [
+        0.008,
+        0.38,
+        0.52,
+        1
+      ],
+      "metallic": 0.1,
+      "roughness": 0.25,
+      "emissionStrength": 1.1
+    }
+  ],
+  "forwardAxis": "-Y",
+  "upAxis": "Z",
+  "unitMeters": 1.0,
+  "originalMeshReused": false,
+  "renderGroups": [
+    "FixedBase",
+    "TurretHousing",
+    "YawArmor",
+    "PitchHousing",
+    "PitchArmor",
+    "RecoilCarriage",
+    "RotorBearings",
+    "RotatingBarrels",
+    "StatusLamps"
+  ],
+  "mechanics": {
+    "pitchCenter": [
+      0.0,
+      -0.05999999865889549,
+      0.38199999928474426
+    ],
+    "spinCenter": [
+      0.0,
+      -0.19499999284744263,
+      0.38199999928474426
+    ],
+    "barrelCount": 8,
+    "barrelCircleRadius": 0.051,
+    "barrelTubeOuterRadius": 0.0149,
+    "barrelBoreRadius": 0.0106,
+    "rotorSweepRadius": 0.068,
+    "bearingInnerRadius": 0.071,
+    "bearingCentersY": [
+      -0.205,
+      -0.305
+    ],
+    "recoilMeters": 0.012,
+    "recoilDirection": [
+      0,
+      1,
+      0
+    ],
+    "pitchLimitsDegrees": [
+      -6,
+      18
+    ],
+    "yawAxis": [
+      0,
+      0,
+      1
+    ],
+    "pitchAxis": [
+      1,
+      0,
+      0
+    ],
+    "spinAxis": [
+      0,
+      -1,
+      0
+    ]
+  },
+  "scope": "Game visual mechanics only; not weapon engineering specifications."
+}

@@ -1,0 +1,106 @@
+{
+  "asset": "FuxiTurret",
+  "materials": [
+    {
+      "name": "Fuxi_Armor",
+      "baseColor": [
+        0.6800000071525574,
+        0.5400000214576721,
+        0.4000000059604645,
+        1
+      ],
+      "metallic": 0.1,
+      "roughness": 0.5,
+      "emissionStrength": 0.0,
+      "baseColorTexture": "Assets/Defend/Content/Art/FuxiTurret/Textures/FuxiTurret_BaseColor.png",
+      "metallicSmoothnessTexture": "Assets/Defend/Content/Art/FuxiTurret/Textures/FuxiTurret_MetallicSmoothness.png"
+    },
+    {
+      "name": "Fuxi_Graphite",
+      "baseColor": [
+        0.02800000086426735,
+        0.029999999329447746,
+        0.03099999949336052,
+        1
+      ],
+      "metallic": 0.72,
+      "roughness": 0.3799999952316284,
+      "emissionStrength": 0.0,
+      "baseColorTexture": "Assets/Defend/Content/Art/FuxiTurret/Textures/FuxiTurret_BaseColor.png",
+      "metallicSmoothnessTexture": "Assets/Defend/Content/Art/FuxiTurret/Textures/FuxiTurret_MetallicSmoothness.png"
+    },
+    {
+      "name": "Fuxi_Steel",
+      "baseColor": [
+        0.15000000596046448,
+        0.16500000655651093,
+        0.17000000178813934,
+        1
+      ],
+      "metallic": 0.8500000238418579,
+      "roughness": 0.2800000011920929,
+      "emissionStrength": 0.0,
+      "baseColorTexture": "Assets/Defend/Content/Art/FuxiTurret/Textures/FuxiTurret_BaseColor.png",
+      "metallicSmoothnessTexture": "Assets/Defend/Content/Art/FuxiTurret/Textures/FuxiTurret_MetallicSmoothness.png"
+    },
+    {
+      "name": "Fuxi_Accent",
+      "baseColor": [
+        0.47999998927116394,
+        0.2750000059604645,
+        0.07500000298023224,
+        1
+      ],
+      "metallic": 0.05999999865889549,
+      "roughness": 0.550000011920929,
+      "emissionStrength": 0.0,
+      "baseColorTexture": "Assets/Defend/Content/Art/FuxiTurret/Textures/FuxiTurret_BaseColor.png",
+      "metallicSmoothnessTexture": "Assets/Defend/Content/Art/FuxiTurret/Textures/FuxiTurret_MetallicSmoothness.png"
+    },
+    {
+      "name": "Fuxi_Amber",
+      "baseColor": [
+        1.0,
+        0.25,
+        0.017999999225139618,
+        1
+      ],
+      "metallic": 0.0,
+      "roughness": 0.25,
+      "emissionStrength": 2.0999999046325684,
+      "baseColorTexture": "Assets/Defend/Content/Art/FuxiTurret/Textures/FuxiTurret_BaseColor.png",
+      "metallicSmoothnessTexture": "Assets/Defend/Content/Art/FuxiTurret/Textures/FuxiTurret_MetallicSmoothness.png"
+    },
+    {
+      "name": "Fuxi_Glass",
+      "baseColor": [
+        0.007000000216066837,
+        0.008999999612569809,
+        0.012000000104308128,
+        1
+      ],
+      "metallic": 0.23999999463558197,
+      "roughness": 0.10000000149011612,
+      "emissionStrength": 0.0,
+      "baseColorTexture": "Assets/Defend/Content/Art/FuxiTurret/Textures/FuxiTurret_BaseColor.png",
+      "metallicSmoothnessTexture": "Assets/Defend/Content/Art/FuxiTurret/Textures/FuxiTurret_MetallicSmoothness.png"
+    }
+  ],
+  "referenceUnitDiameter": 0.84,
+  "pitchCenter": [
+    0.0,
+    0.08399999886751175,
+    0.257999986410141
+  ],
+  "gunAxis": [
+    0.0,
+    -0.05700000002980232,
+    0.2930000126361847
+  ],
+  "surfaceAtlas": {
+    "size": 2048,
+    "baseColorEncoding": "sRGB",
+    "metallicSmoothnessEncoding": "Linear: metallic in red, smoothness in alpha",
+    "uvLayer": "FuxiSurfaceUV"
+  }
+}

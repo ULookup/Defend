@@ -1,0 +1,16 @@
+{
+  "restored": [
+    "Assets/Defend/Content/Art/PhaseFive/Materials/PhaseFive_ArmorIvory.mat",
+    "Assets/Defend/Content/Art/PhaseFive/Materials/PhaseFive_EnemyOrange.mat",
+    "Assets/Defend/Content/Art/PhaseFive/Materials/PhaseFive_EnergyCyan.mat",
+    "Assets/Defend/Content/Art/PhaseFive/Materials/PhaseFive_GroundConcrete.mat",
+    "Assets/Defend/Content/Art/PhaseFive/Materials/PhaseFive_MetalSteel.mat",
+    "Assets/Defend/Content/Art/PhaseFive/Materials/PhaseFive_RockSlate.mat",
+    "Assets/Defend/Content/Art/PhaseFive/Materials/PhaseFive_StructureDark.mat"
+  ],
+  "fields": [
+    "compatibility _Color",
+    "EnergyCyan _EMISSION keyword"
+  ],
+  "guard": "Only these field changes are accepted; direct byte comparison, no hashes."
+}

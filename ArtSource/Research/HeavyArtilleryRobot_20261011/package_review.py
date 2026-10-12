@@ -1,0 +1,76 @@
+from pathlib import Path
+from PIL import Image,ImageDraw,ImageFont
+import json
+
+ROOT=Path(__file__).resolve().parent
+paths=sorted((ROOT/'Frames').glob('*.png'))
+if len(paths)!=160:raise RuntimeError(f'Expected 160 actual Blender frames; found {len(paths)}')
+font=ImageFont.truetype('C:/Windows/Fonts/msyh.ttc',18)
+heading=ImageFont.truetype('C:/Windows/Fonts/msyhbd.ttc',25)
+small=ImageFont.truetype('C:/Windows/Fonts/msyh.ttc',14)
+labels=[('01  炮塔旋转','底座固定，上部主体左右转向'),('02  炮管俯仰','前部炮组下俯 6°，上仰 18°'),('03  短行程后座','后座 0.012 米，按 0.30 秒间隔循环'),('04  组合动作','转向、俯仰、后座与炮管自转')]
+frames=[]
+for index,path in enumerate(paths):
+    with Image.open(path) as src:
+        canvas=Image.new('RGB',(560,672),(17,25,34));canvas.paste(src.convert('RGB'),(0,70))
+    draw=ImageDraw.Draw(canvas);label,detail=labels[index//40]
+    draw.text((22,10),label,font=heading,fill=(225,236,243));draw.text((22,43),detail,font=small,fill=(137,208,216))
+    draw.text((22,641),'Blender 离线动作研究 · 尚未接入游戏',font=small,fill=(173,187,202))
+    frames.append(canvas)
+sample=Image.new('RGB',(560*4,672*4))
+for i,index in enumerate(range(0,160,10)):sample.paste(frames[index],((i%4)*560,(i//4)*672))
+palette=sample.quantize(colors=256,method=Image.Quantize.MEDIANCUT)
+quantized=[f.quantize(palette=palette,dither=Image.Dither.NONE) for f in frames]
+outputs=[]
+for name,first,last in [('MotionOverview',0,160),('Yaw',0,40),('Pitch',40,80),('Recoil',80,120),('Combined',120,160)]:
+    selected=quantized[first:last];target=ROOT/'Previews'/f'{name}.gif'
+    selected[0].save(target,save_all=True,append_images=selected[1:],duration=50,loop=0,disposal=1,optimize=False)
+    with Image.open(target) as reopened:
+        duration=sum((reopened.seek(i) or reopened.info['duration']) for i in range(reopened.n_frames))
+        outputs.append({'file':target.name,'source_frames':len(selected),'gif_frames':reopened.n_frames,'milliseconds':duration,'bytes':target.stat().st_size})
+(ROOT/'PreviewEncoding.json').write_text(json.dumps(outputs,ensure_ascii=False,indent=2),encoding='utf-8')
+
+report='''<!doctype html><html lang="zh-CN"><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>速射炮模型评审 · 2026-10-11</title>
+<style>body{margin:0;background:#101923;color:#e6ecf2;font:16px/1.8 "Microsoft YaHei",sans-serif}main{max-width:1120px;margin:auto;padding:48px 30px}h1{font-size:36px;line-height:1.35;margin:10px 0 24px}h2{font-size:23px;margin-top:36px;color:#c3e8eb}p{max-width:980px}a{color:#7cdae5}.eyebrow{color:#93adb9;letter-spacing:2px;font-size:13px}.lead{font-size:20px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}figure{margin:0;background:#1b2835;border:1px solid #314354;border-radius:12px;overflow:hidden}figure img{display:block;width:100%}figcaption{padding:14px 20px;color:#afc1ce;font-size:14px}table{border-collapse:collapse;width:100%;font-size:15px}th,td{padding:12px 14px;text-align:left;border-bottom:1px solid #314354}th{background:#20303e;color:#a7d8df}.note{padding:16px 22px;background:#202f3c;border-left:3px solid #84c8d3;border-radius:4px}li{margin:8px 0}code{color:#aed9df}footer{margin-top:42px;border-top:1px solid #314354;padding-top:20px;color:#97aab9;font-size:14px}@media(max-width:720px){main{padding:24px 16px}.grid{grid-template-columns:1fr}h1{font-size:28px}}</style>
+<main><div class="eyebrow">DEFEND · 3D 美术与动作可行性评审 · 2026-10-11</div>
+<h1>适合作为速射炮候选。<br>完成分件与机械关节后，再制作游戏用版本。</h1>
+<p class="lead">这是一座固定式多管炮塔。多管炮口、低矮圆台和两侧装甲能清楚表达持续火力，造型定位适合项目中的“连射炮”。原压缩包提供的是静态合并网格，本次已另做可编辑的 Blender 动作研究文件。</p>
+<div class="grid"><figure><img src="Previews/Original_Front.png"><figcaption>原始模型实物渲染：固定底座、中央多管炮组、两侧装甲与顶部传感器。</figcaption></figure><figure><img src="Previews/MotionOverview.gif"><figcaption>8 秒实际 Blender 渲染：水平旋转 → 俯仰 → 后座 → 组合动作。炮管自转是额外表现。</figcaption></figure></div>
+<p><a href="RapidTurret_MotionStudy.blend">打开可编辑动作研究文件</a> · <a href="Previews/MotionOverview.gif">单独查看动作预览</a> · <a href="Original_Inspection.blend">查看保留原始模型的检视文件</a></p>
+<h2>原文件实际提供了什么</h2>
+<table><tr><th>项目</th><th>实测结果</th><th>对制作的意义</th></tr>
+<tr><td>文件</td><td>1 个 FBX，1 张 4096 × 4096 JPG</td><td>没有骨骼、动画或机械层级；压缩包不含许可说明。</td></tr>
+<tr><td>几何</td><td>1 个网格，11,107 顶点，17,731 三角面</td><td>约为现有连射炮 988 三角面的 18 倍；这不是性能不合格的实测结论。</td></tr>
+<tr><td>材质</td><td>1 个原始材质、1 套 UV、1 张颜色图</td><td>未提供独立法线、金属度和粗糙度贴图；原材质含无贴图输入的法线节点。</td></tr>
+<tr><td>网格连接</td><td>293 个原始连通岛</td><td>并不等于 293 个可动零件；UV/分离边及细节都可能造成断开，须人工梳理机械归属。</td></tr>
+<tr><td>原始尺寸</td><td>约 0.902 × 1.000 × 0.595</td><td>模型本身的比例与现有一格炮塔接近。</td></tr>
+<tr><td>研究样片尺寸</td><td>宽 0.840 × 深 0.931 × 高 0.554 米</td><td>约缩放到原始的 0.931 倍，尺寸与位移已落实在模型内部。</td></tr>
+<tr><td>固定底座 / 旋转范围</td><td>底座约 0.840 × 0.805 米；水平旋转半径约 0.538 米</td><td>底座可落入一格，炮口会少量伸出格边；需在相邻炮塔布局下进一步查看。</td></tr></table>
+<h2>三种动作都能做，但要整理连接结构</h2>
+<table><tr><th>动作</th><th>研究文件已经展示</th><th>正式制作要求</th></tr>
+<tr><td>炮塔旋转</td><td>固定底座保持静止，上方装甲、传感器与炮组绕垂直轴转动；样片左右各 48°。</td><td>保留完整转盘与下沿遮挡结构。游戏中补持续平滑追踪，检查整圈转动时的相邻占地。</td></tr>
+<tr><td>炮管俯仰</td><td>前方炮组与护套围绕炮口后方关节转动，演示下俯 6°、上仰 18°。</td><td>本次采用前部炮组俯仰方案。临时球形遮缝件需要重做成嵌入式机械连接，并清理固定托架的避让空间。</td></tr>
+<tr><td>后座</td><td>炮组沿射击轴反向后退 0.012 米，快速冲击后复位；每 0.30 秒一次。</td><td>保留短行程，避免整体装甲像重炮一样大幅晃动。最终幅度应结合游戏镜头与闪光调整。</td></tr>
+<tr><td>炮管自转</td><td>多管前段独立绕炮轴旋转。</td><td>属于增强速射识别的可选动作；不能替代后座，也不改变实际伤害或射速。</td></tr></table>
+<p class="note">研究层级：固定底座 → <code>TurretYaw</code> → <code>BarrelPitch</code> → <code>BarrelRecoil</code> → 炮管及炮口。炮管另有 <code>BarrelSpin</code> 自转节点。本文件按 Blender 的 Z 向上、−Y 向前制作，尚未导出为 Unity 规范轴向资产。</p>
+<div class="grid"><figure><img src="Previews/Extreme_DownAndRecoil.png"><figcaption>侧视检查：下俯 6°与最大后座叠加。关节仍是研究用结构。</figcaption></figure><figure><img src="Previews/Extreme_UpAndRecoil.png"><figcaption>侧视检查：上仰 18°与最大后座叠加。静帧不替代全角度接缝终审。</figcaption></figure></div>
+<h2>作为游戏主美，我会优先改这三处</h2>
+<ol><li><strong>机械结构先成立。</strong>把临时遮缝球改成嵌入式球座或耳轴罩，清理护套尾部与固定门形装甲之间的接缝，补必要的内壁。研究样片保留原有 17,731 三角面分布，另加一个遮缝件，共 5 个网格；它不是优化后的生产资产。</li>
+<li><strong>让俯视轮廓更清楚。</strong>保留灰白装甲，将炮管、关节和装甲后的结构压深，增加少量青色灯光呼应项目配色。顶部传感器可略收小，避免比炮口更抢眼。当前写实磨损和细碎管线与现项目的大块面风格有差距。</li>
+<li><strong>另做游戏用版本。</strong>保留原始高细节版本，以约 4,000–6,000 三角面、1K–2K 贴图作为第一轮简化建议，重点保护炮口和运动接缝。这个建议高于现项目 500–2,000 三角面的建筑白盒预算，属于美术升级路线；若继续遵守原预算，应进一步重做低面数版本。最终预算要以实际场景实例数量与画面验证决定。</li></ol>
+<figure><img src="Previews/Study_GameView.png" style="max-width:760px;margin:auto"><figcaption>接近项目主要观察方式的 70°正交视图。炮组能读清，但装甲、结构与炮管的明度应再拉开。</figcaption></figure>
+<h2>接入现有游戏还缺什么</h2>
+<p>当前 <code>CombatModelAnchors.Aim</code> 会将目标方向的高度分量清零，开火时立即水平转向。<code>WeaponMotionRig</code> 只查找旋转与后座节点，所以增加模型层级并不会自动获得俯仰或连续跟踪，需要补表现层驱动。</p>
+<p>现役连射炮按 20 次/秒的逻辑频率、6 次逻辑更新的冷却运作，即约 0.30 秒一发；原后座参数为 0.028 米、0.12 秒恢复。本次研究用更短的 0.012 米后座匹配多管炮外形，没有改变任何玩法参数。</p>
+<p>接入时还要统一 Unity 的 +Y 向上、+Z 向前，配置单个炮口或独立炮口序列；旧炮是左右双炮口，不能原样假定适用于多管炮。尺寸应落实在模型内部，因为 <code>BuildingView</code> 会将外层显示节点的缩放重设为 1。</p>
+<h2>证据与交付边界</h2>
+<p>已完成：压缩包内容检查、Blender 5.2.2 LTS 实际导入、四角度原始模型渲染、可编辑分件与关键帧制作、保存后重新打开、原始三角面数量守恒检查、尺寸与旋转半径计算、极限俯仰叠加后座侧视渲染、160 张真实渲染帧编码为 8 秒预览。</p>
+<p>未完成：正式关节重建、低面数版本与贴图优化、FBX 导出与 Unity 导入、游戏内开火联动和性能验证。没有改动生产资源、关卡、游戏代码或配置。压缩包没有授权文件，正式发布前需补齐模型来源与使用许可记录。</p>
+<p>数据记录：<a href="OriginalInspection.json">原始模型检查</a> · <a href="MotionStudy.json">分件与动作参数</a> · <a href="MotionValidation.json">保存重开与尺度检查</a> · <a href="ExtremePoseReview.json">极限姿态与连通性诊断</a> · <a href="PreviewEncoding.json">动画编码记录</a></p>
+<p>当前工程依据：<a href="../../../..//Assets/Defend/Scripts/Unity/Presentation/CombatModelAnchors.cs">瞄准与炮口绑定</a> · <a href="../../../..//Assets/Defend/Effects/Runtime/Weapons/WeaponMotionRig.cs">旋转与后座表现</a> · <a href="../../../..//Docs/Architecture/PhaseFiveModelProduction.md">原美术制作约定</a></p>
+<footer>结论：建议采用这个造型方向，并以本次动作研究文件为后续制作起点。画面为原模型的实际离线渲染，不是概念生成图，也不是游戏运行画面。</footer></main></html>'''
+# Report lives three levels below the project root.
+report=report.replace('../../../..//','../../../')
+(ROOT/'ModelReview.html').write_text(report,encoding='utf-8')
+(ROOT/'使用说明.txt').write_text('速射炮模型动作研究，2026-10-11\n\n先打开 ModelReview.html 查看结论和动作预览。\nRapidTurret_MotionStudy.blend 为可编辑研究文件，贴图已打包在文件内。\nBlender 时间轴 1–240 帧、30 帧/秒：1–60 炮塔旋转，61–120 炮管俯仰，121–180 后座和自转，181–240 组合动作。\n按空格播放；时间轴已标记四个段落。\n这是机械动作可行性原型，包含临时关节遮缝件，尚未完成生产级关节、减面或 Unity 接入。\nOriginal 目录保留从用户压缩包提取的文件；没有修改下载压缩包或项目现役资源。\n',encoding='utf-8')
+print(json.dumps(outputs,ensure_ascii=False,indent=2))

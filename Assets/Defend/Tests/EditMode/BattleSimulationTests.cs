@@ -103,21 +103,30 @@ namespace Defend.Tests
         }
 
         [Test]
-        public void BuildingLimitAndSpawnProtectionRejectWithoutCharging()
+        public void PreparingTransactionsDoNotAdvanceTimeAndCombatEditsCannotRemainQueued()
         {
-            GameWorld world = Create(Settings(buildings: 2));
-            Place(world, BuildingKind.Core, 13, 8);
+            GameWorld world = Create(Settings(buildings: 1));
+            world.Submit(WorldCommand.Place(BuildingKind.Core, 13, 8));
+            long tick = world.CurrentTick;
             int money = world.Credits;
-            world.Enqueue(WorldCommand.Place(BuildingKind.Relay, 2, 8));
-            world.Step();
-            Assert.That(world.LastCommandResult.Succeeded, Is.False);
+            Assert.That(world.Submit(WorldCommand.Place(BuildingKind.Relay, 2, 8)).Succeeded, Is.False);
             Assert.That(world.Credits, Is.EqualTo(money));
-            Place(world, BuildingKind.Relay, 5, 5);
-            money = world.Credits;
+            Assert.That(world.Submit(WorldCommand.Place(BuildingKind.Relay, 5, 5)).Succeeded, Is.True);
+            Assert.That(world.CurrentTick, Is.EqualTo(tick));
+            Assert.That(world.Buildings.Count, Is.EqualTo(2), "旧建筑数量配置不得限制购买。");
+
+            world.Enqueue(WorldCommand.StartWave());
             world.Enqueue(WorldCommand.Place(BuildingKind.Relay, 6, 5));
-            world.Step();
+            world.ProcessCommands();
             Assert.That(world.LastCommandResult.Succeeded, Is.False);
+            Assert.That(world.FindBuildingAt(6, 5), Is.Null);
+            money = world.Credits;
+            world.Enqueue(WorldCommand.Place(BuildingKind.Relay, 7, 5));
+            Assert.That(world.LastCommandResult.Succeeded, Is.False);
+            world.ProcessCommands();
+            Assert.That(world.CurrentTick, Is.EqualTo(tick));
             Assert.That(world.Credits, Is.EqualTo(money));
+            Assert.That(world.FindBuildingAt(7, 5), Is.Null);
         }
 
         [Test]
@@ -194,35 +203,38 @@ namespace Defend.Tests
         }
 
         [Test]
-        public void WavesRewardOnceAndKeepEnergyWorldAndPriority()
+        public void WavesRewardOnceWithoutRestoringCoreAndRequireContinuePreparing()
         {
-            GameWorld world = Create(Settings(turretDamage: 100, waves: new[] {
-                new WaveDefinition(2, 20, 2, 300), new WaveDefinition(2, 20, 2, 400) }));
-            Place(world, BuildingKind.Core, 13, 8);
-            Place(world, BuildingKind.Reactor, 7, 8);
-            BuildingState turret = Place(world, BuildingKind.Turret, 8, 8);
-            SimulationTestWorld.Execute(world, WorldCommand.SetPriority(turret.Id, 4));
-            Advance(world, 100);
-            EnergySystem originalEnergy = world.Energy;
+            GameWorld world = new GameWorld(new[] {
+                new BuildingDefinition(BuildingKind.Reactor, "反应堆", 1, 1, 100000, 10000, 0, 100000, 1, 3, 1000, 10, 5, 3),
+                Definition(BuildingKind.Turret), Definition(BuildingKind.Core)
+            }, new WorldSettings(16, 16, 20, 10000), new EnergySettings(200, 1, 1000, 0),
+                Settings(turretDamage: 100, waves: new[] {
+                    new WaveDefinition(1, 20, 2, 300), new WaveDefinition(1, 20, 2, 400) }));
+            BuildingState core = Place(world, BuildingKind.Core, 15, 15);
+            world.Submit(WorldCommand.Damage(core.Id, 100));
+            Place(world, BuildingKind.Reactor, 1, 1);
+            BuildingState turret = Place(world, BuildingKind.Turret, 2, 1);
+            Advance(world, 10);
             int before = world.Credits;
             Start(world);
             SimulationTestWorld.AdvanceUntil(world, () => world.Battle.State == BattleState.WaveCleared,
-                400, "第一波应清场。");
-            Assert.That(world.Credits, Is.EqualTo(before + 300));
+                100, "第一波应清场。");
+            int reward = world.Battle.LastWaveReward;
+            Assert.That(reward, Is.EqualTo(world.Battle.LastWaveFixedReward + world.Battle.LastWaveKillReward));
+            Assert.That(world.Credits, Is.EqualTo(before + reward));
+            Assert.That(core.Health, Is.EqualTo(900));
+            // 核心离反应堆的直线距离超过传输范围；没有到货就不能凭清波得到护盾。
+            Assert.That(core.StoredEnergy, Is.Zero);
             long generated = world.Energy.GetTotals().Generated;
-            long tick = world.CurrentTick;
-            Advance(world, 30);
-            Assert.That(world.Credits, Is.EqualTo(before + 300));
-            Start(world);
-            Assert.That(world.Energy, Is.SameAs(originalEnergy));
-            Assert.That(turret.PriorityWeight, Is.EqualTo(4));
-            Assert.That(world.CurrentTick, Is.GreaterThan(tick));
+            Advance(world, 3);
+            Assert.That(world.Credits, Is.EqualTo(before + reward));
+            Assert.That(world.Submit(WorldCommand.StartWave()).Succeeded, Is.False);
+            Assert.That(world.Submit(WorldCommand.ContinuePreparing()).Succeeded, Is.True);
+            Assert.That(world.CanEditBuildings, Is.True);
+            Assert.That(world.FindBuildingAt(7, 5), Is.Null);
             Assert.That(world.Energy.GetTotals().Generated, Is.GreaterThanOrEqualTo(generated));
-            SimulationTestWorld.AdvanceUntil(world, () => world.Battle.State == BattleState.Victory,
-                400, "最后一波应进入胜利。");
-            Assert.That(world.Credits, Is.EqualTo(before + 700));
-            Advance(world, 30);
-            Assert.That(world.Credits, Is.EqualTo(before + 700));
+            Assert.That(world.Credits, Is.EqualTo(before + reward));
         }
 
         [Test]

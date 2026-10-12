@@ -1,0 +1,20 @@
+{
+  "asset": "FuxiTurret",
+  "reviewStage": "First four-view draft",
+  "verdict": "REVISE",
+  "numericSimilarity": null,
+  "similarityNote": "The user's 90 percent similarity request is a target. This visual review does not assert a measured percentage.",
+  "viewsInspected": ["FirstPassViews/Front.png","FirstPassViews/Rear.png","FirstPassViews/Left.png","FirstPassViews/Right.png"],
+  "findings": [
+    {"priority":1,"topic":"Base skirt plates","status":"open","observation":"The dark conical core intersects the ivory trapezoid panels, exposing large U-shaped dark areas and leaving narrow ivory strips. The reference shows full broad ivory skirt plates separated by narrow mechanical recesses.","requestedChange":"Inset the core by approximately 0.015 to 0.020 m, keeping the armor panels and footprint in place."},
+    {"priority":2,"topic":"Perforated protective shroud","status":"open","observation":"The draft uses a sparse wire-like cage. The reference has broad continuous ivory sheet surfaces with irregular triangular and trapezoidal openings.","requestedChange":"Replace sparse narrow rods with broad connected plate webs and genuine open apertures; preserve full rotor sweep clearance."},
+    {"priority":3,"topic":"Body profile and side armor","status":"open","observation":"The side profile remains rectangular with straight long top plates and thin octagonal outlines. The reference has much more substantial framed side armor, sloping front shoulders and low forward braces. The box front also hides roughly the rear third of the protective shroud in side view.","requestedChange":"Rework the octagonal frame depth and segmentation, chamfer the front shoulder profile, expose the shroud root and add the distinctive lower angled support."},
+    {"priority":4,"topic":"Sensor assembly","status":"open","observation":"The asymmetrical positions and relative sizes are close, but the exposed circular tray, plain sphere and unsegmented dish read as simplified shapes. The reference has separate support structures, layered optics, paneled spherical armor and dish panel lines.","requestedChange":"Replace the large exposed tray with a coherent support platform; add the reference's mechanical segmentation without materially changing the front-view sensor offsets."},
+    {"priority":5,"topic":"Surface and panel definition","status":"open","observation":"The current images are flat, clean and smooth compared with the warm coated metal, narrow panel recesses, small edge wear and layered service covers in the references. Several rear cover bolts face into the cover.","requestedChange":"Complete the planned coating and wear pass, strengthen narrow seams and service-cover recesses, correct rear-facing hardware orientation, and evaluate under matched neutral lighting."}
+  ],
+  "mechanicalIssues": [
+    "The rear rotor hoop intrudes 0.0033 m into the front bearing's radial opening over their overlapping axial interval.",
+    "At positive elevation, the moving front armor frame intersects the fixed sensor platform and spherical optical housing; the rear shroud also intersects the sensor platform near maximum elevation."
+  ],
+  "acceptedSoFar": ["General scale targets and asymmetric sensor placement are substantially closer to the references than the previous unrelated design.","Eight-barrel layout, large side discs and shallow broad base are present.","These accepted elements do not establish completion or numerical similarity."]
+}

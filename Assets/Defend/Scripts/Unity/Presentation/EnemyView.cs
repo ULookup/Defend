@@ -12,6 +12,9 @@ namespace Defend.Unity
         [SerializeField] private GameObject strikeFlash;
         [SerializeField] private bool industrialModel;
         [SerializeField] private MechanicalEnemyMotion mechanicalMotion;
+        [SerializeField] private GameObject selectionMarker;
+        public long EnemyId { get; private set; }
+        public void ShowSelection(bool selected) { if (selectionMarker != null) selectionMarker.SetActive(selected); }
         public EnemyKind Kind { get; private set; }
         public Transform ModelRoot => facingRoot;
         private MaterialPropertyBlock bodyProperties;
@@ -28,6 +31,8 @@ namespace Defend.Unity
         public void ResetForReuse()
         {
             hasPosition = false;
+            EnemyId = 0;
+            ShowSelection(false);
             previousHealth = 0;
             if (facingRoot != null)
             {
@@ -45,6 +50,7 @@ namespace Defend.Unity
         public void Apply(EnemyState state, long tick = 0, int ticksPerSecond = 20)
         {
             Kind = state.Kind;
+            EnemyId = state.Id;
             Vector3 nextPosition = new Vector3((float)state.X, 0, (float)state.Z);
             previousPosition = hasPosition ? currentPosition : nextPosition;
             currentPosition = nextPosition;
@@ -73,7 +79,7 @@ namespace Defend.Unity
             // 移动时朝向真实行进方向，出手时朝向模拟所知位置，不查询目标的新坐标。
             Vector3 direction = currentPosition - previousPosition;
             if (attacking || direction.sqrMagnitude < 0.000001f)
-                direction = state.TargetBuildingId > 0 ? new Vector3((float)state.TargetX, 0, (float)state.TargetZ) - currentPosition : Vector3.zero;
+                direction = attacking ? new Vector3((float)state.LastAttackTargetX, 0, (float)state.LastAttackTargetZ) - currentPosition : state.TargetBuildingId > 0 ? new Vector3((float)state.TargetX, 0, (float)state.TargetZ) - currentPosition : Vector3.zero;
             if (direction.sqrMagnitude > 0.000001f)
                 facingRoot.localRotation = Quaternion.LookRotation(direction.normalized) * facingRestRotation;
             facingRoot.localPosition = facingRestPosition + (attacking && !industrialModel ? direction.normalized * 0.16f : Vector3.zero);
@@ -81,10 +87,9 @@ namespace Defend.Unity
 
         internal static bool IsShowingAttack(EnemyState state, long tick, int ticksPerSecond)
         {
-            return state.TargetBuildingId > 0 && state.LastAttackTick >= 0 && state.TargetAssignedTick <= state.LastAttackTick &&
-                state.LastAttackTargetBuildingId == state.TargetBuildingId && state.LastAttackTargetX == state.TargetX &&
-                state.LastAttackTargetZ == state.TargetZ &&
-                state.TargetPurpose != EnemyTargetPurpose.SearchLastKnownPosition &&
+            // 攻击表现绑定本次真正击中的建筑，拆除障碍时不能误用最终目标。
+            return state.CurrentAttackBuildingId > 0 && state.LastAttackTick >= 0 &&
+                state.LastAttackTargetBuildingId == state.CurrentAttackBuildingId &&
                 tick >= state.LastAttackTick && tick - state.LastAttackTick < Mathf.Max(1, Mathf.CeilToInt(ticksPerSecond * 0.22f));
         }
 

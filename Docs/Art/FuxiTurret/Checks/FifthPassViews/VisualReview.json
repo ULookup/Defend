@@ -1,0 +1,54 @@
+{
+  "asset": "FuxiTurret",
+  "reviewStage": "Final saved source with shared packed surface atlas",
+  "verdict": "MECHANICAL_PASS_WITH_REFERENCE_DIFFERENCES_DOCUMENTED",
+  "numericSimilarity": null,
+  "similarityNote": "The requested 90 percent likeness is a target, not a verified numerical result. No image metric, invented score or mechanical test count is used as a substitute for reference fidelity.",
+  "source": "ArtSource/Production/FuxiTurret/FuxiTurret.blend",
+  "sourceLastWriteLocal": "2026-10-12 13:57:35",
+  "viewsIndependentlyInspected": [
+    {"view": "Front", "render": "../Previews/Front.png", "renderedLocal": "2026-10-12 14:01:47", "reference": "E:/夸克下载/fuxi_turret_4views/c428fd2b-571e-41f1-b68d-1efbb4b88c9c.png"},
+    {"view": "Rear", "render": "../Previews/Rear.png", "renderedLocal": "2026-10-12 14:03:03", "reference": "E:/夸克下载/fuxi_turret_4views/17e38d6b-8d32-4fd1-9b39-86e94a1aa1ce.png"},
+    {"view": "Left", "render": "../Previews/Left.png", "renderedLocal": "2026-10-12 14:03:55", "reference": "E:/夸克下载/fuxi_turret_4views/d2f7a8cb-d1c7-42b2-bc83-0530c3ea2a4d.png"},
+    {"view": "Right", "render": "../Previews/Right.png", "renderedLocal": "2026-10-12 14:04:49", "reference": "E:/夸克下载/fuxi_turret_4views/50e22db2-e2f8-437d-93f4-84fa158edfd7.png"}
+  ],
+  "cameraScope": "Matched orthographic front, rear and side presentation. The references have small internally inconsistent proportions; the model remains a single coherent three-dimensional asset.",
+  "additionalViewsInspected": [
+    {"render": "../Previews/FrontThreeQuarter.png", "renderedLocal": "2026-10-12 14:06:07", "finding": "Confirms actual perforated guard thickness, separate barrel retaining hoops, layered shoulder armor and the yaw/pitch separation. Large upper plates and supports remain comparatively simple."},
+    {"render": "../Previews/RearThreeQuarter.png", "renderedLocal": "2026-10-12 14:07:20", "finding": "Confirms rear armor, radar back supports, paired optical supports and the one-sided gold emblem. No new visible exterior interpenetration was found in these neutral-pose oblique views."}
+  ],
+  "confirmedReferenceFeatures": [
+    "Broad shallow sloped skirt with separated ivory panels, lower notches, dark anchor recesses, diagonal supports and open anchor eyes.",
+    "Two large circular side armor covers inside substantial stepped octagonal outer frames.",
+    "Eight long dark barrels with distinct retaining hoops and an actual thick perforated tapering guard.",
+    "Asymmetric large thin radar disc and smaller spherical optical head, with separate supporting forks and journals.",
+    "Rear horizontal grille and removable service plates, warm ivory and graphite material hierarchy, amber fixtures, and the gold geometric mark on one side.",
+    "Last-pass lower jaw now projects forward in side view, and the former broad circular ivory pitch bezel is a narrower faceted transition."
+  ],
+  "resolvedMajorDraftProblems": [
+    "The skirt no longer intersects the dark conical core.",
+    "The guard is no longer a sparse rod cage: it is a continuous closed plate with 24 apertures.",
+    "Outer front armor is assigned to the yaw structure and clears the pitching carrier and sensor assembly.",
+    "Front/rear shoulder armor has folded end faces rather than three isolated thin plates.",
+    "The side frame has an axial stepped section rather than a thin outside blade.",
+    "The base ramps and sensor supports have explicit connecting structure.",
+    "The lower jaw clears the -6 degree downward pitch and full recoil stroke."
+  ],
+  "remainingReferenceDifferences": [
+    {"topic": "Surface finish", "observation": "The finished game surface remains substantially cleaner and more uniform than the supplied worn-metal references. The reference has denser fine scratches, edge wear, localized grime and finish variation; the current small wear treatment is subtle at full-turret scale."},
+    {"topic": "Panel and hardware density", "observation": "Large side and rear armor surfaces, fastener placement and mechanical recesses are simplified. The reference has more layered rims, irregular panel borders and small hardware around the shoulder and rear body."},
+    {"topic": "Central front structure", "observation": "The front frame and open dark area around the carrier remain more spacious and geometrically regular than the compact layered assembly in the reference. The last narrower faceted bezel reduces the earlier dominant white circle but does not duplicate the reference's exact local silhouette."},
+    {"topic": "Shroud pattern and lower brace", "observation": "The repeated aperture layout is coherent and open but differs from the reference's individual irregular holes. The projected lower brace captures the directional feature while remaining a simpler wedge-shaped form."},
+    {"topic": "Sensors and illumination", "observation": "The optical side journals, forks, radar support and amber lamps are simplified compared with the reference's deeper brackets, lens housing and layered illuminated recesses."}
+  ],
+  "mechanicalConclusion": {
+    "verdict": "PASS",
+    "report": "MechanicalReview.json",
+    "visualReport": "MechanicalVisualReview.json",
+    "checksPassed": 18,
+    "checksTotal": 18,
+    "evidence": ["../Previews/MechanicalSideNeutral.png", "../Previews/MechanicalSideDownRecoil.png", "../Previews/MechanicalSideUpRecoil.png", "../Previews/MechanicalExploded.png"],
+    "note": "The reviewed game-art geometry is coherent across the required four motion groups. This does not certify real engineering or Unity runtime behavior."
+  },
+  "deliveryLanguage": "Describe the asset as rebuilt from the supplied reference with the listed identifying features and verified game-art mechanical movement. Do not describe 90 percent similarity as measured or confirmed."
+}

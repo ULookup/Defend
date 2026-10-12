@@ -14,6 +14,9 @@ namespace Defend.Unity
         private readonly Vector3[] corners = new Vector3[4];
         private Vector2 previousPointerPosition;
         private bool dragging;
+        public bool InputBlocked { get; set; }
+        private float previousPinch;
+        public void Focus(float x, float z) { worldCamera.transform.position += new Vector3(x, 0, z) - GroundCenter(); ClampCameraCenter(); }
         private readonly Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
         public void Configure(Camera camera, RectTransform viewport) { worldCamera = camera; mapViewport = viewport; }
 
@@ -32,11 +35,36 @@ namespace Defend.Unity
 
         private void ApplyZoom(float width, float height)
         {
-            worldCamera.orthographicSize = Mathf.Max(mapExtent * 0.5f, mapExtent * 0.5f * height / width) * zoomFactor;
+            float halfHeight = Mathf.Max(mapExtent * 0.5f, mapExtent * 0.5f * height / width) * zoomFactor;
+            if (worldCamera.orthographic)
+            {
+                worldCamera.orthographicSize = halfHeight;
+                return;
+            }
+
+            // 保持地面焦点和视角，以沿视线移动的方式缩放透视镜头。
+            Vector3 focus = GroundCenter();
+            float distance = halfHeight / Mathf.Tan(worldCamera.fieldOfView * Mathf.Deg2Rad * 0.5f);
+            worldCamera.transform.position = focus - worldCamera.transform.forward * distance;
         }
 
         private void ProcessCameraInput(float width, float height)
         {
+            if (InputBlocked) { dragging = false; previousPinch = 0; return; }
+            var screen = Touchscreen.current;
+            if (screen != null && screen.primaryTouch.press.isPressed)
+            {
+                Vector2 touchPosition = screen.primaryTouch.position.ReadValue();
+                if (!worldCamera.pixelRect.Contains(touchPosition)) { dragging = false; return; }
+                int fingers = 0; Vector2 first = default, second = default;
+                foreach (var touch in screen.touches) if (touch.press.isPressed) { if (fingers == 0) first = touch.position.ReadValue(); else if (fingers == 1) second = touch.position.ReadValue(); fingers++; }
+                if (fingers >= 2) { float pinch = Vector2.Distance(first, second); if (previousPinch > 1 && pinch > 1) zoomFactor = Mathf.Clamp(zoomFactor * previousPinch / pinch, .28f, 1.4f); previousPinch = pinch; dragging = false; ApplyZoom(width, height); return; }
+                previousPinch = 0;
+                if (!dragging) { previousPointerPosition = touchPosition; dragging = true; }
+                worldCamera.transform.position += GroundPoint(previousPointerPosition) - GroundPoint(touchPosition);
+                ClampCameraCenter(); previousPointerPosition = touchPosition; return;
+            }
+            previousPinch = 0;
             Mouse mouse = Mouse.current;
             if (mouse == null) return;
             Vector2 position = mouse.position.ReadValue();
@@ -81,10 +109,17 @@ namespace Defend.Unity
         private void ClampCameraCenter()
         {
             // 斜俯视时摄像机自身位于地图南侧。限位必须作用于镜头中心的地面焦点。
-            Vector3 focus = GroundPoint(worldCamera.pixelRect.center);
+            Vector3 focus = GroundCenter();
             Vector3 clamped = new Vector3(Mathf.Clamp(focus.x, 0, mapExtent - 2), 0,
                 Mathf.Clamp(focus.z, 0, mapExtent - 2));
             worldCamera.transform.position += clamped - focus;
+        }
+
+        private Vector3 GroundCenter()
+        {
+            // 局部视口边界可能落在小数像素上，投影 API 的像素取整会让中心射线偏离光轴。
+            Ray ray = new Ray(worldCamera.transform.position, worldCamera.transform.forward);
+            return groundPlane.Raycast(ray, out float distance) ? ray.GetPoint(distance) : worldCamera.transform.position;
         }
     }
 }

@@ -2,10 +2,15 @@ using System;
 
 namespace Defend.Simulation
 {
-    /// <summary>局部感应和战略目标的不可变参数；旧战斗配置默认不开启。</summary>
+    /// <summary>全图重评与目标稳定性的不可变参数；旧局部范围与绕行上限字段仅保留序列兼容，不再限制候选。</summary>
     public sealed class EnemyBehaviorSettings
     {
         public bool Enabled { get; }
+        public double RouteImprovementRatio { get; }
+        public double BaseDestructionValue { get; }
+        public double CoreValue { get; }
+        public double FirepowerValue { get; }
+        public double SupplyValue { get; }
         public double SensingRadius { get; }
         public double ObservationMemorySeconds { get; }
         public double EvaluationIntervalSeconds { get; }
@@ -20,7 +25,7 @@ namespace Defend.Simulation
             double observationMemorySeconds = 3, double evaluationIntervalSeconds = 0.5,
             double minimumTargetLockSeconds = 3, double switchScoreRatio = 1.35,
             int maximumCandidates = 6, int maximumEvaluationsPerTick = 20,
-            int maximumPathBuildsPerTick = 2, int maximumAdditionalTravelCells = 6)
+            int maximumPathBuildsPerTick = 2, int maximumAdditionalTravelCells = 6, double routeImprovementRatio = .8, double baseDestructionValue = 5, double coreValue = 20, double firepowerValue = 3, double supplyValue = 6)
         {
             PositiveFinite(sensingRadius, nameof(sensingRadius));
             PositiveFinite(observationMemorySeconds, nameof(observationMemorySeconds));
@@ -33,7 +38,12 @@ namespace Defend.Simulation
             if (maximumEvaluationsPerTick <= 0) throw new ArgumentOutOfRangeException(nameof(maximumEvaluationsPerTick));
             if (maximumPathBuildsPerTick <= 0) throw new ArgumentOutOfRangeException(nameof(maximumPathBuildsPerTick));
             if (maximumAdditionalTravelCells < 0) throw new ArgumentOutOfRangeException(nameof(maximumAdditionalTravelCells));
-            Enabled = enabled;
+            if (routeImprovementRatio <= 0 || routeImprovementRatio >= 1 || double.IsNaN(routeImprovementRatio)) throw new ArgumentOutOfRangeException(nameof(routeImprovementRatio));
+            PositiveFinite(baseDestructionValue, nameof(baseDestructionValue)); PositiveFinite(coreValue, nameof(coreValue));
+            PositiveFinite(firepowerValue, nameof(firepowerValue)); PositiveFinite(supplyValue, nameof(supplyValue));
+            BaseDestructionValue = baseDestructionValue; CoreValue = coreValue; FirepowerValue = firepowerValue; SupplyValue = supplyValue;
+            RouteImprovementRatio = routeImprovementRatio;
+            Enabled = true;
             SensingRadius = sensingRadius;
             ObservationMemorySeconds = observationMemorySeconds;
             EvaluationIntervalSeconds = evaluationIntervalSeconds;

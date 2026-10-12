@@ -1,0 +1,37 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>速射炮 · 游戏版本交付</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#101820;color:#dce5ed;font:16px/1.8 "Microsoft YaHei",sans-serif}
+main{max-width:1060px;margin:auto;padding:48px 32px}h1{font-size:38px;line-height:1.3;color:#fff;margin:12px 0}h2{font-size:23px;margin-top:38px;color:#fff}
+p{max-width:900px}small,.muted{color:#9eafba}a{color:#68d6e4}img{max-width:100%;display:block;border-radius:12px;background:#253039}
+.tag{letter-spacing:2px;font-size:13px;color:#68d6e4}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:26px 0}
+.metric{background:#1a2731;padding:18px;border-radius:10px}.metric b{display:block;font-size:28px;color:#fff}.columns{display:grid;grid-template-columns:1.15fr 1fr;gap:24px;align-items:start}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:12px;border-bottom:1px solid #35434e}code{color:#93dce4}li{margin:6px 0}
+@media(max-width:740px){main{padding:24px 18px}.metrics{grid-template-columns:1fr 1fr}.columns{display:block}h1{font-size:30px}}
+</style><main><div class="tag">DEFEND / 2026.10.11 / BLENDER → UNITY</div>
+<h1>速射炮 · 游戏版本交付</h1>
+<p>原重型火炮机器人已完成轻量化和机械关节改造，并替换工业防线现役速射炮。浅色装甲保留原模型细节，深色金属区分活动部件，青色指示灯延续关卡的能源配色。</p>
+<div class="metrics"><div class="metric"><b>5,900</b>三角面 · 原 17,731</div><div class="metric"><b>−66.7%</b>三角面减少</div><div class="metric"><b>3 / 6</b>材质 / 网格</div><div class="metric"><b>2K</b>颜色贴图</div></div>
+<img src="Previews/UnityCombatClose.png" alt="Unity 工业防线实际运行中的新速射炮">
+<small>Unity 实际战斗特写。使用当前关卡灯光与运行时材质。</small>
+<h2>机械结构与连续动作</h2>
+<table><tr><th>部件</th><th>实现</th></tr>
+<tr><td>固定底座 → 炮塔上装</td><td>底座保持固定，水平旋转采用最短方向平滑追踪，最高 300°/秒。</td></tr>
+<tr><td>俯仰耳轴 → 炮管托架</td><td>实体耳轴与包覆套筒，下俯 6°、上仰 18°，平滑跟踪目标高度。</td></tr>
+<tr><td>后座滑套</td><td>沿局部炮轴后退 12 毫米，约 0.10 秒回位。</td></tr>
+<tr><td>八管旋转组件</td><td>重建实体中空炮管，持续开火加速至 1080°/秒，停火后自然减速。</td></tr>
+<tr><td>炮口挂点</td><td>挂在一根真实炮管前端，随俯仰、后座与自转同步移动，驱动炮口闪光及射线起点。</td></tr></table>
+<h2>实际运行证据</h2><div class="columns"><div><img src="Previews/UnityMotion.gif" alt="真实战斗中的连续开火动画"><small>60 帧实际 Update 采集，使用各帧真实时间间隔编码；不是性能测试。</small></div><div>
+<p>只运行与本次替换直接相关的资产、动作和战斗检查；报告保存了每项断言与观测值。</p><ul><li><a href="Checks/AssetInspection.json">现役资源</a>：14 项，通过</li><li><a href="Checks/MotionChecks.json">机械动作</a>：14 项，通过</li><li><a href="Checks/CombatChecks.json">实际战斗</a>：12 项，通过</li><li><a href="Checks/AlignmentRegression.json">大角度换目标</a>：10 项，通过</li></ul>
+<p>检查覆盖暂停、1／2／4 倍速、后座回位、自转启停、对象复用、重新开始，以及其他炮塔原有动作分支。当前交付为 Unity 工程资源，未重新打包 Windows 程序，也未作长时间性能验收。</p></div></div>
+<h2>接入与表现边界</h2>
+<p>动作由现有战斗表现时钟驱动，不向纯 C# 战斗模拟回写瞄准结果。大角度换目标时，炮口与待播射击目标的水平夹角在 6° 以内，才播放该发后座、闪光、射线与武器命中特效；原有伤害、射速与能源结算保持原样。每座炮塔最多保留一条待播快照，过久的转向会合并部分射击表现，超过 1.25 模拟秒的待播效果会取消，避免积压后集中补播。</p>
+<p>资源采用 Unity +Y 向上、+Z 向前，活动节点零旋转、单位缩放。6 个网格共 9 个材质槽，3 种材质不等于 3 次绘制。当前完成单级游戏网格；批量密集布置仍需按实际场景测量渲染开销。源模型部分静态拼接边保留，交付未声称全封闭拓扑。</p>
+<h2>文件入口</h2><ul>
+<li><a href="../../../ArtSource/Production/RapidTurret/RapidTurret.blend">可编辑 Blender 源文件</a> · Blender 5.2.2 LTS</li>
+<li><a href="../../../Assets/Defend/Content/Art/RapidTurret/Prefabs/RapidTurret.prefab">规范轴向模型预制体</a> · 运行时机械动作组件与炮口挂点</li>
+<li><a href="../../../Assets/Defend/Content/PhaseFiveCombat/Buildings/Turret.prefab">现役速射炮预制体</a> · 已保留选择碰撞体与建筑配置</li>
+<li><a href="../../../Assets/Defend/Content/Scenes/Dev/IndustrialDefense.unity">工业防线场景</a> · 打开后直接播放查看</li>
+<li><a href="../../../Tools/Art/RapidTurret/build_rapid_turret.py">Blender 制作脚本</a> · <a href="../../../Tools/Art/RapidTurret/RapidTurretAssetBuilder.cs">Unity 导入制作脚本</a> · <a href="../../../Tools/Unity/RapidTurretValidation.cs">限定验证脚本</a></li>
+</ul><p class="muted">制作流程：Blender 脚本生成生产版，再通过 Unity Pipeline 调用 RapidTurretAssetBuilder.Build() 更新规范轴向资源与现役预制体。关卡生成器也已引用新模型。原下载压缩包、研究文件及旧模型保留。全部检查未使用哈希值校验。</p>
+</main></html>

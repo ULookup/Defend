@@ -257,7 +257,7 @@ namespace Defend.Simulation
         public bool IsRelayBlocked(BuildingState building)
         {
             // 持续抢不到输出的中继即使尚未满仓，也允许上游尝试备用路。正常冷却不会进入此集合。
-            return !building.IsConsumer && (congestedRelays.Contains(building.Id) ||
+            return building.Kind == BuildingKind.Relay && (congestedRelays.Contains(building.Id) ||
                 building.StoredEnergy + building.ReservedIncoming >= building.Definition.EnergyCapacity);
         }
 

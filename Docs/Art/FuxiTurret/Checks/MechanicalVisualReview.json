@@ -1,0 +1,58 @@
+{
+  "asset": "FuxiTurret",
+  "verdict": "PASS",
+  "scope": "Independent game-art mechanical coherence review of the final 644-part geometry, including secondary details and packed shared surface atlas version 3.",
+  "source": "ArtSource/Production/FuxiTurret/FuxiTurret.blend",
+  "sourceLastWriteLocal": "2026-10-12 14:32:02",
+  "automatedEvidence": "MechanicalReview.json",
+  "automatedChecks": {
+    "passed": 18,
+    "total": 18
+  },
+  "renderedEvidence": [
+    {
+      "file": "../Previews/MechanicalSideNeutral.png",
+      "state": "Neutral pitch, neutral recoil",
+      "finding": "The fixed base, side housings, offset pitch assembly, perforated non-spinning guard and eight-tube rotor read as separate connected assemblies."
+    },
+    {
+      "file": "../Previews/MechanicalSideDownRecoil.png",
+      "state": "Pitch -6 degrees, recoil 0.012 m, rotor 22.5 degrees",
+      "finding": "The lower jaw clears the lowered barrel carrier; the barrel bundle remains supported by the guard's two bearing stations. No visible exterior interpenetration was found in this view."
+    },
+    {
+      "file": "../Previews/MechanicalSideUpRecoil.png",
+      "state": "Pitch +18 degrees, recoil 0.012 m, rotor 22.5 degrees",
+      "finding": "The upper guard and pitch carrier clear the fixed sensor assembly and the swept front armor. The side circular armor rotates about its shared pitch axis within the static outer frame."
+    },
+    {
+      "file": "../Previews/MechanicalExploded.png",
+      "state": "Five runtime motion groups separated for inspection",
+      "finding": "The actual editable meshes expose the fixed base, rotating armored housing, pitch axle/cradle/side covers, recoiling carrier with non-spinning guard, and rotating barrel group. Display separation is explanatory and does not add runtime degrees of freedom."
+    }
+  ],
+  "mechanicalInterfaces": {
+    "rotorBearingMinimumRadialClearanceMeters": 0.0004,
+    "recoilRailMinimumEndMarginMeters": 0.02,
+    "recoilGuideEngagementMeters": 0.096,
+    "recoilStrokeMeters": 0.012,
+    "pitchRangeDegrees": [
+      -6,
+      18
+    ],
+    "newTurntableDetailMinimumVerticalClearanceMeters": 0.008149974
+  },
+  "contactClassification": [
+    "The trunnion journals and transverse axle enter their concealed support cabinet. These are deliberately concealed support interfaces, not exposed armor collisions.",
+    "The circular side armor seats approximately 0.0005 m into its backing panel at its concealed rear face. This seating is unchanged through coaxial rotation; the exposed rim remains clear.",
+    "Rail and guide-shoe overlap is an intended sliding interface. The rotor's swept envelope is tested only in the actual bearing slab, so remote retaining rings do not create false collision reports."
+  ],
+  "limitations": [
+    "This review does not certify real-world weapon engineering and is limited to the game model's visual/mechanical coherence.",
+    "Selected sampled poses and mesh-surface crossings do not constitute a complete continuous physics collision simulation.",
+    "Blender evidence does not verify Unity playback, runtime material rendering, frame rate or prefab integration; those are separate integration checks.",
+    "Mechanical PASS does not establish a numeric percentage of reference-image similarity."
+  ],
+  "secondaryDetailReview": "SecondaryDetailMechanicalReview.json",
+  "inspectedMeshParts": 644
+}

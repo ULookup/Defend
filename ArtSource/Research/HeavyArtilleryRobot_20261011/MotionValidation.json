@@ -1,0 +1,289 @@
+{
+  "saved_blend_reopened": true,
+  "blender_version": "5.2.2 LTS",
+  "pose_checks": [
+    {
+      "frame": 1,
+      "yaw_degrees": 0.0,
+      "pitch_degrees": 0.0,
+      "recoil_local": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "muzzle_world": [
+        0.0,
+        -0.5374253392219543,
+        0.27709540724754333
+      ],
+      "base_world_translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "frame": 16,
+      "yaw_degrees": 48.00000133572169,
+      "pitch_degrees": 0.0,
+      "recoil_local": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "muzzle_world": [
+        0.39938488602638245,
+        -0.3596077263355255,
+        0.27709540724754333
+      ],
+      "base_world_translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "frame": 46,
+      "yaw_degrees": -48.00000133572169,
+      "pitch_degrees": 0.0,
+      "recoil_local": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "muzzle_world": [
+        -0.39938488602638245,
+        -0.3596077263355255,
+        0.27709540724754333
+      ],
+      "base_world_translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "frame": 61,
+      "yaw_degrees": 0.0,
+      "pitch_degrees": -6.000000166965211,
+      "recoil_local": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "muzzle_world": [
+        0.0,
+        -0.5351700782775879,
+        0.23406264185905457
+      ],
+      "base_world_translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "frame": 91,
+      "yaw_degrees": 0.0,
+      "pitch_degrees": 18.000000500895634,
+      "recoil_local": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "muzzle_world": [
+        0.0,
+        -0.5172760486602783,
+        0.40431293845176697
+      ],
+      "base_world_translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "frame": 121,
+      "yaw_degrees": 0.0,
+      "pitch_degrees": 0.0,
+      "recoil_local": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "muzzle_world": [
+        0.0,
+        -0.5374253392219543,
+        0.27709540724754333
+      ],
+      "base_world_translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "frame": 122,
+      "yaw_degrees": 0.0,
+      "pitch_degrees": 0.0,
+      "recoil_local": [
+        0.0,
+        0.012000000104308128,
+        0.0
+      ],
+      "muzzle_world": [
+        0.0,
+        -0.5254253149032593,
+        0.27709540724754333
+      ],
+      "base_world_translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "frame": 125,
+      "yaw_degrees": 0.0,
+      "pitch_degrees": 0.0,
+      "recoil_local": [
+        0.0,
+        0.003000000026077032,
+        0.0
+      ],
+      "muzzle_world": [
+        0.0,
+        -0.5344253182411194,
+        0.27709540724754333
+      ],
+      "base_world_translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "frame": 196,
+      "yaw_degrees": 24.000000667860846,
+      "pitch_degrees": 3.500000026248569,
+      "recoil_local": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "muzzle_world": [
+        0.21827825903892517,
+        -0.4902609586715698,
+        0.3022281527519226
+      ],
+      "base_world_translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "mesh_count": 5,
+  "parts": {
+    "FixedBase": {
+      "triangles": 2131,
+      "parent": "RapidTurret_Research",
+      "uv_layers": 1,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "TurretHousing": {
+      "triangles": 13272,
+      "parent": "TurretYaw",
+      "uv_layers": 1,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "GunSleeve": {
+      "triangles": 922,
+      "parent": "BarrelRecoil",
+      "uv_layers": 1,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "RotatingBarrels": {
+      "triangles": 1406,
+      "parent": "BarrelSpin",
+      "uv_layers": 1,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "Study_PitchJointCollar": {
+      "triangles": 528,
+      "parent": "BarrelPitch",
+      "uv_layers": 1,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  },
+  "packed_images": [
+    {
+      "name": "tripo_image_9577f57e_0",
+      "width": 4096,
+      "height": 4096,
+      "packed": true
+    }
+  ],
+  "material_channels": {
+    "Study_DarkSteel": [
+      {
+        "target": "Surface",
+        "source_type": "BSDF_PRINCIPLED"
+      }
+    ],
+    "tripo_mat_9577f57e": [
+      {
+        "target": "Surface",
+        "source_type": "BSDF_PRINCIPLED"
+      },
+      {
+        "target": "Normal",
+        "source_type": "NORMAL_MAP"
+      },
+      {
+        "target": "Base Color",
+        "source_type": "TEX_IMAGE"
+      }
+    ]
+  },
+  "base_bounds": {
+    "min": [
+      -0.42000001668930054,
+      -0.40981265902519226,
+      0.0
+    ],
+    "max": [
+      0.42000001668930054,
+      0.39562317728996277,
+      0.10141851752996445
+    ]
+  },
+  "neutral_dimensions": [
+    0.8400000333786011,
+    0.9309583008289337,
+    0.5543909072875977
+  ],
+  "yaw_full_rotation_radius": 0.5382262734080673,
+  "original_triangle_partition_total": 17731,
+  "original_triangles_preserved": true
+}

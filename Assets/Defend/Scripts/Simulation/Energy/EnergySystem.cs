@@ -48,6 +48,11 @@ namespace Defend.Simulation
         {
             set { transport.TransferCompleted = value; }
         }
+        /// <summary>真实终端到货及完整访问链，供现场供能收益记录读取；电池充电不算终端消费。</summary>
+        internal Action<BuildingState, long, IReadOnlyList<long>, long> TerminalDeliveryCompleted
+        {
+            set { transport.TerminalDeliveryCompleted = value; }
+        }
         public bool HasStalledEnergy(long buildingId)
         {
             foreach (var batch in transport.Batches)
@@ -73,7 +78,7 @@ namespace Defend.Simulation
             allocationSchedule = new WeightedEnergySchedule(settings.BaseQuantum);
             planner = new EnergyRoutePlanner(settings);
             transport = new EnergyTransport(nodes, ledger, allocationSchedule, planner);
-            dispatch = new EnergyDispatch(orderedNodes, consumers, planner, transport, allocationSchedule);
+            dispatch = new EnergyDispatch(orderedNodes, consumers, planner, transport, allocationSchedule, settings);
         }
 
         public void Step(long tick)
@@ -141,7 +146,7 @@ namespace Defend.Simulation
                     orderedNodes.Add(node);
                 }
                 node.AvailableOutput = building.CanOutput && tick >= node.NextOutputTick ? building.Definition.OutputAmount : 0;
-                if (building.IsAlive && !building.IsSold && building.IsConsumer) consumers.Add(building);
+                if (building.IsAlive && !building.IsSold && building.IsEnergyDestination) consumers.Add(building);
             }
         }
 
@@ -166,6 +171,7 @@ namespace Defend.Simulation
             {
                 EnergyBatch batch = batches[index];
                 if (batch.Retired || batch.InFlight || batch.IsStalled || batch.PlanningDeferredTick == tick) continue;
+                if (batch.Location.Kind == BuildingKind.Battery && batch.Destination == null) continue;
                 if (!batch.IsStalled && tick < batch.EligibleTick && HasPotentialDestination(batch)) continue;
                 if (batch.PlanningDeferredTick == tick) continue;
                 // 自身历史无路或取整后不足以产生有效到货的残片，只等待自身超时，不能封锁整栋中继。
@@ -213,6 +219,10 @@ namespace Defend.Simulation
                 BuildingState building = node.Building;
                 if (building.IsSold) building.EnergyStatus = "已出售";
                 else if (!building.IsAlive) building.EnergyStatus = "已损坏";
+                else if (building.Kind == BuildingKind.Battery)
+                    building.EnergyStatus = building.ReceivedLastSecond > 0 && building.DischargedLastSecond > 0 ? "充放电中" :
+                        building.DischargedLastSecond > 0 ? "放电中" : building.ReceivedLastSecond > 0 ? "充电中" :
+                        building.CommittedIncoming > 0 ? "充电在途" : building.StoredEnergy >= building.Definition.EnergyCapacity ? "储能已满" : "储能待命";
                 else if (building.IsConsumer)
                     building.EnergyStatus = building.StoredEnergy >= building.Definition.EnergyCapacity ? "缓存已满" :
                         building.CommittedIncoming > 0 ? "供给在途" : "等待供给";
@@ -253,7 +263,7 @@ namespace Defend.Simulation
                 {
                     if (checkedHistory.Contains(batch.FlightTargetId)) Fail($"批次 {batch.Id} 正在回流。");
                     if (batch.ArrivalTick <= batch.StartTick) Fail($"批次 {batch.Id} 没有正向运输时间。");
-                    if (!nodes[batch.FlightTargetId].Building.IsConsumer) Add(checkedReservations, batch.FlightTargetId, batch.Amount);
+                    if (!nodes[batch.FlightTargetId].Building.IsEnergyDestination) Add(checkedReservations, batch.FlightTargetId, batch.Amount);
                 }
                 else
                 {
@@ -275,14 +285,14 @@ namespace Defend.Simulation
                 BuildingState building = buildings[index];
                 if (building.StoredEnergy < 0 || building.ReservedIncoming < 0 || building.CommittedIncoming < 0)
                     Fail($"建筑 {building.Id} 有负数账目。");
-                long occupied = checked(building.StoredEnergy + (building.IsConsumer ? building.CommittedIncoming : building.ReservedIncoming));
+                long occupied = checked(building.StoredEnergy + (building.IsEnergyDestination ? building.CommittedIncoming : building.ReservedIncoming));
                 if (occupied > building.Definition.EnergyCapacity) Fail($"建筑 {building.Id} 储量和预约超过容量。");
                 if ((!building.IsAlive || building.IsSold) && (building.StoredEnergy != 0 || building.ReservedIncoming != 0 || building.CommittedIncoming != 0))
                     Fail($"失效建筑 {building.Id} 仍有库存或预约。");
                 checkedStored.TryGetValue(building.Id, out long actualStored);
                 checkedReservations.TryGetValue(building.Id, out long actualReserved);
                 checkedCommitments.TryGetValue(building.Id, out long actualCommitted);
-                if (building.Kind == BuildingKind.Relay && building.StoredEnergy != actualStored)
+                if ((building.Kind == BuildingKind.Relay || building.Kind == BuildingKind.Battery) && building.StoredEnergy != actualStored)
                     Fail($"中继 {building.Id} 批次数量与库存不一致。");
                 if (building.ReservedIncoming != actualReserved || building.CommittedIncoming != actualCommitted)
                     Fail($"建筑 {building.Id} 的预约与活动运输记录不一致。");

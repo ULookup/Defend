@@ -1,0 +1,57 @@
+{
+  "passed": true,
+  "checkCount": 12,
+  "checks": {
+    "现役实例使用新模型与动作组件": true,
+    "真实射击对齐后触发后座": true,
+    "真实炮口闪光使用当前炮口": true,
+    "会话暂停冻结动作与表现时钟": true,
+    "1倍速驱动实际表现时钟": true,
+    "2倍速驱动实际表现时钟": true,
+    "4倍速驱动实际表现时钟": true,
+    "真实战斗转向不移动底座": true,
+    "真实战斗已推动炮管转动": true,
+    "运行时继续使用资产材质": true,
+    "动作录制期间真实速射炮持续开火": true,
+    "会话重开恢复初始关节姿态": true
+  },
+  "observations": {
+    "Id": 4,
+    "ShotsFired": 28,
+    "observedShots": 36,
+    "playedRapidShots": 34,
+    "tick": 328,
+    "rates": [
+      {
+        "speed": 1,
+        "realSeconds": 0.4046567999994295,
+        "advanced": 0.40461970097385347,
+        "rate": 0.99990831977721351
+      },
+      {
+        "speed": 2,
+        "realSeconds": 0.40058069999940926,
+        "advanced": 0.80115700094029307,
+        "rate": 1.9999890182963747
+      },
+      {
+        "speed": 4,
+        "realSeconds": 0.40348989999984042,
+        "advanced": 1.6149247949942946,
+        "rate": 4.0023921168657095
+      }
+    ],
+    "screenshot": "E:\\UnityProject\\Defend\\Docs\\Art\\FuxiTurret\\Checks\\Unity\\CombatClose.png",
+    "recording": {
+      "source": "实际工业防线 GameSessionRoot.Update",
+      "width": 640,
+      "height": 560,
+      "frameCount": 60,
+      "targetFramesPerSecond": 20,
+      "realDurationSeconds": 4.3569521000008535,
+      "speed": 1.0,
+      "buildingId": 4,
+      "timingReport": "E:\\UnityProject\\Defend\\Docs\\Art\\FuxiTurret\\Checks\\Unity\\MotionFrames.json"
+    }
+  }
+}

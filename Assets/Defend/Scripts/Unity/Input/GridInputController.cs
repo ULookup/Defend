@@ -19,6 +19,8 @@ namespace Defend.Unity
         private readonly Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
         private readonly List<RaycastResult> interfaceHits = new List<RaycastResult>();
         private PointerEventData pointerEvent;
+        private Vector2 pressPosition;
+        private bool pointerDragged;
         public bool HasPlacement => placingKind.HasValue || movingBuildingId != 0;
         public string ModeDescription { get; private set; } = "浏览 / 选择";
         public void Configure(Camera camera, EventSystem events) { worldCamera = camera; eventSystem = events; }
@@ -31,6 +33,7 @@ namespace Defend.Unity
 
         public void BeginPlacement(BuildingKind kind)
         {
+            if (session.BlocksWorldInput || !session.World.CanEditBuildings) return;
             placingKind = kind;
             movingBuildingId = 0;
             previewDefinition = session.FindDefinition(kind).CreateDefinition();
@@ -41,7 +44,7 @@ namespace Defend.Unity
         public void BeginMove()
         {
             BuildingState building = session.SelectedBuilding;
-            if (building == null || building.IsSold) return;
+            if (session.BlocksWorldInput || !session.World.CanEditBuildings || building == null || building.IsSold || !building.IsAlive) return;
             if (session.Battle != null && building.Kind == BuildingKind.Core) { session.ShowFeedback("核心不能移动。"); return; }
             placingKind = null;
             movingBuildingId = building.Id;
@@ -66,13 +69,23 @@ namespace Defend.Unity
             Keyboard keyboard = Keyboard.current;
             if (keyboard != null)
             {
-                if (keyboard.escapeKey.wasPressedThisFrame) Cancel();
+                if (keyboard.escapeKey.wasPressedThisFrame) { if (HasPlacement) Cancel(); else session.TogglePause(); }
                 if (keyboard.spaceKey.wasPressedThisFrame) session.TogglePause();
             }
+            if (session.BlocksWorldInput) { presentation.SetPreview(false, 0, 0, 1, 1, false); return; }
+            if (HasPlacement && !session.World.CanEditBuildings) Cancel();
             Mouse mouse = Mouse.current;
-            if (mouse == null) return;
-            if (mouse.rightButton.wasPressedThisFrame) Cancel();
-            Vector2 pointerPosition = mouse.position.ReadValue();
+            var touch = Touchscreen.current?.primaryTouch;
+            bool usingTouch = touch != null && (touch.press.isPressed || touch.press.wasReleasedThisFrame);
+            if (mouse == null && !usingTouch) return;
+            if (mouse != null && mouse.rightButton.wasPressedThisFrame) Cancel();
+            Vector2 pointerPosition = usingTouch ? touch.position.ReadValue() : mouse.position.ReadValue();
+            bool pressed = usingTouch ? touch.press.wasPressedThisFrame : mouse.leftButton.wasPressedThisFrame;
+            bool released = usingTouch ? touch.press.wasReleasedThisFrame : mouse.leftButton.wasReleasedThisFrame;
+            if (pressed) { pressPosition = pointerPosition; pointerDragged = false; }
+            if ((pointerPosition - pressPosition).sqrMagnitude > 144) pointerDragged = true;
+            if (usingTouch) { int touches = 0; foreach (var finger in Touchscreen.current.touches) if (finger.press.isPressed) touches++; if (touches > 1) pointerDragged = true; }
+            bool clicked = released && !pointerDragged;
             // 显式射线检测不依赖 EventSystem.Update 的先后顺序，避免刚移到按钮上的点击穿透。
             pointerEvent.position = pointerPosition;
             interfaceHits.Clear();
@@ -98,28 +111,40 @@ namespace Defend.Unity
                 presentation.SetPreview(inside, x, z, definition.Width, definition.Depth, valid);
                 presentation.ShowPreviewRange(session.World, previewDefinition, x, z, inside);
                 ModeDescription = (movingBuildingId != 0 ? "移动：" : "建造：") + definition.DisplayName + (valid ? " · 可放置" : " · " + issue);
-                if (mouse.leftButton.wasPressedThisFrame && inside)
+                if (clicked && inside)
                 {
                     session.Submit(placingKind.HasValue ? WorldCommand.Place(placingKind.Value, x, z) : WorldCommand.Move(movingBuildingId, x, z));
                     // 连续购买保留建筑选择；移动完成后返回选择模式。
                     if (movingBuildingId != 0) Cancel();
                 }
             }
-            else if (mouse.leftButton.wasPressedThisFrame && inside)
+            else if (clicked)
             {
-                BuildingState selected = session.World.FindBuildingAt(x, z);
-                if (selected == null)
+                // 优先拾取真实渲染模型的碰撞体；触控容错只在模型附近补充，不依赖对象池身份。
+                EnemyState picked = null;
+                float nearestHit = float.PositiveInfinity;
+                foreach (var hit in Physics.RaycastAll(ray, 2000))
                 {
-                    // 损坏建筑不占格，但仍属玩家所有；优先选活建筑，再选择该位置的残骸以便修复。
-                    foreach (BuildingState candidate in session.World.Buildings)
+                    var view = hit.collider.GetComponentInParent<EnemyView>();
+                    if (hit.distance >= nearestHit) continue;
+                    var buildingView = hit.collider.GetComponentInParent<BuildingView>();
+                    if (view == null) { if (buildingView != null) { nearestHit = hit.distance; picked = null; } continue; }
+                    if (session.Battle == null) continue;
+                    foreach (var enemy in session.Battle.Enemies)
+                        if (enemy.Id == view.EnemyId && enemy.IsAlive) { picked = enemy; nearestHit = hit.distance; break; }
+                }
+                if (picked == null && usingTouch && session.Battle != null && float.IsPositiveInfinity(nearestHit))
+                {
+                    float best = 32 * 32;
+                    foreach (var enemy in session.Battle.Enemies)
                     {
-                        if (candidate.IsSold || candidate.IsAlive) continue;
-                        if (x >= candidate.X && x < candidate.X + candidate.Definition.Width &&
-                            z >= candidate.Z && z < candidate.Z + candidate.Definition.Depth)
-                        { selected = candidate; break; }
+                        Vector3 screen = worldCamera.WorldToScreenPoint(new Vector3((float)enemy.X, .5f, (float)enemy.Z));
+                        float square = ((Vector2)screen - pointerPosition).sqrMagnitude;
+                        if (enemy.IsAlive && screen.z > 0 && square < best) { best = square; picked = enemy; }
                     }
                 }
-                session.Select(selected == null ? 0 : selected.Id);
+                if (picked != null) session.SelectEnemy(picked);
+                else { BuildingState selected = inside ? session.World.FindBuildingAt(x, z) : null; session.Select(selected != null && selected.IsAlive ? selected.Id : 0); }
             }
         }
 

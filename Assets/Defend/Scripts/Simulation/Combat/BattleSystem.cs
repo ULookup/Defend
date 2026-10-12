@@ -11,12 +11,14 @@ namespace Defend.Simulation
         private readonly BuildingGrid grid;
         private readonly EnemyNavigation navigation;
         private readonly EnemyBehaviorSystem behavior;
+        private readonly EnemyMovementSystem movement;
         private readonly List<EnemyState> enemies = new List<EnemyState>();
         private readonly List<ShotSnapshot> shots = new List<ShotSnapshot>();
         private long nextEnemyId = 1;
         private long nextShotId = 1;
         private long nextSpawnTick;
-        private int spawnCursor;
+        private int spawnCursor, groupIndex, groupSpawned, lossesAtWaveStart;
+        private long waveStartTick, spawnDelay;
 
         public BattleSettings Settings { get; }
         public BattleState State { get; private set; } = BattleState.Preparing;
@@ -24,6 +26,11 @@ namespace Defend.Simulation
         public int RemainingToSpawn { get; private set; }
         public int Kills { get; private set; }
         public int LastWaveReward { get; private set; }
+        public int PendingKillReward { get; private set; }
+        public int LastWaveFixedReward { get; private set; }
+        public int LastWaveKillReward { get; private set; }
+        public int LastWaveBuildingLosses { get; private set; }
+        public int DestroyedBuildingCount => world.DestroyedBuildingCount;
         public long CoreBuildingId { get; private set; }
         public IReadOnlyList<EnemyState> Enemies { get; }
         public IReadOnlyList<ShotSnapshot> Shots { get; }
@@ -56,21 +63,32 @@ namespace Defend.Simulation
             Shots = shots.AsReadOnly();
             navigation = new EnemyNavigation(world, grid);
             behavior = new EnemyBehaviorSystem(world, grid, this, navigation);
+            movement = new EnemyMovementSystem(world, grid, this);
         }
 
         internal CommandResult StartWave(long sequence)
         {
-            if (State != BattleState.Preparing && State != BattleState.WaveCleared)
+            if (State != BattleState.Preparing)
                 return new CommandResult(sequence, false, "当前不能开始下一波。", 0);
             BuildingState core = world.FindBuilding(CoreBuildingId);
             if (core == null || !core.IsAlive || core.IsSold)
                 return new CommandResult(sequence, false, "需要一座完好的核心才能开始战斗。", 0);
             WaveNumber++;
             RemainingToSpawn = Settings.Waves[WaveNumber - 1].EnemyCount;
-            LastWaveReward = 0;
+            LastWaveReward = LastWaveFixedReward = LastWaveKillReward = PendingKillReward = 0;
+            groupIndex = groupSpawned = 0; spawnDelay = 0; waveStartTick = world.CurrentTick;
+            lossesAtWaveStart = world.DestroyedBuildingCount;
             nextSpawnTick = world.CurrentTick;
             State = BattleState.Combat;
             return new CommandResult(sequence, true, "第 " + WaveNumber + " 波敌人开始进攻。", CoreBuildingId);
+        }
+
+        /// <summary>继续准备只恢复操作权限；波次奖励已经结算，能源时间和库存不重置。</summary>
+        internal CommandResult ContinuePreparing(long sequence)
+        {
+            if (State != BattleState.WaveCleared) return new CommandResult(sequence, false, "当前没有等待确认的波次结算。", 0);
+            State = BattleState.Preparing;
+            return new CommandResult(sequence, true, "可以整备防线并主动开始下一波。", CoreBuildingId);
         }
 
         internal void RegisterCore(BuildingState building)
@@ -80,7 +98,7 @@ namespace Defend.Simulation
 
         internal void BuildingDestroyed(BuildingState building)
         {
-            if (building.Id == CoreBuildingId) State = BattleState.Defeat;
+            if (building.Id == CoreBuildingId) { State = BattleState.Defeat; PendingKillReward = 0; }
         }
 
         internal string ValidatePlacement(int x, int z, int width, int depth)
@@ -111,7 +129,7 @@ namespace Defend.Simulation
             BuildingState core = world.FindBuilding(CoreBuildingId);
             behavior.Evaluate(core, tick);
             for (int index = 0; index < enemies.Count && State == BattleState.Combat; index++)
-                if (enemies[index].IsAlive) StepEnemy(enemies[index], core, tick);
+                if (enemies[index].IsAlive) movement.Step(enemies[index], tick);
             for (int index = enemies.Count - 1; index >= 0; index--)
                 if (!enemies[index].IsAlive) enemies.RemoveAt(index);
         }
@@ -120,23 +138,40 @@ namespace Defend.Simulation
         {
             if (State != BattleState.Combat) return;
             WaveDefinition wave = Settings.Waves[WaveNumber - 1];
-            if (RemainingToSpawn > 0 && enemies.Count < Settings.MaximumLivingEnemies && tick >= nextSpawnTick)
+            if (RemainingToSpawn > 0)
             {
-                // 出生格由建造校验保留。满员时延后生成，不跳过敌人，也不积攒一次性爆发生成。
-                SpawnPoint spawn = SpawnPoints[wave.EntranceIndex < 0 ? spawnCursor % SpawnPoints.Count : wave.EntranceIndex % SpawnPoints.Count];
-                if (grid.Find(spawn.X, spawn.Z) == 0)
+                WaveGroupDefinition group = wave.Groups.Count == 0 ? null : wave.Groups[groupIndex];
+                long scheduled = group == null ? nextSpawnTick : Math.Max(nextSpawnTick, waveStartTick + group.StartTick + spawnDelay);
+                if (tick >= scheduled)
                 {
-                    var kind = wave.EnemyPattern[(wave.EnemyCount - RemainingToSpawn) % wave.EnemyPattern.Count];
-                    enemies.Add(new EnemyState(nextEnemyId++, spawn, wave.EnemyHealth, kind));
-                    spawnCursor = (spawnCursor + 1) % SpawnPoints.Count;
-                    RemainingToSpawn--;
-                    nextSpawnTick = checked(tick + wave.SpawnIntervalTicks);
+                    int entrance = group?.EntranceIndex ?? wave.EntranceIndex;
+                    var spawn = SpawnPoints[entrance < 0 ? spawnCursor % SpawnPoints.Count : entrance % SpawnPoints.Count];
+                    var kind = group?.Kind ?? wave.EnemyPattern[(wave.EnemyCount - RemainingToSpawn) % wave.EnemyPattern.Count];
+                    var definition = Settings.GetEnemy(kind);
+                    if (enemies.Count < Settings.MaximumLivingEnemies && movement.TrySpawn(spawn, definition, out double x, out double z))
+                    {
+                        var enemy = new EnemyState(nextEnemyId++, spawn, wave.EnemyHealth, kind, definition) { X = x, Z = z, CellX = (int)x, CellZ = (int)z };
+                        enemies.Add(enemy);
+                        spawnCursor = (spawnCursor + 1) % SpawnPoints.Count;
+                        RemainingToSpawn--;
+                        nextSpawnTick = checked(tick + (group?.IntervalTicks ?? wave.SpawnIntervalTicks));
+                        if (group != null && ++groupSpawned == group.Count) { groupIndex++; groupSpawned = 0; }
+                    }
+                    else
+                    {
+                        // 受阻的游戏时间进入整个后续序列的顺延，放开后仍一次生成一名。
+                        spawnDelay++; nextSpawnTick = tick + 1;
+                    }
                 }
             }
             if (RemainingToSpawn != 0 || enemies.Count != 0) return;
             // 先离开战斗状态再发奖励，后续逻辑步或重复开始命令都不能再次领取。
             State = WaveNumber == Settings.Waves.Count ? BattleState.Victory : BattleState.WaveCleared;
-            LastWaveReward = world.GrantBattleReward(wave.ClearReward);
+            LastWaveFixedReward = wave.ClearReward;
+            LastWaveKillReward = PendingKillReward;
+            LastWaveBuildingLosses = world.DestroyedBuildingCount - lossesAtWaveStart;
+            PendingKillReward = 0;
+            LastWaveReward = world.GrantBattleReward(checked(LastWaveFixedReward + LastWaveKillReward));
         }
 
         private void StepTurrets(long tick)
@@ -192,74 +227,7 @@ namespace Defend.Simulation
                     if (!victim.IsAlive) world.Record(WorldEventKind.EnemyDeath, victim.Id, victim.X, victim.Z);
                     turret.DamageDealt += damage;
                     behavior.ObserveDamage(turret, victim.X, victim.Z, damage, tick);
-                    if (!victim.IsAlive) Kills++;
-                }
-            }
-        }
-
-        private void StepEnemy(EnemyState enemy, BuildingState core, long tick)
-        {
-            bool strategic = behavior.HasStrategicTarget(enemy);
-            if (strategic && !behavior.HasCurrentPath(enemy))
-            {
-                var knownTarget = world.FindBuilding(enemy.TargetBuildingId);
-                // 等待共享距离场期间，已进入攻击范围的有效目标仍可攻击；其他敌人继续向核心推进。
-                // 内部保留有限目标记忆和原始锁定时间，不能靠反复改变远处占地让敌群停走。
-                strategic = knownTarget != null && behavior.CanAttack(enemy, knownTarget, tick) && InAttackRange(enemy, knownTarget);
-            }
-            if (!strategic)
-            {
-                long targetId = navigation.GetTarget(enemy.CellX, enemy.CellZ, core);
-                if (enemy.TargetBuildingId != targetId) enemy.TargetAssignedTick = tick;
-                enemy.TargetBuildingId = targetId;
-                enemy.TargetPurpose = targetId == core.Id ? EnemyTargetPurpose.AdvanceToCore : EnemyTargetPurpose.ClearObstacle;
-            }
-            BuildingState target = world.FindBuilding(enemy.TargetBuildingId);
-            if (target == null || !target.IsAlive || target.IsSold) return;
-            if (!strategic) { enemy.TargetX = target.CenterX; enemy.TargetZ = target.CenterZ; }
-            if (behavior.CanAttack(enemy, target, tick) && InAttackRange(enemy, target))
-            {
-                if (tick >= enemy.NextAttackTick)
-                {
-                    world.ApplyBattleDamage(target, Settings.EnemyAttackDamage * enemy.DamageMultiplier);
-                    enemy.LastAttackTick = tick;
-                    enemy.LastAttackTargetBuildingId = target.Id;
-                    enemy.LastAttackTargetX = target.CenterX;
-                    enemy.LastAttackTargetZ = target.CenterZ;
-                    enemy.NextAttackTick = checked(tick + Settings.EnemyAttackIntervalTicks);
-                }
-                return;
-            }
-
-            double remainingDistance = Settings.EnemySpeedCellsPerSecond * enemy.SpeedMultiplier / world.Settings.TicksPerSecond;
-            // 每段都在相邻格中心之间移动；不会因低逻辑频率跨越建筑或地图边界。
-            while (remainingDistance > 0.0000001)
-            {
-                if (enemy.CellX == enemy.NextCellX && enemy.CellZ == enemy.NextCellZ)
-                {
-                    int nextX, nextZ;
-                    bool hasNext = strategic ? behavior.TryNextCell(enemy, out nextX, out nextZ)
-                        : navigation.TryNextCell(enemy.CellX, enemy.CellZ, core, out nextX, out nextZ);
-                    if (!hasNext) break;
-                    enemy.NextCellX = nextX;
-                    enemy.NextCellZ = nextZ;
-                }
-                double differenceX = enemy.NextCellX + 0.5 - enemy.X;
-                double differenceZ = enemy.NextCellZ + 0.5 - enemy.Z;
-                double distance = Math.Sqrt(differenceX * differenceX + differenceZ * differenceZ);
-                if (distance <= remainingDistance + 0.0000001)
-                {
-                    enemy.X = enemy.NextCellX + 0.5;
-                    enemy.Z = enemy.NextCellZ + 0.5;
-                    enemy.CellX = enemy.NextCellX;
-                    enemy.CellZ = enemy.NextCellZ;
-                    remainingDistance -= distance;
-                }
-                else
-                {
-                    enemy.X += differenceX / distance * remainingDistance;
-                    enemy.Z += differenceZ / distance * remainingDistance;
-                    remainingDistance = 0;
+                    if (!victim.IsAlive) { Kills++; PendingKillReward = checked(PendingKillReward + victim.Definition.KillReward); }
                 }
             }
         }
@@ -270,7 +238,7 @@ namespace Defend.Simulation
             double closestZ = Math.Max(building.Z, Math.Min(enemy.Z, building.Z + building.Definition.Depth));
             double differenceX = enemy.X - closestX;
             double differenceZ = enemy.Z - closestZ;
-            return differenceX * differenceX + differenceZ * differenceZ <= 0.36;
+            return differenceX * differenceX + differenceZ * differenceZ <= enemy.Definition.AttackRange * enemy.Definition.AttackRange;
         }
 
         private static bool Contains(int x, int z, int width, int depth, int cellX, int cellZ) =>
