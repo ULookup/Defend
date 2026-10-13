@@ -1,0 +1,48 @@
+{
+  "success": true,
+  "command": "command run_script",
+  "data": {
+    "command": "run_script",
+    "parameters": {
+      "file": "Tools/Unity/SettingsPageValidation.cs",
+      "entry": "SettingsPageValidation.Review"
+    },
+    "result": {
+      "diagnostics": [],
+      "compileMs": 1376,
+      "executeMs": 1702,
+      "assemblyName": "PipelineRunScript_SettingsPageValidation_da7eb7f9b77740b8b4a1e03d7f9760e1",
+      "success": true,
+      "result": {
+        "passed": true,
+        "checks": [
+          "首次两路70且不静音",
+          "有效布局与真实点击区域",
+          "音量数字和×有可见文字几何",
+          "滑杆实时改变声音与0–100数值",
+          "音乐独立静音且数值保留",
+          "音效独立静音且数值保留",
+          "静音显示红斜杠",
+          "真实拖动音乐仅解除音乐静音",
+          "真实拖动音效仅解除音效静音",
+          "0与100端点",
+          "新的音频组件从本地偏好恢复两音量及两静音状态",
+          "旧总静音及旧音量迁移",
+          "点击弹窗外不关闭也不穿透",
+          "右上角×关闭",
+          "底部关闭",
+          "从暂停打开后返回暂停"
+        ],
+        "preferencesRestored": true,
+        "screenshots": "1920x1080,1280x800"
+      }
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7800,
+      "projectPath": "D:\\许子健\\Documents\\taptap聚光灯"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

@@ -1,0 +1,4 @@
+Playing=True Canvas=True Active=True Mode=ScreenSpaceOverlay Display=0 Screen=979x526
+BG_Main_defend_01: enabled=True active=True rect=(x:-744.71, y:-419.12, width:1489.41, height:838.24) cull=False alpha=1 material=UI/Default sprite=BG_Main_defend_01
+开始守望: enabled=True active=True rect=(x:-188.89, y:-67.41, width:377.78, height:134.81) cull=False alpha=1 material=UI/Default sprite=UI_Button_Main_Start_Normal
+UI_Logo_Main_01: enabled=True active=True rect=(x:-259.26, y:-79.63, width:518.52, height:159.26) cull=False alpha=1 material=UI/Default sprite=UI_Logo_Main_01

@@ -204,6 +204,9 @@ namespace Defend.Editor
                 // 启动资产只显示开始页，避免首帧短暂露出未初始化的对局与其他覆盖层。
                 hud.gameObject.SetActive(false);
                 foreach (string page in new[] { "pausePage", "helpPage", "archivePage", "settingsPage", "confirmationPage", "settlementPage" }) ((GameObject)bindings[page]).SetActive(false);
+                MainMenuArtAuthoring.ApplyToRoot(root);
+                SettingsPageArtAuthoring.ApplyToRoot(root);
+                ArchivePageArtAuthoring.ApplyToRoot(root);
                 GameObject prefab = PrefabUtility.SaveAsPrefabAsset(root, PrefabPath);
                 if (prefab == null) throw new InvalidOperationException("正式界面预制体保存失败。");
                 AssetDatabase.SaveAssets();

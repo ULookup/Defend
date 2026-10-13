@@ -1,0 +1,38 @@
+{
+  "success": true,
+  "command": "command console_status",
+  "data": {
+    "command": "console_status",
+    "parameters": {},
+    "result": {
+      "entries": [],
+      "cursor": 7,
+      "session": "6c4c5e071bde4a41bfc5c97362354b2a",
+      "returned": 0,
+      "dropped": false,
+      "reset": false,
+      "counts": {
+        "error": 0,
+        "warn": 0,
+        "log": 1
+      },
+      "groundTruth": {
+        "sampledUtc": "2026-10-13T03:55:53.070639Z",
+        "ageMs": 71,
+        "compilationFailed": false,
+        "compiling": false,
+        "consoleErrors": 0,
+        "consoleWarnings": 0,
+        "consoleLogs": 1,
+        "seeded": true
+      }
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7800,
+      "projectPath": "D:\\许子健\\Documents\\taptap聚光灯"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

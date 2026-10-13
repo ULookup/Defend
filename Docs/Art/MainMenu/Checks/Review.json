@@ -1,0 +1,37 @@
+{
+  "success": true,
+  "command": "command run_script",
+  "data": {
+    "command": "run_script",
+    "parameters": {
+      "file": "Tools/Unity/MainMenuValidation.cs",
+      "entry": "MainMenuValidation.Review"
+    },
+    "result": {
+      "diagnostics": [],
+      "compileMs": 1394,
+      "executeMs": 2192,
+      "assemblyName": "PipelineRunScript_MainMenuValidation_1341764a676640d687e87d56ba79ef3a",
+      "success": true,
+      "result": {
+        "interactions": {
+          "passed": true,
+          "checks": "初始显示、有效布局、三个档案分类与弹窗交互、音量与静音、按钮按下状态、进入准备及返回",
+          "state": "Preparing"
+        },
+        "captures": {
+          "captured": true,
+          "resolutions": "1920x1080,1280x800",
+          "folder": "D:\\许子健\\Documents\\taptap聚光灯\\Docs/Art/MainMenu/Previews"
+        }
+      }
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7800,
+      "projectPath": "D:\\许子健\\Documents\\taptap聚光灯"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

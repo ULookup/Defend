@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-13",
+  "scope": "开始页、设置页、垣城档案；不进入局内",
+  "unity": "6000.6.5f1",
+  "validation": "Tools/Unity/MenuFeedbackValidation.cs / MenuFeedbackValidation.Review",
+  "passed": true,
+  "checks": [
+    "首次进入默认选中开始守望，并显示独立焦点边角",
+    "Input System 真实方向键移动焦点与可见提示",
+    "五个主菜单按钮显示导航焦点，装饰不拦截点击",
+    "导航焦点保持默认按钮图片",
+    "档案三类分类与条目的悬停、鼠标按下、离开、键盘焦点和提交文字对比度",
+    "设置与档案各三轮键盘打开和返回",
+    "每页只有一个有效返回入口",
+    "返回恢复入口焦点与默认图片，没有持续按压",
+    "设置底部两句提示保持删除",
+    "再次进入首页恢复默认焦点"
+  ],
+  "compile": "passed",
+  "consoleErrors": 0,
+  "consoleWarnings": 0,
+  "diffCheck": "passed",
+  "screenshots": ["Main-focus-fixed.png", "Archive-hover-fixed.png"]
+}

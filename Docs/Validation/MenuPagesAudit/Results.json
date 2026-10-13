@@ -1,0 +1,150 @@
+{
+  "scope": "仅开始页、设置页、垣城档案；不比较局内配置",
+  "unity": "6000.6.5f1",
+  "results": [
+    {
+      "probe": "initialKeyboardNavigation",
+      "initialSelection": null,
+      "firstSelection": null,
+      "moveActionObserved": true,
+      "moveEnabled": true,
+      "afterArrowSelection": null
+    },
+    {
+      "name": "startPage",
+      "passed": true,
+      "result": {
+        "passed": true,
+        "checks": "初始显示、有效布局、菜单点击区域、局外弹窗、音量与静音、按钮按压反馈；未检查局内流程",
+        "state": "Preparing"
+      }
+    },
+    {
+      "name": "settings",
+      "passed": true,
+      "result": {
+        "passed": true,
+        "checks": [
+          "首次两路70且不静音",
+          "有效布局与真实点击区域",
+          "音量数字和×有可见文字几何",
+          "滑杆实时改变声音与0–100数值",
+          "音乐独立静音且数值保留",
+          "音效独立静音且数值保留",
+          "静音显示红斜杠",
+          "真实拖动音乐仅解除音乐静音",
+          "真实拖动音效仅解除音效静音",
+          "0与100端点",
+          "新的音频组件从本地偏好恢复两音量及两静音状态",
+          "旧总静音及旧音量迁移",
+          "点击弹窗外不关闭也不穿透",
+          "右上角×关闭",
+          "设置仅保留右上角退出"
+        ],
+        "preferencesRestored": true,
+        "screenshots": "1920x1080,1280x800"
+      }
+    },
+    {
+      "name": "archive",
+      "passed": true,
+      "result": {
+        "passed": true,
+        "checks": [
+          "开始页打开档案并阻止战场输入",
+          "单一事件系统",
+          "分类条目数量：背景故事",
+          "完整配置正文：垣城往事",
+          "分类条目数量：防御工事",
+          "完整配置正文：防线核心",
+          "完整配置正文：反应堆",
+          "完整配置正文：中继器",
+          "完整配置正文：电池",
+          "完整配置正文：闪哨机",
+          "完整配置正文：崩岩机",
+          "完整配置正文：荡尘机",
+          "分类条目数量：守城者",
+          "完整配置正文：巡猎者",
+          "完整配置正文：拆迁者",
+          "完整配置正文：收束者",
+          "完整配置正文：拭净者",
+          "完整配置正文：镇载者",
+          "长故事实际溢出并可滚动",
+          "滚轮移动故事正文",
+          "故事最后一段可以滚到视口底部",
+          "切换条目正文回到顶部",
+          "点击弹窗外不穿透开始页",
+          "左上返回箭头关闭到开始页",
+          "档案仅保留左上角返回",
+          "设置页仍能打开及关闭"
+        ],
+        "entries": 13,
+        "illustrations": 12,
+        "screenshots": "1920x1080 / 1280x800"
+      }
+    },
+    {
+      "name": "returnRegression",
+      "passed": true,
+      "result": {
+        "passed": true,
+        "checks": [
+          "Settings only one return",
+          "Settings idle sprite after return",
+          "Settings only one return",
+          "Settings idle sprite after return",
+          "Settings only one return",
+          "Settings idle sprite after return",
+          "Archive only one return",
+          "Archive idle sprite after return",
+          "Archive only one return",
+          "Archive idle sprite after return",
+          "Archive only one return",
+          "Archive idle sprite after return"
+        ]
+      }
+    },
+    {
+      "probe": "archiveHoverContrast",
+      "labelColor": "RGBA(0.170, 0.200, 0.230, 1.000)",
+      "sprite": "UI_Button_Archive_Entry_Pressed"
+    },
+    {
+      "probe": "keyboardFocusIndicator",
+      "spriteChanges": false,
+      "labelChanges": false,
+      "outline": false
+    },
+    {
+      "probe": "missingScripts",
+      "count": 0
+    },
+    {
+      "probe": "settingsHint",
+      "remainingText": []
+    },
+    {
+      "probe": "audioSources",
+      "sources": [
+        {
+          "name": "音乐播放",
+          "clip": "守望环境",
+          "volume": 0.62,
+          "mute": false
+        },
+        {
+          "name": "音效播放",
+          "clip": "界面反馈",
+          "volume": 0.65,
+          "mute": false
+        }
+      ]
+    }
+  ],
+  "console": {
+    "errors": 0,
+    "warnings": 0
+  },
+  "authorizedChange": "删除设置页底部滑杆静音提示",
+  "otherRuntimeCodeChanged": false
+}

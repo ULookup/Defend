@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using Defend.Simulation;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Defend.Unity
@@ -26,6 +27,8 @@ namespace Defend.Unity
         [SerializeField] private Slider musicVolume, effectsVolume;
         [SerializeField] private Toggle mute;
         [SerializeField] private DefenseAudio audioSettings;
+        [SerializeField] private DefenseSettingsView settingsView;
+        [SerializeField] private DefenseArchiveView archiveView;
         [SerializeField] private TextAsset archiveStory;
         [SerializeField] private Image enemyPortrait;
         [SerializeField] private Sprite[] enemyPortraits;
@@ -51,7 +54,9 @@ namespace Defend.Unity
             arrangePaused.onClick.AddListener(() => { modal = Modal.None; Refresh(); });
             pauseHelp.onClick.AddListener(() => Open(Modal.Help)); pauseSettings.onClick.AddListener(() => Open(Modal.Settings));
             redeploy.onClick.AddListener(() => RequestReset(false)); returnHome.onClick.AddListener(() => RequestReset(true));
-            closeHelp.onClick.AddListener(CloseModal); closeArchive.onClick.AddListener(CloseModal); closeSettings.onClick.AddListener(CloseModal);
+            closeHelp.onClick.AddListener(CloseModal);
+            if (archiveView == null) closeArchive.onClick.AddListener(CloseModal);
+            if (settingsView == null) closeSettings.onClick.AddListener(CloseModal);
             cancelConfirmation.onClick.AddListener(() => { modal = Modal.Pause; Refresh(); });
             confirm.onClick.AddListener(() => { if (confirmHome) session.ReturnToStart(); else session.Restart(); });
             nextPreparation.onClick.AddListener(() => session.Submit(WorldCommand.ContinuePreparing()));
@@ -67,15 +72,33 @@ namespace Defend.Unity
             ranges.onClick.AddListener(() => { session.WorldViews.ShowRanges = !session.WorldViews.ShowRanges; session.WorldViews.Invalidate(); });
             for (int i = 0; i < shopButtons.Length; i++) { BuildingKind kind = ShopKinds[i]; shopButtons[i].onClick.AddListener(() => session.GridInput.BeginPlacement(kind)); }
             for (int i = 0; i < priorityButtons.Length; i++) { int weight = 1 << i; priorityButtons[i].onClick.AddListener(() => session.SetSelectedPriority(weight)); }
-            for (int i = 0; i < archiveCategories.Length; i++) { int category = i; archiveCategories[i].onClick.AddListener(() => { archiveCategory = category; RefreshArchive(0); }); }
-            for (int i = 0; i < archiveEntries.Length; i++) { int entry = i; archiveEntries[i].onClick.AddListener(() => RefreshArchive(entry)); }
-            audioSettings.Load(); musicVolume.SetValueWithoutNotify(audioSettings.MusicVolume); effectsVolume.SetValueWithoutNotify(audioSettings.EffectsVolume); mute.SetIsOnWithoutNotify(audioSettings.Muted);
-            musicVolume.onValueChanged.AddListener(value => audioSettings.SetMusic(value)); effectsVolume.onValueChanged.AddListener(value => audioSettings.SetEffects(value)); mute.onValueChanged.AddListener(value => audioSettings.SetMuted(value));
+            if (archiveView != null) archiveView.Initialize(CloseModal);
+            else
+            {
+                for (int i = 0; i < archiveCategories.Length; i++) { int category = i; archiveCategories[i].onClick.AddListener(() => { archiveCategory = category; RefreshArchive(0); }); }
+                for (int i = 0; i < archiveEntries.Length; i++) { int entry = i; archiveEntries[i].onClick.AddListener(() => RefreshArchive(entry)); }
+            }
+            audioSettings.Load();
+            if (settingsView != null) settingsView.Initialize(audioSettings, CloseModal);
+            else
+            {
+                musicVolume.SetValueWithoutNotify(audioSettings.MusicVolume); effectsVolume.SetValueWithoutNotify(audioSettings.EffectsVolume); mute.SetIsOnWithoutNotify(audioSettings.Muted);
+                musicVolume.onValueChanged.AddListener(value => audioSettings.SetMusic(value)); effectsVolume.onValueChanged.AddListener(value => audioSettings.SetEffects(value)); mute.onValueChanged.AddListener(value => audioSettings.SetMuted(value));
+            }
             foreach (var button in GetComponentsInChildren<Button>(true)) button.onClick.AddListener(audioSettings.PlayClick);
-            RefreshArchive(0);
+            if (archiveView == null) RefreshArchive(0);
         }
 
-        public void ShowStart() { modal = Modal.None; Refresh(); }
+        public void ShowStart()
+        {
+            modal = Modal.None; Refresh();
+            // 只在进入开始页时设置默认焦点，刷新页面或关闭弹窗时保留当前导航位置。
+            if (EventSystem.current != null && startGame.IsActive() && startGame.IsInteractable())
+            {
+                EventSystem.current.firstSelectedGameObject = startGame.gameObject;
+                EventSystem.current.SetSelectedGameObject(startGame.gameObject);
+            }
+        }
         public void SessionStarted() { modal = Modal.None; showSelection = true; deadEnemyId = 0; Refresh(); }
         public void RevealDetails() { showSelection = true; }
         public void TogglePause()
