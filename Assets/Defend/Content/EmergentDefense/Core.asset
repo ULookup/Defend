@@ -14,15 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: Defend.Unity::Defend.Unity.BuildingDefinitionAsset
   kind: 3
   displayName: "\u6838\u5FC3"
-  width: 1
-  depth: 1
+  width: 3
+  depth: 3
   energyCapacity: 80000
   productionPerTick: 0
   consumptionPerTick: 0
   outputAmount: 0
+  maximumChargePerTick: 8000
   outputIntervalTicks: 4
   transmissionRange: 8
   maximumHealth: 700
   purchaseCost: 0
   saleRefund: 0
   repairCost: 120
+  resonanceAbsorptionRange: 5
+  resonanceRepairThreshold: 10
+  resonanceRepairAmount: 18
+  resonanceBurstThreshold: 25
+  resonanceBurstRadius: 3.5
+  resonanceBurstDamage: 45
+  resonanceSlowMultiplier: 0.6
+  resonanceSlowSeconds: 1.25
+  resonanceWindupSeconds: 0.9
+  resonanceRecentDamageSeconds: 3
+  resonanceDamageBonusMultiplier: 1.15

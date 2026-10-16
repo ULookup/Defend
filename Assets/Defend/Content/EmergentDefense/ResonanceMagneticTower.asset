@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c5890f4cb5ba4e4cab6cc36852b0056, type: 3}
+  m_Name: ResonanceMagneticTower
+  m_EditorClassIdentifier: Defend.Unity::Defend.Unity.BuildingDefinitionAsset
+  kind: 8
+  displayName: "\u5171\u632F\u78C1\u66B4\u5854"
+  width: 2
+  depth: 2
+  energyCapacity: 1000
+  productionPerTick: 0
+  consumptionPerTick: 0
+  outputAmount: 0
+  maximumChargePerTick: 8000
+  outputIntervalTicks: 4
+  transmissionRange: 0
+  maximumHealth: 520
+  purchaseCost: 280
+  saleRefund: 140
+  repairCost: 70
+  resonanceAbsorptionRange: 5
+  resonanceRepairThreshold: 10
+  resonanceRepairAmount: 18
+  resonanceBurstThreshold: 25
+  resonanceBurstRadius: 3.5
+  resonanceBurstDamage: 45
+  resonanceSlowMultiplier: 0.6
+  resonanceSlowSeconds: 1.25
+  resonanceWindupSeconds: 0.9
+  resonanceRecentDamageSeconds: 3
+  resonanceDamageBonusMultiplier: 1.15
