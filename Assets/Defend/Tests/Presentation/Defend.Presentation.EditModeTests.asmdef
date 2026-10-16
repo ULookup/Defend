@@ -1,0 +1,8 @@
+{
+  "name": "Defend.Presentation.EditModeTests",
+  "rootNamespace": "Defend.Tests",
+  "references": ["Defend.Simulation", "Defend.Unity", "Unity.ugui"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "autoReferenced": false
+}

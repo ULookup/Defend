@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Defend.PhaseFiveEffects
 {
@@ -107,7 +107,7 @@ namespace Defend.PhaseFiveEffects
                 target = Context.Subject;
             if (target == null) return;
             subjectMotion = target.GetComponent<DamageSubjectMotion>();
-            if (subjectMotion == null) subjectMotion = target.gameObject.AddComponent<DamageSubjectMotion>();
+            if (subjectMotion == null) return;
             motionOwner = subjectMotion.Acquire();
         }
 

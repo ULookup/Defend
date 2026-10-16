@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Defend.Unity
@@ -74,40 +74,12 @@ namespace Defend.Unity
             ApplyWhiteOverlay(WhiteOverlay);
         }
 
-        private void Update()
+        /// <summary>由会话反馈时钟推进，单步和暂停不会再受到第二个 Update 时钟影响。</summary>
+        public void AdvanceFeedback(float seconds)
         {
-            float currentValue =
-                Mathf.Clamp01(WhiteOverlay);
-
-            // 先应用当前值，确保外部设置为 1 后，
-            // 可以完整显示一次闪白。
-            if (!Mathf.Approximately(
-                    currentValue,
-                    lastAppliedValue))
-            {
-                ApplyWhiteOverlay(currentValue);
-            }
-
-            // 游戏暂停时冻结闪白。
-            if (Paused)
-            {
-                WhiteOverlay = currentValue;
-                return;
-            }
-
-            if (currentValue <= 0f)
-            {
-                WhiteOverlay = 0f;
-                return;
-            }
-
-            // 使用现实帧时间，不受游戏倍速和 Time.timeScale 影响。
-            WhiteOverlay =
-                Mathf.MoveTowards(
-                    currentValue,
-                    0f,
-                    DecayPerSecond *
-                    Time.unscaledDeltaTime);
+            if (seconds <= 0f) return;
+            WhiteOverlay = Mathf.MoveTowards(Mathf.Clamp01(WhiteOverlay), 0f, DecayPerSecond * seconds);
+            ApplyWhiteOverlay(WhiteOverlay);
         }
 
         public void SetPaused(bool paused)

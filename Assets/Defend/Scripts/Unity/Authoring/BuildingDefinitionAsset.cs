@@ -24,6 +24,18 @@ namespace Defend.Unity
         [SerializeField, Min(0)] private int purchaseCost = 100;
         [SerializeField, Min(0)] private int saleRefund = 50;
         [SerializeField, Min(0)] private int repairCost = 25;
+        [Header("共振磁暴塔")]
+        [SerializeField, Min(.1f)] private float resonanceAbsorptionRange = 5;
+        [SerializeField, Min(1)] private int resonanceRepairThreshold = 10;
+        [SerializeField, Min(1)] private int resonanceRepairAmount = 18;
+        [SerializeField, Min(1)] private int resonanceBurstThreshold = 25;
+        [SerializeField, Min(.1f)] private float resonanceBurstRadius = 3.5f;
+        [SerializeField, Min(1)] private int resonanceBurstDamage = 45;
+        [SerializeField, Range(.01f, 1)] private float resonanceSlowMultiplier = .6f;
+        [SerializeField, Min(.05f)] private float resonanceSlowSeconds = 1.25f;
+        [SerializeField, Min(.05f)] private float resonanceWindupSeconds = .9f;
+        [SerializeField, Min(.05f)] private float resonanceRecentDamageSeconds = 3;
+        [SerializeField, Min(1)] private float resonanceDamageBonusMultiplier = 1.15f;
 
         public BuildingKind Kind => kind;
         public string DisplayName => displayName;
@@ -37,7 +49,13 @@ namespace Defend.Unity
                 throw new System.InvalidOperationException($"{displayName} 的维修基价不能超过购买价格减出售返还。");
             return new BuildingDefinition(kind, displayName, width, depth, energyCapacity,
                 productionPerTick, consumptionPerTick, outputAmount, outputIntervalTicks,
-                transmissionRange, maximumHealth, purchaseCost, saleRefund, repairCost, maximumChargePerTick);
+                transmissionRange, maximumHealth, purchaseCost, saleRefund, repairCost, maximumChargePerTick,
+                kind == BuildingKind.ResonanceMagneticTower ? new ResonanceDefinition(
+                    resonanceAbsorptionRange, resonanceRepairThreshold, resonanceRepairAmount,
+                    resonanceBurstThreshold, resonanceBurstRadius, resonanceBurstDamage,
+                    System.Math.Round(resonanceSlowMultiplier, 4), System.Math.Round(resonanceSlowSeconds, 4), System.Math.Round(resonanceWindupSeconds, 4),
+                    System.Math.Round(resonanceWindupSeconds, 4), 0, 0, resonanceRecentDamageSeconds,
+                    System.Math.Round(resonanceDamageBonusMultiplier, 4)) : null);
         }
 
         /// <summary>仅供资产首次制作时赋初值；不会在游戏运行中修改共享配置。</summary>

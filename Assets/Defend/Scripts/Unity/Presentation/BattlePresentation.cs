@@ -1,11 +1,11 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Defend.Simulation;
 using UnityEngine;
 using UnityEngine.Pool;
 
 namespace Defend.Unity
 {
-    /// <summary>池化敌人与瞬时射线，只读取战斗结果，不参与命中和伤害结算。</summary>
+    /// <summary>池化敌人，按统一显示时刻采样已交付的真实移动分段，并延迟致命回收。</summary>
     public sealed class BattlePresentation : MonoBehaviour
     {
         [SerializeField] private EnemyView enemyPrefab;
@@ -22,8 +22,8 @@ namespace Defend.Unity
         {
             if (prefab == null || variantPools.ContainsKey(kind)) return;
             variantPools.Add(kind, new ObjectPool<EnemyView>(() => Instantiate(prefab, enemyRoot),
-                view => { view.ResetForReuse(); view.gameObject.SetActive(true); }, view => view.gameObject.SetActive(false),
-                view => { if (view != null) Destroy(view.gameObject); }, false, 16, 256));
+                view => { view.ResetForReuse(); view.gameObject.SetActive(true); }, view => { if (view != null) view.gameObject.SetActive(false); },
+                view => { if (view != null) { if (Application.isPlaying) Destroy(view.gameObject); else DestroyImmediate(view.gameObject); } }, false, 16, 256));
         }
         [SerializeField] private LineRenderer shotPrefab;
         [SerializeField] private Transform enemyRoot;
@@ -36,8 +36,6 @@ namespace Defend.Unity
         private ObjectPool<LineRenderer> shotPool;
         private ObjectPool<EnemyTargetView> targetMarkerPool;
         private readonly Dictionary<long, EnemyView> enemyViews = new Dictionary<long, EnemyView>();
-        private readonly HashSet<long> livingIds = new HashSet<long>();
-        private readonly List<long> removedIds = new List<long>();
         private readonly List<LineRenderer> shotViews = new List<LineRenderer>();
         private readonly List<EnemyTargetView> targetMarkers = new List<EnemyTargetView>();
         private readonly Dictionary<(long building, double x, double z, bool searching), int> targetIndices =
@@ -45,7 +43,36 @@ namespace Defend.Unity
         private readonly List<(double x, double z, bool searching, bool attacking)> targetSnapshots =
             new List<(double, double, bool, bool)>();
         private long lastAppliedTick = -1;
-        private MaterialPropertyBlock shotProperties;
+        private readonly struct EnemyFacingFrame
+        {
+            public readonly double Time, AttackTime, AttackDuration, NextAttackTime;
+            public readonly Vector3 Target, AttackTarget;
+            public readonly bool HasTarget, HasAttack, PreparingAttack;
+            public EnemyFacingFrame(EnemyState state, long tick, int ticksPerSecond)
+            {
+                Time = tick / (double)ticksPerSecond;
+                AttackTime = state.LastAttackTick / (double)ticksPerSecond;
+                NextAttackTime = state.NextAttackTick / (double)ticksPerSecond;
+                AttackDuration = Mathf.Max(1, Mathf.CeilToInt(ticksPerSecond * .22f)) / (double)ticksPerSecond;
+                HasTarget = state.TargetBuildingId > 0;
+                HasAttack = state.CurrentAttackBuildingId > 0 && state.LastAttackTick >= 0 &&
+                    state.LastAttackTargetBuildingId == state.CurrentAttackBuildingId;
+                PreparingAttack = HasAttack && state.CurrentAction == EnemyAction.Attacking;
+                Target = new Vector3((float)state.TargetX, 0, (float)state.TargetZ);
+                AttackTarget = new Vector3((float)state.LastAttackTargetX, 0, (float)state.LastAttackTargetZ);
+            }
+        }
+        private sealed class EnemyDisplay
+        {
+            public EnemyState Source;
+            public double SpawnTime, RemovalTime = double.PositiveInfinity;
+            public readonly List<EnemyMotionSegment> Segments = new List<EnemyMotionSegment>();
+            public readonly List<EnemyFacingFrame> Facing = new List<EnemyFacingFrame>();
+        }
+        private readonly CombatDisplayQueue fallbackResults = new CombatDisplayQueue();
+        private readonly Dictionary<long, List<ProjectileSnapshot>> fallbackPaths = new Dictionary<long, List<ProjectileSnapshot>>();
+        private readonly List<long> completedPaths = new List<long>();
+        private readonly Dictionary<long, EnemyDisplay> displays = new Dictionary<long, EnemyDisplay>();
         public void Configure(EnemyView enemy, LineRenderer shot, Transform enemies, Transform shots)
         { enemyPrefab = enemy; shotPrefab = shot; enemyRoot = enemies; shotRoot = shots; }
         public void ConfigureTargetMarkers(EnemyTargetView prefab, Transform root)
@@ -53,102 +80,166 @@ namespace Defend.Unity
 
         public void Initialize()
         {
-            if (shotProperties == null) shotProperties = new MaterialPropertyBlock();
             if (enemyPool == null)
             {
                 enemyPool = new ObjectPool<EnemyView>(() => Instantiate(enemyPrefab, enemyRoot),
-                    view => { view.ResetForReuse(); view.gameObject.SetActive(true); }, view => view.gameObject.SetActive(false),
-                    view => { if (view != null) Destroy(view.gameObject); }, false, 32, 256);
+                    view => { view.ResetForReuse(); view.gameObject.SetActive(true); }, view => { if (view != null) view.gameObject.SetActive(false); },
+                    view => { if (view != null) { if (Application.isPlaying) Destroy(view.gameObject); else DestroyImmediate(view.gameObject); } }, false, 32, 256);
                 shotPool = new ObjectPool<LineRenderer>(() => Instantiate(shotPrefab, shotRoot),
-                    view => view.gameObject.SetActive(true), view => view.gameObject.SetActive(false),
-                    view => { if (view != null) Destroy(view.gameObject); }, false, 32, maximumVisibleShots);
+                    view => view.gameObject.SetActive(true), view => { if (view != null) view.gameObject.SetActive(false); },
+                    view => { if (view != null) { if (Application.isPlaying) Destroy(view.gameObject); else DestroyImmediate(view.gameObject); } }, false, 32, maximumVisibleShots);
             }
             if (targetMarkerPool == null && targetMarkerPrefab != null && targetMarkerRoot != null)
                 targetMarkerPool = new ObjectPool<EnemyTargetView>(() => Instantiate(targetMarkerPrefab, targetMarkerRoot),
-                    view => view.gameObject.SetActive(true), view => view.gameObject.SetActive(false),
-                    view => { if (view != null) Destroy(view.gameObject); }, false, 8, maximumVisibleTargetMarkers);
+                    view => view.gameObject.SetActive(true), view => { if (view != null) view.gameObject.SetActive(false); },
+                    view => { if (view != null) { if (Application.isPlaying) Destroy(view.gameObject); else DestroyImmediate(view.gameObject); } }, false, 8, maximumVisibleTargetMarkers);
             AddVariant(EnemyKind.Fast, fastEnemyPrefab);
             AddVariant(EnemyKind.Heavy, heavyEnemyPrefab);
             AddVariant(EnemyKind.Demolisher, demolisherEnemyPrefab);
             AddVariant(EnemyKind.Converger, convergerEnemyPrefab);
-            foreach (EnemyView view in enemyViews.Values) Pool(view.Kind).Release(view);
+            foreach (EnemyView view in enemyViews.Values) if (view != null) Pool(view.Kind).Release(view);
             enemyViews.Clear();
-            foreach (LineRenderer view in shotViews) shotPool.Release(view);
+            foreach (LineRenderer view in shotViews) if (view != null) shotPool.Release(view);
             shotViews.Clear();
-            foreach (EnemyTargetView view in targetMarkers) targetMarkerPool.Release(view);
+            foreach (EnemyTargetView view in targetMarkers) if (view != null) targetMarkerPool.Release(view);
             targetMarkers.Clear();
             targetIndices.Clear();
             targetSnapshots.Clear();
-            livingIds.Clear();
-            removedIds.Clear();
-            lastAppliedTick = -1;
+            lastAppliedTick = -1; displays.Clear(); fallbackResults.Clear(); fallbackPaths.Clear();
+        }
+
+        public void ObserveStep(GameWorld world)
+        {
+            if (world.Battle == null || lastAppliedTick == world.CurrentTick) return;
+            lastAppliedTick = world.CurrentTick;
+            double seconds = world.CurrentTick / (double)world.Settings.TicksPerSecond;
+            foreach (var state in world.Battle.Enemies)
+            {
+                if (!state.IsAlive) continue;
+                if (!displays.TryGetValue(state.Id, out var display))
+                {
+                    var view = Pool(state.Kind).Get();
+                    enemyViews.Add(state.Id, view);
+                    display = new EnemyDisplay { Source = state, SpawnTime = seconds };
+                    displays.Add(state.Id, display);
+                    view.Apply(state, world.CurrentTick, world.Settings.TicksPerSecond, false, false);
+                    view.ApplyDisplayHealth(state.Health, state.MaximumHealth);
+                    view.gameObject.SetActive(false);
+                }
+                else enemyViews[state.Id].Apply(state, world.CurrentTick, world.Settings.TicksPerSecond, false, false);
+            }
+            // 已死亡敌人的对象在模拟清单移除后仍可读取一次，复制分段后不依赖其后续变化。
+            foreach (var display in displays.Values)
+            {
+                display.Facing.Add(new EnemyFacingFrame(display.Source, world.CurrentTick, world.Settings.TicksPerSecond));
+                foreach (var segment in display.Source.MotionSegments)
+                    if (segment.EndTime >= seconds - 1.0 / world.Settings.TicksPerSecond - 1e-9)
+                        display.Segments.Add(segment);
+                if (!display.Source.IsAlive && double.IsPositiveInfinity(display.RemovalTime))
+                    display.RemovalTime = seconds;
+            }
+            foreach (var result in world.Events)
+                if (result.Kind == WorldEventKind.EnemyDeath && displays.TryGetValue(result.SubjectId, out var display))
+                    display.RemovalTime = result.Time;
+            if (!externalCombatEffects)
+            {
+                fallbackResults.Observe(world.Events, null);
+                foreach (var projectile in world.Battle.Projectiles)
+                {
+                    if (!fallbackPaths.TryGetValue(projectile.Id, out var path))
+                    { path = new List<ProjectileSnapshot>(); fallbackPaths.Add(projectile.Id, path); }
+                    path.Add(projectile);
+                }
+                RefreshTargetMarkers(world);
+            }
         }
 
         public void Refresh(GameWorld world, double displayTick, bool paused = false)
         {
             if (world.Battle == null) return;
-            if (lastAppliedTick != world.CurrentTick)
+            ObserveStep(world);
+            double seconds = displayTick / world.Settings.TicksPerSecond;
+            foreach (var pair in displays)
             {
-                RefreshSnapshots(world);
-                lastAppliedTick = world.CurrentTick;
-            }
-            float progress = Mathf.Clamp01((float)(displayTick - world.CurrentTick));
-            foreach (EnemyView view in enemyViews.Values)
-            {
+                var display = pair.Value;
+                var view = enemyViews[pair.Key];
+                bool visible = seconds + 1e-9 >= display.SpawnTime;
+                view.gameObject.SetActive(visible);
                 view.SetPaused(paused);
-                view.Interpolate(progress);
+                if (!visible) continue;
+                double positionTime = System.Math.Min(seconds, display.RemovalTime);
+                var segments = display.Segments;
+                while (segments.Count > 1 && segments[0].EndTime < positionTime - 1e-9) segments.RemoveAt(0);
+                if (segments.Count == 0)
+                { view.Interpolate(1f); ApplyFacing(view, display, seconds, Vector3.zero); continue; }
+                var segment = segments[0];
+                segment.Sample(positionTime, out double x, out double z);
+                var position = new Vector3((float)x, 0, (float)z);
+                view.SetDisplayPosition(position, position);
+                view.Interpolate(1f);
+                ApplyFacing(view, display, seconds, new Vector3((float)(segment.EndX - segment.StartX), 0, (float)(segment.EndZ - segment.StartZ)));
+            }
+            if (!externalCombatEffects)
+            {
+                fallbackResults.Drain(seconds, ApplyResult, null);
+                RefreshFallbackProjectiles(seconds);
             }
         }
 
-        private void RefreshSnapshots(GameWorld world)
+        private static void ApplyFacing(EnemyView view, EnemyDisplay display, double seconds, Vector3 movement)
         {
-            livingIds.Clear();
-            for (int index = 0; index < world.Battle.Enemies.Count; index++)
+            var frames = display.Facing;
+            while (frames.Count > 1 && frames[1].Time <= seconds + 1e-9) frames.RemoveAt(0);
+            if (frames.Count == 0) return;
+            var frame = frames[0];
+            bool attacking = frame.HasAttack && seconds >= frame.AttackTime && seconds < frame.AttackTime + System.Math.Max(frame.AttackDuration, view.AttackRecoverySeconds);
+            Vector3 direction = attacking ? frame.AttackTarget - view.transform.position :
+                movement.sqrMagnitude > .000001f ? movement : frame.HasTarget ? frame.Target - view.transform.position : Vector3.zero;
+            view.ApplyDisplayFacing(direction, attacking);
+            view.SampleAttackMotion(seconds, frame.AttackTime, frame.NextAttackTime, frame.HasAttack, frame.PreparingAttack);
+        }
+
+        private void RefreshFallbackProjectiles(double seconds)
+        {
+            completedPaths.Clear();
+            int count = 0;
+            foreach (var pair in fallbackPaths)
             {
-                EnemyState state = world.Battle.Enemies[index];
-                if (!state.IsAlive) continue;
-                livingIds.Add(state.Id);
-                if (!enemyViews.TryGetValue(state.Id, out EnemyView view))
-                {
-                    view = Pool(state.Kind).Get();
-                    enemyViews.Add(state.Id, view);
-                }
-                view.Apply(state, world.CurrentTick, world.Settings.TicksPerSecond);
+                var path = pair.Value;
+                while (path.Count > 1 && path[0].EndTime < seconds - 1e-9) path.RemoveAt(0);
+                var segment = path[0];
+                if (seconds < segment.StartTime) continue;
+                while (shotViews.Count <= count) shotViews.Add(shotPool.Get());
+                var line = shotViews[count++];
+                float progress = segment.EndTime > segment.StartTime ? Mathf.Clamp01((float)((seconds - segment.StartTime) / (segment.EndTime - segment.StartTime))) : 1f;
+                var from = new Vector3((float)segment.PreviousX, (float)segment.PreviousY, (float)segment.PreviousZ);
+                var to = new Vector3((float)segment.X, (float)segment.Y, (float)segment.Z);
+                line.positionCount = 2; line.SetPosition(0, from); line.SetPosition(1, Vector3.Lerp(from, to, progress));
+                if (segment.IsEnded && seconds >= segment.EndTime) completedPaths.Add(pair.Key);
             }
-            removedIds.Clear();
-            foreach (KeyValuePair<long, EnemyView> item in enemyViews)
-                if (!livingIds.Contains(item.Key)) { Pool(item.Value.Kind).Release(item.Value); removedIds.Add(item.Key); }
-            foreach (long id in removedIds) enemyViews.Remove(id);
-            if (externalCombatEffects) return;
-            RefreshTargetMarkers(world);
-            int count = Mathf.Min(world.Battle.Shots.Count, maximumVisibleShots);
-            while (shotViews.Count < count) shotViews.Add(shotPool.Get());
+            foreach (long id in completedPaths) fallbackPaths.Remove(id);
             while (shotViews.Count > count)
+            { int index = shotViews.Count - 1; shotPool.Release(shotViews[index]); shotViews.RemoveAt(index); }
+        }
+
+        public void ApplyResult(WorldEventSnapshot result)
+        {
+            if (!enemyViews.TryGetValue(result.SubjectId, out var view)) return;
+            if (result.Kind == WorldEventKind.EnemyHit)
             {
-                int last = shotViews.Count - 1;
-                shotPool.Release(shotViews[last]);
-                shotViews.RemoveAt(last);
+                view.ApplyHit(result);
             }
-            for (int index = 0; index < count; index++)
+            else if (result.Kind == WorldEventKind.EnemyDeath)
             {
-                ShotSnapshot shot = world.Battle.Shots[index];
-                LineRenderer line = shotViews[index];
-                line.positionCount = shot.SplashRadius > 0 ? 35 : 2;
-                Color color = shot.TurretKind == BuildingKind.AreaTurret ? new Color(0.3f, 0.8f, 1) :
-                    shot.TurretKind == BuildingKind.BurstTurret ? new Color(1, 0.3f, 0.6f) : new Color(1, 0.8f, 0.3f);
-                line.startColor = line.endColor = color;
-                shotProperties.SetColor("_BaseColor", color); shotProperties.SetColor("_Color", color);
-                line.SetPropertyBlock(shotProperties);
-                line.startWidth = line.endWidth = shot.TurretKind == BuildingKind.BurstTurret ? 0.16f : 0.065f;
-                line.SetPosition(0, new Vector3((float)shot.SourceX, 0.72f, (float)shot.SourceZ));
-                line.SetPosition(1, new Vector3((float)shot.TargetX, 0.5f, (float)shot.TargetZ));
-                for (int point = 2; point < line.positionCount; point++)
-                {
-                    double angle = (point - 2) * System.Math.PI * 2 / 32;
-                    line.SetPosition(point, new Vector3((float)(shot.TargetX + System.Math.Cos(angle) * shot.SplashRadius),
-                        0.2f, (float)(shot.TargetZ + System.Math.Sin(angle) * shot.SplashRadius)));
-                }
+                view.ResetForReuse();
+                Pool(view.Kind).Release(view);
+                enemyViews.Remove(result.SubjectId); displays.Remove(result.SubjectId);
             }
+        }
+
+        public void AdvanceFeedback(float seconds)
+        {
+            foreach (var view in enemyViews.Values) view.AdvanceFeedback(seconds);
         }
 
         private void RefreshTargetMarkers(GameWorld world)

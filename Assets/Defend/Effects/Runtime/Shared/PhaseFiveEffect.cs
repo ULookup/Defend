@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace Defend.PhaseFiveEffects
@@ -14,6 +14,7 @@ namespace Defend.PhaseFiveEffects
         public float Intensity;
         public int Seed;
         public bool ConfirmedTransfer;
+        public bool AuthoritativeAim;
         public long EventSequence;
         public float Radius;
     }

@@ -12,6 +12,9 @@ namespace Defend.PhaseFiveEffects
         [SerializeField] private Vector3[] scatterDirections;
         [SerializeField] private ParticleSystem splinters;
         [SerializeField] private int particleCount;
+        private float authoredRadius, displayScale = 1f;
+        private bool particleScaleCached;
+        private ParticleSystemScalingMode authoredParticleScaling;
 
         public void Configure(bool isBreaking, Transform visual, LineRenderer[] lines,
             Vector3[] directions, ParticleSystem particles, int count)
@@ -29,6 +32,26 @@ namespace Defend.PhaseFiveEffects
 
         protected override void OnBegin()
         {
+            if (authoredRadius <= 0)
+            {
+                foreach (var stroke in strokes)
+                    for (int index = 0; index < stroke.positionCount; index++)
+                    {
+                        Vector3 point = stroke.GetPosition(index);
+                        if (!stroke.useWorldSpace) point = stroke.transform.TransformPoint(point);
+                        point = transform.InverseTransformPoint(point);
+                        authoredRadius = Mathf.Max(authoredRadius, new Vector2(point.x, point.z).magnitude);
+                    }
+            }
+            displayScale = breaking && Context.Radius > 0 && !float.IsNaN(Context.Radius) &&
+                !float.IsInfinity(Context.Radius) && authoredRadius > .0001f ? Context.Radius / authoredRadius : 1f;
+            transform.localScale = Vector3.one * displayScale;
+            if (splinters != null)
+            {
+                var main = splinters.main;
+                if (!particleScaleCached) { authoredParticleScaling = main.scalingMode; particleScaleCached = true; }
+                main.scalingMode = displayScale == 1f ? authoredParticleScaling : ParticleSystemScalingMode.Hierarchy;
+            }
             geometry.gameObject.SetActive(true);
             for (int index = 0; index < strokes.Length; index++) strokes[index].enabled = true;
             if (splinters != null && particleCount > 0) splinters.Emit(particleCount);
@@ -41,7 +64,7 @@ namespace Defend.PhaseFiveEffects
             for (int index = 0; index < strokes.Length; index++)
             {
                 strokes[index].startColor = strokes[index].endColor = new Color(1, 1, 1, remaining * remaining);
-                strokes[index].widthMultiplier = widths[index] * (.4f + .6f * remaining);
+                strokes[index].widthMultiplier = widths[index] * displayScale * (.4f + .6f * remaining);
                 if (breaking && scatterDirections != null && index < scatterDirections.Length)
                     strokes[index].transform.localPosition = scatterDirections[index] * (.18f * normalizedTime);
             }
@@ -49,6 +72,13 @@ namespace Defend.PhaseFiveEffects
 
         protected override void OnReset()
         {
+            displayScale = 1f;
+            transform.localScale = Vector3.one;
+            if (splinters != null && particleScaleCached)
+            {
+                var main = splinters.main;
+                main.scalingMode = authoredParticleScaling;
+            }
             if (geometry != null)
             {
                 geometry.localScale = Vector3.one;

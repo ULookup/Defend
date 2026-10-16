@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Defend.Unity
 {
     /// <summary>
-    /// 为选中的反应堆或中继器显示逐格能源传输效率。
+    /// 显示单建筑或已有供能网络的逐格运输效率，不推断实际到货或可用库存。
     /// </summary>
     public sealed class EnergyLossGridOverlay : MonoBehaviour
     {
@@ -24,16 +24,37 @@ namespace Defend.Unity
         private int width;
         private int depth;
 
-        private long lastSelectedId = -1;
-        private int lastPositionRevision = -1;
-        private int lastLifeGeneration = -1;
+        private BuildingDefinition lastDefinition;
+        private double lastCenterX;
+        private double lastCenterZ;
         private bool lastDisplayed;
+        private bool showingNetwork;
+        private long lastExcludedSourceId;
+        private readonly List<SourcePosition> networkSources = new List<SourcePosition>();
+        private float minimumEfficiency;
+        private bool placementComposed;
+        private BuildingDefinition lastPreviewDefinition;
+        private double lastPreviewCenterX, lastPreviewCenterZ;
+
+        private readonly struct SourcePosition
+        {
+            private readonly long id;
+            private readonly BuildingDefinition definition;
+            private readonly double x, z;
+
+            public SourcePosition(BuildingState source)
+            { id = source.Id; definition = source.Definition; x = source.CenterX; z = source.CenterZ; }
+
+            public bool Matches(BuildingState source) => id == source.Id && definition == source.Definition &&
+                x == source.CenterX && z == source.CenterZ;
+        }
 
         private static readonly int ShouldBeDisplayed =
             Shader.PropertyToID("_ShouldBeDisplayed");
 
         private static readonly int Percentage =
             Shader.PropertyToID("_Percentage");
+        private static readonly int MinimumPercentage = Shader.PropertyToID("_MinimumEfficiency");
 
         private sealed class Cell
         {
@@ -41,6 +62,7 @@ namespace Defend.Unity
             public readonly Renderer Renderer;
             public readonly int X;
             public readonly int Z;
+            public float NetworkEfficiency;
 
             public Cell(
                 GameObject instance,
@@ -118,100 +140,139 @@ namespace Defend.Unity
 
             HideAll();
 
-            lastSelectedId = -1;
-            lastPositionRevision = -1;
-            lastLifeGeneration = -1;
+            lastDefinition = null;
             lastDisplayed = false;
+            showingNetwork = false;
+            placementComposed = false;
+            networkSources.Clear();
         }
 
         /// <summary>
-        /// 只在选择、位置或生命状态变化时重新写入逐格参数。
+        /// 已放置建筑使用真实位置；损毁、出售或取消选择后隐藏。
         /// </summary>
         public void Refresh(
             GameWorld value,
             long selectedId)
         {
-            if (value == null ||
-                value != world ||
-                cells.Count == 0)
+            BuildingState source = value?.FindBuilding(selectedId);
+            if (source == null || !source.IsAlive || source.IsSold) { Hide(); return; }
+            RefreshAtPosition(value, source.Definition, source.CenterX, source.CenterZ);
+        }
+
+        /// <summary>只读候选位置。移动预览不修改建筑位置、库存或在途能量。</summary>
+        public void RefreshPreview(GameWorld value, BuildingDefinition definition, int x, int z, int orientationQuarterTurns = 0)
+        {
+            if (definition == null) { Hide(); return; }
+            RefreshAtPosition(value, definition, x + definition.GetFootprintWidth(orientationQuarterTurns) * 0.5,
+                z + definition.GetFootprintDepth(orientationQuarterTurns) * 0.5);
+        }
+
+        /// <summary>摆放时显示所有现有供能建筑的覆盖；被移动的原建筑不参与最优来源判断。</summary>
+        public void RefreshNetwork(GameWorld value, long excludedSourceId)
+        {
+            if (value == null || value != world || cells.Count == 0) { Hide(); return; }
+            // 只比较影响覆盖的源状态。库存、运输进度与无关命令不会使整张底图重算。
+            if (lastDisplayed && showingNetwork && lastExcludedSourceId == excludedSourceId &&
+                NetworkSourcesUnchanged(value, excludedSourceId)) return;
+
+            networkSources.Clear();
+            placementComposed = false;
+            minimumEfficiency = 1f;
+            foreach (var source in value.Buildings)
             {
-                return;
+                if (!EnergyCoverageQuery.IsSource(source) || source.Id == excludedSourceId) continue;
+                networkSources.Add(new SourcePosition(source));
+                minimumEfficiency = Mathf.Min(minimumEfficiency,
+                    (float)EnergyCoverageQuery.MinimumEfficiency(value, source.Definition));
             }
-
-            BuildingState source =
-                value.FindBuilding(selectedId);
-
-            bool displayed =
-                source != null &&
-                source.IsAlive &&
-                !source.IsSold &&
-                (
-                    source.Kind == BuildingKind.Reactor ||
-                    source.Kind == BuildingKind.Relay
-                );
-
-            int positionRevision =
-                source == null
-                    ? -1
-                    : source.PositionRevision;
-
-            int lifeGeneration =
-                source == null
-                    ? -1
-                    : source.LifeGeneration;
-
-            bool unchanged =
-                selectedId == lastSelectedId &&
-                displayed == lastDisplayed &&
-                positionRevision == lastPositionRevision &&
-                lifeGeneration == lastLifeGeneration;
-
-            if (unchanged)
+            foreach (Cell cell in cells.Values)
             {
-                return;
+                EnergyCoverageQuery.BestSource(value, cell.X + .5, cell.Z + .5, excludedSourceId,
+                    out double percentage);
+                cell.NetworkEfficiency = (float)percentage;
+                SetCellDisplay(cell, percentage > 0, (float)percentage);
             }
+            lastDefinition = null;
+            lastDisplayed = true;
+            showingNetwork = true;
+            lastExcludedSourceId = excludedSourceId;
+        }
 
-            lastSelectedId = selectedId;
-            lastDisplayed = displayed;
-            lastPositionRevision = positionRevision;
-            lastLifeGeneration = lifeGeneration;
-
-            // 先隐藏全部格子。
-            HideAll();
-
-            if (!displayed)
+        /// <summary>候选范围内突出候选本身的效率，外围保留已有覆盖；共用一层格子，不叠加颜色或效率。</summary>
+        public void RefreshPlacement(GameWorld value, long excludedSourceId, BuildingDefinition candidate, int x, int z, bool visible,
+            int orientationQuarterTurns = 0)
+        {
+            RefreshNetwork(value, excludedSourceId);
+            if (!lastDisplayed || value != world) return;
+            if (!visible || candidate == null || EnergyCoverageQuery.MinimumEfficiency(value, candidate) <= 0) candidate = null;
+            double centerX = candidate == null ? 0 : x + candidate.GetFootprintWidth(orientationQuarterTurns) * .5;
+            double centerZ = candidate == null ? 0 : z + candidate.GetFootprintDepth(orientationQuarterTurns) * .5;
+            if (placementComposed && lastPreviewDefinition == candidate && lastPreviewCenterX == centerX && lastPreviewCenterZ == centerZ) return;
+            if (candidate != null) minimumEfficiency = (float)EnergyCoverageQuery.MinimumEfficiency(value, candidate);
+            foreach (Cell cell in cells.Values)
             {
-                return;
+                double preview = candidate == null ? 0 : value.Energy.DirectEfficiencyAt(candidate, centerX, centerZ, cell.X + .5, cell.Z + .5);
+                float efficiency = preview > 0 ? (float)preview : cell.NetworkEfficiency;
+                float opacity = candidate == null ? .36f : preview > 0 ? .44f : .22f;
+                SetCellDisplay(cell, efficiency > 0, efficiency, opacity);
             }
+            lastPreviewDefinition = candidate; lastPreviewCenterX = centerX; lastPreviewCenterZ = centerZ;
+            placementComposed = true;
+        }
+
+        private bool NetworkSourcesUnchanged(GameWorld value, long excludedSourceId)
+        {
+            int index = 0;
+            foreach (var source in value.Buildings)
+            {
+                if (!EnergyCoverageQuery.IsSource(source) || source.Id == excludedSourceId) continue;
+                if (index >= networkSources.Count || !networkSources[index].Matches(source)) return false;
+                index++;
+            }
+            return index == networkSources.Count;
+        }
+
+        private void RefreshAtPosition(GameWorld value, BuildingDefinition definition, double centerX, double centerZ)
+        {
+            if (value == null || value != world || cells.Count == 0 ||
+                (definition.Kind != BuildingKind.Reactor && definition.Kind != BuildingKind.Relay &&
+                 definition.Kind != BuildingKind.Battery))
+            { Hide(); return; }
+
+            // 鼠标在同一格内移动时不重复更新材质；换格、开关或切换建筑后更新。
+            if (lastDisplayed && !showingNetwork && lastDefinition == definition && lastCenterX == centerX && lastCenterZ == centerZ) return;
+            lastDefinition = definition;
+            lastCenterX = centerX;
+            lastCenterZ = centerZ;
+            lastDisplayed = true;
+            showingNetwork = false;
+            placementComposed = false;
+            minimumEfficiency = (float)EnergyCoverageQuery.MinimumEfficiency(value, definition);
 
             foreach (Cell cell in cells.Values)
             {
                 double percentage =
                     value.Energy.DirectEfficiencyAt(
-                        source,
+                        definition,
+                        centerX,
+                        centerZ,
                         cell.X + 0.5,
                         cell.Z + 0.5);
 
-                if (percentage <= 0)
-                {
-                    continue;
-                }
-
                 SetCellDisplay(
                     cell,
-                    true,
+                    percentage > 0,
                     (float)percentage);
             }
         }
 
         public void Hide()
         {
-            HideAll();
-
-            lastSelectedId = -1;
-            lastPositionRevision = -1;
-            lastLifeGeneration = -1;
+            if (lastDisplayed) HideAll();
+            lastDefinition = null;
             lastDisplayed = false;
+            showingNetwork = false;
+            placementComposed = false;
         }
 
         private void EnsureCells()
@@ -325,7 +386,7 @@ namespace Defend.Unity
         private void SetCellDisplay(
             Cell cell,
             bool shouldDisplay,
-            float percentage)
+            float percentage, float opacity = .36f)
         {
             cell.Instance.SetActive(
                 shouldDisplay);
@@ -339,6 +400,8 @@ namespace Defend.Unity
             properties.SetFloat(
                 Percentage,
                 shouldDisplay ? percentage : 0f);
+            properties.SetFloat(MinimumPercentage, minimumEfficiency);
+            properties.SetFloat("_FillOpacity", opacity);
 
             cell.Renderer.SetPropertyBlock(
                 properties);

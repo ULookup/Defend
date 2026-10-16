@@ -3,15 +3,18 @@ using UnityEngine;
 
 namespace Defend.Unity
 {
-    /// <summary>血量由预制体内的几何条表现，敌人不携带动态 UI。</summary>
+    /// <summary>预制体保存生命条和受击节点；运行时只读取快照并推进显示。</summary>
     public sealed class EnemyView : MonoBehaviour
     {
         [SerializeField] private Transform healthFill;
+        [SerializeField] private HealthBarView healthBar;
+        [SerializeField] private HitReactionView hitReaction;
         [SerializeField] private Renderer bodyRenderer;
         [SerializeField] private Transform facingRoot;
         [SerializeField] private GameObject strikeFlash;
         [SerializeField] private bool industrialModel;
         [SerializeField] private MechanicalEnemyMotion mechanicalMotion;
+        [SerializeField] private ReactorEnemyMotion reactorMotion;
         [SerializeField] private GameObject selectionMarker;
         public long EnemyId { get; private set; }
         public void ShowSelection(bool selected) { if (selectionMarker != null) selectionMarker.SetActive(selected); }
@@ -21,7 +24,7 @@ namespace Defend.Unity
         private Vector3 facingRestPosition;
         private Quaternion facingRestRotation;
         private bool hasRestPose;
-        private int previousHealth;
+        
         private HitFlashEffect hitFlashEffect;
         private void Awake()
         {
@@ -40,8 +43,9 @@ namespace Defend.Unity
             hasPosition = false;
             EnemyId = 0;
             ShowSelection(false);
-            previousHealth = 0;
+            healthBar?.ResetState(); hitReaction?.ResetPose();
             hitFlashEffect?.ResetFlash();
+            reactorMotion?.ResetPose();
             if (facingRoot != null)
             {
                 if (!hasRestPose)
@@ -55,48 +59,78 @@ namespace Defend.Unity
             }
             if (strikeFlash != null) strikeFlash.SetActive(false);
         }
-        public void Apply(EnemyState state, long tick = 0, int ticksPerSecond = 20)
+        public void Apply(EnemyState state, long tick = 0, int ticksPerSecond = 20, bool updateHealth = true, bool updateFacing = true)
         {
-            bool receivedDamage = previousHealth > state.Health;
-            if (receivedDamage) hitFlashEffect?.Flash();
+
             Kind = state.Kind;
             EnemyId = state.Id;
             Vector3 nextPosition = new Vector3((float)state.X, 0, (float)state.Z);
             previousPosition = hasPosition ? currentPosition : nextPosition;
             currentPosition = nextPosition;
             hasPosition = true;
-            float fraction = Mathf.Clamp01((float)state.Health / state.MaximumHealth);
-            if (healthFill != null)
-            {
-                healthFill.localScale = new Vector3(Mathf.Max(0.001f, fraction * 0.72f), 0.055f, 0.12f);
-            healthFill.localPosition = new Vector3((fraction - 1) * 0.36f, 1.15f, 0);
-            }
+            if (updateHealth) ApplyDisplayHealth(state.Health, state.MaximumHealth);
             transform.localScale = industrialModel ? Vector3.one : state.Kind == EnemyKind.Heavy ? new Vector3(1.5f, 1.25f, 1.5f) :
                 state.Kind == EnemyKind.Fast ? new Vector3(0.65f, 0.7f, 0.65f) : Vector3.one;
-            ApplyFacing(state, tick, ticksPerSecond);
+            if (updateFacing) ApplyFacing(state, tick, ticksPerSecond);
             if (bodyRenderer != null && !industrialModel)
             {
                 if (bodyProperties == null) bodyProperties = new MaterialPropertyBlock();
-                Color color = receivedDamage ? Color.white : state.Kind == EnemyKind.Fast ?
+                Color color = state.Kind == EnemyKind.Fast ?
                     new Color(1, 0.8f, 0.15f) : state.Kind == EnemyKind.Heavy ? new Color(0.65f, 0.25f, 0.8f) : new Color(0.95f, 0.25f, 0.2f);
                 bodyProperties.SetColor("_BaseColor", color); bodyRenderer.SetPropertyBlock(bodyProperties);
             }
-            previousHealth = state.Health;
+
         }
 
+        public void ConfigureImpact(HealthBarView health, HitReactionView reaction) { healthBar = health; hitReaction = reaction; }
+        public void ApplyDisplayHealth(int health, int maximumHealth)
+        {
+            if (healthBar != null) { healthBar.SetHealth(health, maximumHealth); return; }
+            if (healthFill == null) return;
+            float fraction = maximumHealth <= 0 ? 0 : Mathf.Clamp01((float)health / maximumHealth);
+            healthFill.gameObject.SetActive(fraction > 0 && fraction < 1);
+            healthFill.localScale = new Vector3(Mathf.Max(.001f, fraction * .72f), .055f, .12f);
+            healthFill.localPosition = new Vector3((fraction - 1) * .36f, 1.15f, 0);
+        }
+        public void SetDisplayPosition(Vector3 previous, Vector3 current)
+        { previousPosition = previous; currentPosition = current; hasPosition = true; }
+        public void ApplyHit(WorldEventSnapshot result)
+        {
+            if (result.Kind != WorldEventKind.EnemyHit || result.Amount <= 0) return;
+            Vector3 direction = new Vector3((float)result.Hit.DirectionX, 0, (float)result.Hit.DirectionZ);
+            if (result.Hit.SplashRadius > 0)
+            {
+                Vector3 radial = new Vector3((float)(result.Hit.EnemyX - result.Hit.ExplosionX), 0, (float)(result.Hit.EnemyZ - result.Hit.ExplosionZ));
+                if (radial.sqrMagnitude > .000001f) direction = radial;
+            }
+            hitReaction?.Play(direction); hitFlashEffect?.Flash();
+            ApplyDisplayHealth(result.HealthAfter, result.MaximumHealth);
+        }
+        public void AdvanceFeedback(float seconds)
+        { healthBar?.AdvanceFeedback(seconds); hitReaction?.AdvanceFeedback(seconds); hitFlashEffect?.AdvanceFeedback(seconds); }
         private void ApplyFacing(EnemyState state, long tick, int ticksPerSecond)
         {
             bool attacking = IsShowingAttack(state, tick, ticksPerSecond);
-            if (strikeFlash != null) strikeFlash.SetActive(attacking);
-            if (facingRoot == null) return;
             // 移动时朝向真实行进方向，出手时朝向模拟所知位置，不查询目标的新坐标。
             Vector3 direction = currentPosition - previousPosition;
             if (attacking || direction.sqrMagnitude < 0.000001f)
                 direction = attacking ? new Vector3((float)state.LastAttackTargetX, 0, (float)state.LastAttackTargetZ) - currentPosition : state.TargetBuildingId > 0 ? new Vector3((float)state.TargetX, 0, (float)state.TargetZ) - currentPosition : Vector3.zero;
+            ApplyDisplayFacing(direction, attacking);
+        }
+        public void ApplyDisplayFacing(Vector3 direction, bool attacking)
+        {
+            if (strikeFlash != null) strikeFlash.SetActive(attacking);
+            if (facingRoot == null) return;
+            direction.y = 0;
             if (direction.sqrMagnitude > 0.000001f)
                 facingRoot.localRotation = Quaternion.LookRotation(direction.normalized) * facingRestRotation;
             facingRoot.localPosition = facingRestPosition + (attacking && !industrialModel ? direction.normalized * 0.16f : Vector3.zero);
         }
+
+        public float AttackRecoverySeconds => reactorMotion == null ? .22f : ReactorEnemyMotion.RecoverySeconds;
+        public void SampleAttackMotion(double displayTime, double lastAttackTime, double nextAttackTime,
+            bool hasConfirmedAttack, bool preparingAttack)
+        { reactorMotion?.Sample(displayTime, lastAttackTime, nextAttackTime, hasConfirmedAttack, preparingAttack); }
 
         internal static bool IsShowingAttack(EnemyState state, long tick, int ticksPerSecond)
         {
@@ -110,3 +144,6 @@ namespace Defend.Unity
         public void Interpolate(float progress) { transform.position = Vector3.Lerp(previousPosition, currentPosition, progress); mechanicalMotion?.ApplyPosition(); }
     }
 }
+
+
+

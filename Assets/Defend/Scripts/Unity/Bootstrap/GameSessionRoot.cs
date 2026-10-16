@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Defend.Unity
 {
     /// <summary>场景组合入口：构造模拟世界，明确驱动输入、逻辑步进与只读表现。</summary>
-    public sealed class GameSessionRoot : MonoBehaviour
+    public sealed partial class GameSessionRoot : MonoBehaviour
     {
         [SerializeField] private BuildingDefinitionAsset[] buildingDefinitions;
         [SerializeField] private EnergyExperimentSettings experimentSettings;
@@ -19,11 +19,20 @@ namespace Defend.Unity
         [SerializeField] private CombatArtPresentation combatArt;
         [SerializeField] private DefenseInterface defenseInterface;
         [SerializeField] private GameObject energyLossCellPrefab;
+        [SerializeField] private PlacementPresentation placementPresentation;
+        [SerializeField] private EnvironmentCloudMotion environmentCloudMotion;
         private EnergyLossGridOverlay energyLossGridOverlay;
+        private WorldCameraViewport cameraViewport;
+        private enum CameraFollowTargetKind { None, Building, Enemy }
+        private GameWorld cameraFollowWorld;
+        private CameraFollowTargetKind cameraFollowTargetKind;
+        private long cameraFollowTargetId;
+        private string cameraFollowFeedback;
         private readonly List<InitialPlacement> initialPlacements = new List<InitialPlacement>();
         private SimulationClock clock;
         private float nextPanelRefresh;
         private long lastReportedCommand;
+        private double displayedTick;
         public GameWorld World { get; private set; }
         public BattleSystem Battle => World?.Battle;
         /// <summary>仅有性能探针订阅时计时，常规游玩不支付 Stopwatch 记录成本。</summary>
@@ -44,12 +53,22 @@ namespace Defend.Unity
         private readonly struct InitialPlacement
         {
             public readonly BuildingKind Kind;
-            public readonly int X, Z;
+            public readonly int X, Z, OrientationQuarterTurns;
             public InitialPlacement(BuildingView view)
             {
                 Kind = view.Definition.Kind;
-                X = Mathf.FloorToInt(view.transform.position.x);
-                Z = Mathf.FloorToInt(view.transform.position.z);
+                OrientationQuarterTurns = Mathf.RoundToInt(view.transform.eulerAngles.y / 90f) % 4;
+                if (Mathf.Abs(Mathf.DeltaAngle(view.transform.eulerAngles.y, OrientationQuarterTurns * 90)) > .01f)
+                    throw new InvalidOperationException("初始建筑“" + view.name + "”的朝向必须为 90° 的整数倍。");
+                var definition = view.Definition.CreateDefinition();
+                int width = definition.GetFootprintWidth(OrientationQuarterTurns);
+                int depth = definition.GetFootprintDepth(OrientationQuarterTurns);
+                float originX = view.transform.position.x - width * .5f;
+                float originZ = view.transform.position.z - depth * .5f;
+                X = Mathf.RoundToInt(originX);
+                Z = Mathf.RoundToInt(originZ);
+                if (Mathf.Abs(originX - X) > .001f || Mathf.Abs(originZ - Z) > .001f)
+                    throw new InvalidOperationException("初始建筑“" + view.name + "”未按 " + width + "×" + depth + " 占地对齐网格，请检查场景中的建筑中心位置。");
             }
         }
 
@@ -82,19 +101,34 @@ namespace Defend.Unity
 
         private void CreateWorld()
         {
+            StopCameraFollow();
+            defenseInterface?.CloseForSessionChange();
             combatArt?.ResetSession();
+            placementPresentation?.ResetSession();
             List<BuildingDefinition> definitions = new List<BuildingDefinition>();
             foreach (BuildingDefinitionAsset asset in buildingDefinitions) definitions.Add(asset.CreateDefinition());
             World = new GameWorld(definitions, experimentSettings.CreateWorldSettings(), experimentSettings.CreateEnergySettings(),
-                battleSettings == null ? null : battleSettings.CreateSettings());
+                battleSettings == null ? null : battleSettings.CreateSettings(), sandboxMode);
             clock = new SimulationClock(experimentSettings.TicksPerSecond);
             foreach (InitialPlacement placement in initialPlacements)
             {
-                World.Enqueue(WorldCommand.Place(placement.Kind, placement.X, placement.Z));
+                CommandResult result = World.Submit(WorldCommand.Place(placement.Kind, placement.X, placement.Z, placement.OrientationQuarterTurns));
+                if (!result.Succeeded)
+                    throw new InvalidOperationException("初始建筑“" + World.GetDefinition(placement.Kind).DisplayName + "”在网格坐标 (" + placement.X + ", " + placement.Z + ") 无法放置：" + result.Message);
             }
             if (battleSettings == null) World.Enqueue(WorldCommand.SetTestLoad(experimentSettings.EnableTestLoad));
             World.ProcessCommands();
+            BindWorld();
+        }
+
+        private void BindWorld()
+        {
+            StopCameraFollow();
+            clock = new SimulationClock(experimentSettings.TicksPerSecond);
             presentation.Initialize(World, experimentSettings);
+            displayedTick = World.CurrentTick;
+            environmentCloudMotion?.ResetSession();
+            environmentCloudMotion?.Refresh(displayedTick, experimentSettings.TicksPerSecond);
             if (energyLossCellPrefab != null)
             {
                 if (energyLossGridOverlay == null)
@@ -103,10 +137,19 @@ namespace Defend.Unity
             }
             gridInput.Initialize(this, presentation);
             gridInput.Cancel();
+            cameraViewport = gridInput.WorldCamera == null ? null : gridInput.WorldCamera.GetComponent<WorldCameraViewport>();
+            if (cameraViewport != null)
+            {
+                cameraViewport.StopFollowing();
+                BuildingState core = Battle == null ? null : World.FindBuilding(Battle.CoreBuildingId);
+                Vector2 focus = core == null ? new Vector2(World.Settings.Width * .5f, World.Settings.Depth * .5f) :
+                    new Vector2((float)core.CenterX, (float)core.CenterZ);
+                cameraViewport.ConfigureMap(World.Settings.Width, World.Settings.Depth, focus);
+            }
             controlPanel?.Initialize(this);
             battlePresentation?.Initialize();
             if (defenseInterface == null) battleControlPanel?.Initialize(this);
-            Paused = false;
+            Paused = IsSandbox;
             Speed = 1;
             SelectedBuildingId = 0;
             SelectedEnemy = null;
@@ -114,14 +157,20 @@ namespace Defend.Unity
             lastReportedCommand = World.LastCommandResult.Sequence;
             Feedback = Battle == null ? "选择建筑查看供给，或从左侧购买建筑。" : "部署炮塔与供电线路，准备好后开始第一波。";
             presentation.Refresh(World, SelectedBuildingId, World.CurrentTick);
+            battlePresentation?.ObserveStep(World);
             battlePresentation?.Refresh(World, World.CurrentTick, Paused);
             combatArt?.Initialize(World, presentation, battlePresentation);
+            ResetAudioState();
             RefreshPanels();
         }
 
         private void Update()
         {
-            if (World == null) return;
+            if (World == null) { StopCameraFollow(); return; }
+            defenseAudio?.SetCombatPaused(Paused || AtStartPage);
+            bool typing = gridInput.IsTypingText;
+            gridInput.ProcessShortcuts(typing);
+            cameraViewport?.ProcessFrame(BlocksWorldInput, typing);
             gridInput.ProcessInput();
             bool terminal = Battle != null && (Battle.State == BattleState.Victory || Battle.State == BattleState.Defeat);
             if (terminal && gridInput.HasPlacement) gridInput.Cancel();
@@ -135,17 +184,127 @@ namespace Defend.Unity
             }
             // 暂停时保留现有插值位置；时钟不再积累时间，表现也不会退回上一个逻辑位置。
             double interpolation = Math.Min(1, clock.PendingSeconds * experimentSettings.TicksPerSecond);
-            presentation.Refresh(World, SelectedBuildingId, World.CurrentTick + interpolation);
-            energyLossGridOverlay?.Refresh(World, SelectedBuildingId);
-            battlePresentation?.Refresh(World, World.CurrentTick + interpolation, Paused || terminal || AtStartPage);
+            double targetDisplayTick = Math.Max(0, World.CurrentTick - 1 + interpolation);
+            // 整局结束后仍补齐最后一个显示区间；主动暂停不推进任何画面时间。
+            if (!Paused && terminal) targetDisplayTick = Math.Min(World.CurrentTick,
+                displayedTick + Time.unscaledDeltaTime * experimentSettings.TicksPerSecond * Speed);
+            if (!Paused && !AtStartPage) displayedTick = Math.Max(displayedTick, targetDisplayTick);
+            if (!Paused && !AtStartPage) environmentCloudMotion?.Refresh(displayedTick, experimentSettings.TicksPerSecond);
+            float feedbackSeconds = Paused || AtStartPage ? 0 : Time.unscaledDeltaTime;
+            presentation.SynchronizeBuildingPoses(World);
+            presentation.AdvanceFeedback(feedbackSeconds);
+            if (combatArt == null) battlePresentation?.AdvanceFeedback(feedbackSeconds);
+            placementPresentation?.Refresh(World, BlocksWorldInput ? null : gridInput.PreviewDefinition,
+                gridInput.PreviewX, gridInput.PreviewZ, gridInput.MovingBuildingId,
+                gridInput.HasVisiblePlacementPreview, gridInput.PreviewValid, Time.unscaledDeltaTime,
+                gridInput.PreviewOrientationQuarterTurns, gridInput.PreviewFacingDegrees);
+            if (energyLossGridOverlay != null)
+            {
+                if (BlocksWorldInput || (gridInput.HasPlacement && gridInput.PreviewDefinition == null) || (!gridInput.HasPlacement && !presentation.ShowRanges)) energyLossGridOverlay.Hide();
+                else if (gridInput.HasPlacement)
+                {
+                    energyLossGridOverlay.RefreshPlacement(World, gridInput.MovingBuildingId, gridInput.PreviewDefinition,
+                        gridInput.PreviewX, gridInput.PreviewZ, gridInput.HasVisiblePlacementPreview,
+                        gridInput.PreviewOrientationQuarterTurns);
+                }
+                else energyLossGridOverlay.Refresh(World, SelectedBuildingId);
+            }
+            battlePresentation?.Refresh(World, displayedTick, Paused || AtStartPage);
             battlePresentation?.ShowSelection(SelectedEnemy != null && SelectedEnemy.IsAlive ? SelectedEnemy.Id : 0);
-            combatArt?.Refresh(World.CurrentTick + interpolation, SelectedBuildingId, Paused, Time.unscaledDeltaTime);
+            combatArt?.Refresh(displayedTick, SelectedBuildingId, Paused || AtStartPage, feedbackSeconds);
+            presentation.Refresh(World, SelectedBuildingId, displayedTick);
+            UpdateCameraFollow(typing);
+            PresentAudioState();
             if (Time.unscaledTime >= nextPanelRefresh)
             {
                 nextPanelRefresh = Time.unscaledTime + 0.1f;
                 RefreshPanels();
             }
         }
+
+        public bool BeginCameraFollowBuilding(long id) => BeginCameraFollow(CameraFollowTargetKind.Building, id);
+        public bool BeginCameraFollowEnemy(long id) => BeginCameraFollow(CameraFollowTargetKind.Enemy, id);
+        public bool IsFollowingBuilding(long id) => IsFollowing(CameraFollowTargetKind.Building, id);
+        public bool IsFollowingEnemy(long id) => IsFollowing(CameraFollowTargetKind.Enemy, id);
+
+        private bool BeginCameraFollow(CameraFollowTargetKind kind, long id)
+        {
+            if (World == null || cameraViewport == null || gridInput == null || BlocksWorldInput ||
+                gridInput.HasPlacement || gridInput.IsTypingText ||
+                !TryResolveCameraFollowTarget(World, kind, id, out Vector3 position, out string displayName)) return false;
+
+            cameraViewport.BeginFollow(position);
+            if (!cameraViewport.IsFollowing) return false;
+            cameraFollowWorld = World;
+            cameraFollowTargetKind = kind;
+            cameraFollowTargetId = id;
+            cameraFollowFeedback = "跟随：" + displayName + " · WASD/中键退出";
+            ShowFeedback(cameraFollowFeedback);
+            return true;
+        }
+
+        public void StopCameraFollow()
+        {
+            cameraFollowWorld = null;
+            cameraFollowTargetKind = CameraFollowTargetKind.None;
+            cameraFollowTargetId = 0;
+            cameraViewport?.StopFollowing();
+            // 只替换仍属于跟随的提示，不覆盖随后产生的建造、结算或错误消息。
+            if (cameraFollowFeedback != null && Feedback == cameraFollowFeedback) Feedback = "已停止镜头跟随。";
+            cameraFollowFeedback = null;
+        }
+
+        private bool IsFollowing(CameraFollowTargetKind kind, long id)
+        {
+            return cameraViewport != null && cameraViewport.IsFollowing && cameraFollowTargetKind == kind &&
+                cameraFollowTargetId == id && TryResolveCameraFollowTarget(cameraFollowWorld, kind, id, out _, out _);
+        }
+
+        private void UpdateCameraFollow(bool typing)
+        {
+            if (cameraFollowTargetKind == CameraFollowTargetKind.None) return;
+            if (cameraViewport == null || !cameraViewport.IsFollowing || gridInput.HasPlacement ||
+                !TryResolveCameraFollowTarget(cameraFollowWorld, cameraFollowTargetKind, cameraFollowTargetId,
+                    out Vector3 position, out _))
+            {
+                StopCameraFollow();
+                return;
+            }
+            // 暂停保留身份。模态页面或文字输入只冻结镜头，目标身份仍在每帧校验。
+            cameraViewport.UpdateFollow(position, BlocksWorldInput, typing);
+            if (!cameraViewport.IsFollowing) StopCameraFollow();
+        }
+
+        private bool TryResolveCameraFollowTarget(GameWorld targetWorld, CameraFollowTargetKind kind, long id,
+            out Vector3 position, out string displayName)
+        {
+            position = default;
+            displayName = null;
+            if (id <= 0 || targetWorld == null || !ReferenceEquals(targetWorld, World)) return false;
+            if (kind == CameraFollowTargetKind.Building)
+            {
+                BuildingState building = targetWorld.FindBuilding(id);
+                BuildingView view = presentation == null ? null : presentation.FindView(id);
+                if (building == null || !building.IsAlive || building.IsSold || view == null ||
+                    view.BuildingId != id || !view.gameObject.activeInHierarchy) return false;
+                position = new Vector3((float)building.CenterX, 0, (float)building.CenterZ);
+                displayName = building.Definition.DisplayName;
+                return true;
+            }
+            if (kind != CameraFollowTargetKind.Enemy || targetWorld.Battle == null) return false;
+            EnemyState enemy = null;
+            foreach (EnemyState candidate in targetWorld.Battle.Enemies)
+                if (candidate.Id == id) { enemy = candidate; break; }
+            EnemyView enemyView = battlePresentation == null ? null : battlePresentation.FindView(id);
+            if (enemy == null || !enemy.IsAlive || enemyView == null || enemyView.EnemyId != id ||
+                !enemyView.gameObject.activeInHierarchy) return false;
+            // 读取本帧插值后的实体根节点，避开受击/攻击动作的模型子节点；不缓存池化视图。
+            position = enemyView.transform.position;
+            displayName = enemy.Definition.DisplayName;
+            return true;
+        }
+
+        private void OnDisable() => StopCameraFollow();
 
         public BuildingDefinitionAsset FindDefinition(BuildingKind kind)
         {
@@ -159,12 +318,25 @@ namespace Defend.Unity
             if (Battle != null && (Battle.State == BattleState.Victory || Battle.State == BattleState.Defeat))
             {
                 ShowFeedback("本次防守已结束，请重新开始。");
+                PlayInterfaceSound(DefenseSoundCue.UiDenied);
                 return;
             }
             if (AtStartPage) return;
             // 所有输入即时经过同一权威事务；暂停只停止时间，非法输入不会留到下一个阶段。
-            Feedback = World.Submit(command).Message;
+            CommandResult commandResult = World.Submit(command);
+            Feedback = commandResult.Message;
+            PresentCommandSound(command, commandResult);
             presentation.Invalidate();
+            presentation.ObserveCommands(World);
+            combatArt?.ObserveStep(World);
+            if (World.LastCommandResult.Succeeded)
+            {
+                displayedTick = World.CurrentTick;
+                presentation.SynchronizeBuildingPoses(World);
+                combatArt?.FlushToTick(displayedTick, SelectedBuildingId, advanceModelTime: !Paused);
+                presentation.Refresh(World, SelectedBuildingId, displayedTick);
+            }
+            PresentAudioState();
             RefreshPanels();
         }
 
@@ -184,24 +356,58 @@ namespace Defend.Unity
             }
             // 探针回调位于采样区间外，性能记录自身不会被计入世界步进耗时。
             measured?.Invoke(milliseconds);
-            if (combatArt != null && combatArt.IsBoundTo(World))
-            {
-                presentation.Refresh(World, SelectedBuildingId, World.CurrentTick);
-                battlePresentation?.Refresh(World, World.CurrentTick, Paused);
-                combatArt.ObserveStep(World);
-            }
+            presentation.ObserveStep(World);
+            battlePresentation?.ObserveStep(World);
+            if (combatArt != null && combatArt.IsBoundTo(World)) combatArt.ObserveStep(World);
         }
-        public void Select(long id) { SelectedEnemy = null; SelectedBuildingId = id; defenseInterface?.RevealDetails(); RefreshPanels(); }
-        public void SelectEnemy(EnemyState enemy) { SelectedBuildingId = 0; SelectedEnemy = enemy; defenseInterface?.RevealDetails(); RefreshPanels(); }
+        public void Select(long id) { if (id != 0 && (SelectedBuildingId != id || SelectedEnemy != null)) PlayInterfaceSound(DefenseSoundCue.Selection); SelectedEnemy = null; SelectedBuildingId = id; defenseInterface?.RevealDetails(); RefreshPanels(); }
+        public void SelectEnemy(EnemyState enemy) { if (enemy != null && SelectedEnemy != enemy) PlayInterfaceSound(DefenseSoundCue.Selection); SelectedBuildingId = 0; SelectedEnemy = enemy; defenseInterface?.RevealDetails(); RefreshPanels(); }
         public void ClearSelection() { SelectedEnemy = null; SelectedBuildingId = 0; RefreshPanels(); }
         public void ShowFeedback(string message) { Feedback = message; RefreshPanels(); }
         public void TogglePause() { if (defenseInterface != null) defenseInterface.TogglePause(); else SetPaused(!Paused); }
-        public void SetPaused(bool value) { Paused = value; RefreshPanels(); }
-        public void SingleStep() { Paused = true; StepWorld(); RefreshPanels(); }
+        public bool ConsumePageShortcut(bool escape) => defenseInterface != null && defenseInterface.ConsumePageShortcut(escape);
+        public BattleSettings CreateArchiveBattleSettings() => battleSettings.CreateSettings();
+        public void SetPaused(bool value)
+        {
+            if (!value && defenseInterface != null && defenseInterface.IsSandboxPanelOpen) return;
+            bool changed = Paused != value;
+            Paused = value;
+            defenseAudio?.SetCombatPaused(Paused || AtStartPage);
+            if (changed && !AtStartPage) PlayInterfaceSound(value ? DefenseSoundCue.Pause : DefenseSoundCue.Resume);
+            RefreshPanels();
+        }
+        public void SingleStep()
+        {
+            if (defenseInterface != null && defenseInterface.IsSandboxPanelOpen) return;
+            Paused = true;
+            defenseAudio?.SetCombatPaused(true);
+            float seconds = 1f / experimentSettings.TicksPerSecond;
+            presentation.AdvanceFeedback(seconds);
+            combatArt?.AdvanceFeedback(seconds);
+            if (combatArt == null) battlePresentation?.AdvanceFeedback(seconds);
+            StepWorld();
+            displayedTick = World.CurrentTick;
+            environmentCloudMotion?.Refresh(displayedTick, experimentSettings.TicksPerSecond);
+            battlePresentation?.Refresh(World, displayedTick, true);
+            defenseAudio?.BeginPresentationStep();
+            try { combatArt?.FlushToTick(displayedTick, SelectedBuildingId); }
+            finally { defenseAudio?.EndPresentationStep(); }
+            presentation.Refresh(World, SelectedBuildingId, displayedTick);
+            PresentAudioState();
+            RefreshPanels();
+        }
         public void CycleSpeed() { Speed = Speed == 1 ? 2 : Speed == 2 ? 4 : 1; RefreshPanels(); }
-        public void StartWave() { if (Battle == null || !World.CanEditBuildings || AtStartPage) return; gridInput.Cancel(); Submit(WorldCommand.StartWave()); if (Battle.State == BattleState.Combat) SetPaused(false); }
+        public void StartWave()
+        {
+            if (Battle == null || !World.CanEditBuildings || AtStartPage) return;
+            if (IsSandbox && defenseInterface != null && defenseInterface.HasUnappliedSandboxChanges)
+            { ShowFeedback("请先应用或放弃沙盒面板中尚未应用的修改。"); PlayInterfaceSound(DefenseSoundCue.UiDenied); return; }
+            if (IsSandbox && defenseInterface != null && defenseInterface.IsSandboxPanelOpen)
+            { ShowFeedback("请先完成出生点操作并关闭沙盒配置，再开始本波。"); PlayInterfaceSound(DefenseSoundCue.UiDenied); return; }
+            gridInput.Cancel(); Submit(WorldCommand.StartWave()); if (Battle.State == BattleState.Combat) SetPaused(false);
+        }
         public void Restart() { if (World != null) { CreateWorld(); defenseInterface?.SessionStarted(); } }
-        public void ReturnToStart() { if (!AtStartPage && World != null) CreateWorld(); gridInput.Cancel(); ClearSelection(); AtStartPage = true; Paused = true; defenseInterface?.ShowStart(); }
+        public void ReturnToStart() { StopCameraFollow(); sandboxMode = false; if (!AtStartPage && World != null) CreateWorld(); gridInput.Cancel(); ClearSelection(); AtStartPage = true; Paused = true; defenseInterface?.ShowStart(); }
         public void ToggleTestLoad() => Submit(WorldCommand.SetTestLoad(!World.TestLoadEnabled));
         public void SellSelected() { if (SelectedBuilding != null) Submit(WorldCommand.Sell(SelectedBuildingId)); }
         public void DamageSelected() { if (SelectedBuilding != null) Submit(WorldCommand.Damage(SelectedBuildingId, SelectedBuilding.Definition.MaximumHealth)); }

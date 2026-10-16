@@ -147,10 +147,12 @@ namespace Defend.Unity
                     .Append(Energy(building.Definition.OutputAmount)).Append(" / ").Append((building.Definition.OutputIntervalTicks / (double)session.World.Settings.TicksPerSecond).ToString("0.#")).Append("秒");
             if (building.IsTurret)
             {
-                var weapon = session.Battle.Settings.GetTurret(building.Kind);
-                buffer.Append("\n\n").Append(CombatStatus(building.CombatState));
+                var weapon = session.World.GetTurretDefinition(building.Kind);
+                buffer.Append("\n\n").Append(DefenseInterface.RailgunChargeStatus(building) ?? CombatStatus(building.CombatState));
                 buffer.Append("\n单次能耗 ").Append(Energy(weapon.EnergyPerShot)).Append(" · 伤害 ").Append(weapon.Damage);
-                buffer.Append("\n射程 ").Append(weapon.Range.ToString("0.#")).Append(" · 间隔 ").Append((weapon.CooldownTicks / (double)session.World.Settings.TicksPerSecond).ToString("0.#")).Append("秒");
+                buffer.Append("\n射程 ").Append(weapon.Range.ToString("0.#")).Append(" · 最短射击周期 ").Append(((weapon.CooldownTicks + weapon.ChargeTicks) / (double)session.World.Settings.TicksPerSecond).ToString("0.#")).Append("秒");
+                if (weapon.IsPiercing) buffer.Append("\n蓄力 ").Append((weapon.ChargeTicks / (double)session.World.Settings.TicksPerSecond).ToString("0.#"))
+                    .Append("秒 · 射后冷却 ").Append((weapon.CooldownTicks / (double)session.World.Settings.TicksPerSecond).ToString("0.#")).Append("秒");
                 buffer.Append("\n实际伤害 ").Append(building.DamageDealt).Append(" · 缺能 ").Append((building.EnergyWaitTicks / (double)session.World.Settings.TicksPerSecond).ToString("0.#")).Append("秒");
             }
             if (building.IsConsumer)
@@ -240,6 +242,8 @@ namespace Defend.Unity
                 case TurretCombatState.WaitingForEnergy: return "能量不足，等待供给";
                 case TurretCombatState.CoolingDown: return "准备下一次攻击";
                 case TurretCombatState.Fired: return "正在射击";
+                case TurretCombatState.Aiming: return "正在转向瞄准";
+                case TurretCombatState.Charging: return "正在蓄力";
                 default: return "寻找射程内的敌人";
             }
         }

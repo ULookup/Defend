@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Defend.Simulation;
 using Defend.PhaseFiveEffects;
@@ -6,16 +6,23 @@ using UnityEngine;
 
 namespace Defend.Unity
 {
-    /// <summary>逐逻辑步消费结算记录；插值只推进表现时钟，不参与命中、到货或寻路。</summary>
+    /// <summary>逐逻辑步保存不可变结果，按共同显示时刻触发发射、接触与受击反馈。</summary>
     public sealed class CombatArtPresentation : MonoBehaviour
     {
-        private const float MaximumRapidShotDelaySeconds = 1.25f;
         [SerializeField] private EffectPool pool;
+        [SerializeField] private ProjectilePresentation projectiles;
+        [SerializeField] private DamageNumberPresentation damageNumbers;
+        [SerializeField] private RailgunLaserPresentation railgunLaserPrefab;
+        private readonly Dictionary<long, RailgunLaserPresentation> railgunLasers = new Dictionary<long, RailgunLaserPresentation>();
         private GameWorld world;
         private WorldPresentation buildings;
         private BattlePresentation enemies;
+        private DefenseAudio audio;
         private long lastTick = -1, sequence, stateTick = -1, stateSelection = -1;
         private double presentationSeconds;
+        private double audioDisplaySeconds;
+        private bool presentationPaused;
+        private readonly CombatDisplayQueue displayQueue = new CombatDisplayQueue();
         private readonly Dictionary<long, EffectHandle> muzzleHandles = new Dictionary<long, EffectHandle>();
         private readonly Dictionary<(long id, long tick), EffectHandle> transferHandles = new Dictionary<(long, long), EffectHandle>();
         private readonly HashSet<(long id, long tick)> travelling = new HashSet<(long, long)>();
@@ -25,28 +32,26 @@ namespace Defend.Unity
         private readonly Dictionary<(string effect, long id), Vector3> wantedStates = new Dictionary<(string, long), Vector3>();
         private readonly List<(string effect, long id)> retiredStates = new List<(string, long)>();
         private readonly HashSet<long> connected = new HashSet<long>();
-        private readonly List<long> retiredMuzzles = new List<long>();
-        private sealed class RapidTurretTracking
+        private sealed class EnergyFrame
         {
-            public BuildingState Building;
-            public RapidTurretMotion Motion;
-            public EnemyState Target;
-            public long LastShotEnemyId;
-            public int LifeGeneration, PositionRevision;
-            public ShotSnapshot PendingShot;
-            public bool HasPendingShot;
-            public float PendingAge, VisualCooldownRemaining;
+            public double Time;
+            public readonly List<EnergyTransferSnapshot> Departures = new List<EnergyTransferSnapshot>();
+            public readonly List<EnergyTransferSnapshot> Deliveries = new List<EnergyTransferSnapshot>();
+            public readonly List<EnergyTransferSnapshot> Transfers = new List<EnergyTransferSnapshot>();
         }
-        private readonly Dictionary<long, RapidTurretTracking> rapidTurrets = new Dictionary<long, RapidTurretTracking>();
-        private readonly List<long> retiredRapidTurrets = new List<long>();
+        private readonly Queue<(double time, long enemyId, Vector3 source, Vector3 target)> heavyContacts =
+            new Queue<(double, long, Vector3, Vector3)>();
+        private readonly Queue<(double time, EnemyKind kind, Vector3 position)> enemyAttacks =
+            new Queue<(double, EnemyKind, Vector3)>();
+        private readonly Queue<EnergyFrame> energyFrames = new Queue<EnergyFrame>();
+        private readonly Dictionary<long, List<TurretAimSnapshot>> aimFrames = new Dictionary<long, List<TurretAimSnapshot>>();
+        private readonly Dictionary<long, double> displayedRailgunShots = new Dictionary<long, double>();
         public int ObservedShots { get; private set; }
         public int PlayedRapidShots { get; private set; }
-        public int MergedRapidShots { get; private set; }
-        public int ExpiredRapidShots { get; private set; }
-        public int PendingRapidShots
-        {
-            get { int count = 0; foreach (var tracking in rapidTurrets.Values) if (tracking.HasPendingShot) count++; return count; }
-        }
+        // 保留已有诊断消费者，实际发射从不合并、过期或等待表现转向。
+        public int MergedRapidShots => 0;
+        public int ExpiredRapidShots => 0;
+        public int PendingRapidShots => 0;
         public int ObservedDeliveries { get; private set; }
         public int ObservedDeaths { get; private set; }
         public int ObservedBuildingHits { get; private set; }
@@ -59,286 +64,363 @@ namespace Defend.Unity
         public double PresentationSeconds => presentationSeconds;
         public EffectPool Pool => pool;
         public bool IsBoundTo(GameWorld value) => world == value;
+        public void ConfigureFeedback(ProjectilePresentation projectileViews, DamageNumberPresentation numbers)
+        { projectiles = projectileViews; damageNumbers = numbers; }
+        public void ConfigureAudio(DefenseAudio value) => audio = value;
 
         public void ResetSession()
         {
-            pool.StopAll();
-            foreach (var tracking in rapidTurrets.Values) if (tracking.Motion != null) tracking.Motion.ResetPose();
-            rapidTurrets.Clear(); retiredRapidTurrets.Clear();
+            foreach (var laser in railgunLasers.Values)
+                if (laser != null) { laser.ResetSession(); Destroy(laser.gameObject); }
+            railgunLasers.Clear();
+            if (pool != null) pool.StopAll();
+            audio?.StopChargeSounds();
+            projectiles?.ResetSession(); damageNumbers?.ResetSession();
+            if (buildings != null)
+                foreach (long id in aimFrames.Keys) buildings.FindView(id)?.ModelAnchors?.ResetPose();
+            presentationPaused = false;
             world = null; lastTick = stateTick = stateSelection = -1; sequence = 0; presentationSeconds = 0;
+            displayQueue.Clear(); energyFrames.Clear(); aimFrames.Clear(); heavyContacts.Clear(); enemyAttacks.Clear();
+            displayedRailgunShots.Clear();
             muzzleHandles.Clear(); transferHandles.Clear(); states.Clear(); wantedStates.Clear();
             travelling.Clear(); retiredTransfers.Clear(); retiredStates.Clear(); connected.Clear();
             ObservedShots = ObservedDeliveries = ObservedDeaths = ObservedBuildingHits = ObservedRepairs = ObservedShieldHits = ObservedShieldBreaks = 0;
-            PlayedRapidShots = MergedRapidShots = ExpiredRapidShots = 0;
-            SuppressedEnergyEndpoints = 0;
+            PlayedRapidShots = SuppressedEnergyEndpoints = 0;
         }
 
-        public void Initialize(GameWorld value, WorldPresentation buildingViews, BattlePresentation enemyViews)
+        public void Initialize(GameWorld value, WorldPresentation buildingViews, BattlePresentation enemyViews, bool observeCurrentEvents = true)
         {
             world = value; buildings = buildingViews; enemies = enemyViews;
             pool.AutomaticAdvance = false; pool.Paused = false; pool.Initialize();
             presentationSeconds = world.CurrentTick / (double)world.Settings.TicksPerSecond;
-            ObserveStep(world);
-        }
-
-        private void AdvanceTo(double seconds)
-        {
-            if (seconds <= presentationSeconds) return;
-            float elapsed = (float)(seconds - presentationSeconds);
-            AdvanceRapidTurrets(elapsed);
-            pool.Advance(elapsed);
-            presentationSeconds = seconds;
-            PlayReadyRapidShots();
-        }
-
-        private void AdvanceRapidTurrets(float seconds)
-        {
-            foreach (var tracking in rapidTurrets.Values)
-            {
-                if (!CanPresentRapidTurret(tracking)) { tracking.HasPendingShot = false; continue; }
-                tracking.VisualCooldownRemaining = Mathf.Max(0f, tracking.VisualCooldownRemaining - seconds);
-                if (tracking.HasPendingShot)
-                {
-                    tracking.PendingAge += seconds;
-                    if (tracking.PendingAge > MaximumRapidShotDelaySeconds)
-                    {
-                        tracking.HasPendingShot = false;
-                        ExpiredRapidShots++;
-                    }
-                }
-                if (tracking.HasPendingShot)
-                    tracking.Motion.SetAimTarget(Point(tracking.PendingShot.TargetX, tracking.PendingShot.TargetZ, .35f));
-                else if (tracking.Target != null && tracking.Target.IsAlive)
-                    tracking.Motion.SetAimTarget(EnemyAimPoint(tracking.Target));
-                tracking.Motion.Advance(seconds);
-            }
-        }
-
-        private static bool CanPresentRapidTurret(RapidTurretTracking tracking) =>
-            tracking.Motion != null && tracking.Motion.isActiveAndEnabled && tracking.Building.IsAlive && !tracking.Building.IsSold &&
-            tracking.LifeGeneration == tracking.Building.LifeGeneration && tracking.PositionRevision == tracking.Building.PositionRevision;
-
-        private void PlayReadyRapidShots()
-        {
-            foreach (var tracking in rapidTurrets.Values) TryPlayRapidShot(tracking);
-        }
-
-        private void TryPlayRapidShot(RapidTurretTracking tracking)
-        {
-            if (!tracking.HasPendingShot) return;
-            if (!CanPresentRapidTurret(tracking)) { tracking.HasPendingShot = false; return; }
-            if (tracking.VisualCooldownRemaining > .00001f) return;
-            ShotSnapshot shot = tracking.PendingShot;
-            Vector3 target = Point(shot.TargetX, shot.TargetZ, .35f);
-            if (!tracking.Motion.IsHorizontallyAimed(target)) return;
-            tracking.HasPendingShot = false;
-            float interval = world.Battle.Settings.GetTurret(shot.TurretKind).CooldownTicks / (float)world.Settings.TicksPerSecond;
-            tracking.VisualCooldownRemaining = interval;
-            tracking.Motion.NotifyShot(interval);
-            PlayedRapidShots++;
-            PlayShot(shot);
-        }
-
-        private Vector3 EnemyAimPoint(EnemyState enemy)
-        {
-            var view = enemies == null ? null : enemies.FindView(enemy.Id);
-            // 读取已经插值的可见目标，保留高度分量；不把瞄准结果写回模拟。
-            return view == null ? Point(enemy.X, enemy.Z, .35f) : view.transform.position + Vector3.up * .35f;
-        }
-
-        private void RefreshRapidTurretTargets()
-        {
-            retiredRapidTurrets.Clear();
-            foreach (var item in rapidTurrets)
-                if (item.Value.Motion == null || item.Value.Building.IsSold || !item.Value.Building.IsAlive)
-                {
-                    if (item.Value.Motion != null) item.Value.Motion.ResetPose();
-                    retiredRapidTurrets.Add(item.Key);
-                }
-            foreach (long id in retiredRapidTurrets) rapidTurrets.Remove(id);
-            if (world.Battle == null) return;
-            foreach (BuildingState building in world.Buildings)
-            {
-                if (building.Kind != BuildingKind.Turret || !building.IsAlive || building.IsSold) continue;
-                if (!rapidTurrets.TryGetValue(building.Id, out var tracking))
-                {
-                    var view = buildings.FindView(building.Id);
-                    var motion = view == null || view.ModelAnchors == null ? null : view.ModelAnchors.RapidMotion;
-                    if (motion == null || !motion.IsConfigured) continue;
-                    motion.ResetPose();
-                    tracking = new RapidTurretTracking { Building = building, Motion = motion,
-                        LifeGeneration = building.LifeGeneration, PositionRevision = building.PositionRevision };
-                    rapidTurrets.Add(building.Id, tracking);
-                }
-                if (tracking.LifeGeneration != building.LifeGeneration || tracking.PositionRevision != building.PositionRevision)
-                {
-                    StopMuzzle(building.Id);
-                    tracking.Motion.ResetPose(); tracking.Target = null; tracking.LastShotEnemyId = 0;
-                    tracking.HasPendingShot = false; tracking.PendingAge = tracking.VisualCooldownRemaining = 0f;
-                    tracking.LifeGeneration = building.LifeGeneration; tracking.PositionRevision = building.PositionRevision;
-                }
-                // 冷却期间沿用仍有效的真实射击目标；其他时段按模拟的距离、身份顺序预瞄。
-                // 额外一格只提前转向，不改变射程、目标选择、能量消耗或伤害。
-                double trackingRange = world.Battle.Settings.GetTurret(building.Kind).Range + 1;
-                double nearestDistance = trackingRange * trackingRange;
-                bool retainShotTarget = world.CurrentTick < building.NextShotTick && tracking.Target != null &&
-                    tracking.Target.IsAlive && tracking.Target.Id == tracking.LastShotEnemyId &&
-                    EnemyDistanceSquared(building, tracking.Target) <= nearestDistance;
-                if (!retainShotTarget)
-                {
-                    tracking.Target = null;
-                    foreach (EnemyState enemy in world.Battle.Enemies)
-                    {
-                        if (!enemy.IsAlive) continue;
-                        double distance = EnemyDistanceSquared(building, enemy);
-                        if (distance > nearestDistance || (distance == nearestDistance && tracking.Target != null && enemy.Id > tracking.Target.Id)) continue;
-                        tracking.Target = enemy; nearestDistance = distance;
-                    }
-                }
-                if (!tracking.HasPendingShot && tracking.Target != null) tracking.Motion.SetAimTarget(EnemyAimPoint(tracking.Target));
-                if (tracking.Target == null || building.CombatState == TurretCombatState.WaitingForEnergy ||
-                    building.CombatState == TurretCombatState.Searching)
-                    tracking.Motion.StopFiring();
-            }
-        }
-
-        private static double EnemyDistanceSquared(BuildingState building, EnemyState enemy)
-        {
-            double x = enemy.X - building.CenterX, z = enemy.Z - building.CenterZ;
-            return x * x + z * z;
-        }
-
-        public void Refresh(double displayTick, long selectedId, bool paused, float frameSeconds)
-        {
-            if (world == null) return;
-            // 结局允许最后一次爆炸自然结束；用户暂停始终冻结所有效果。
-            if (world.Battle != null && world.Battle.IsFinished)
-            {
-                StopStates();
-                foreach (var handle in transferHandles.Values) pool.Stop(handle);
-                transferHandles.Clear();
-                if (!paused)
-                {
-                    float elapsed = Mathf.Min(frameSeconds, .1f);
-                    AdvanceRapidTurrets(elapsed);
-                    pool.Advance(elapsed);
-                    PlayReadyRapidShots();
-                }
-            }
+            if (observeCurrentEvents) ObserveStep(world);
             else
             {
-                // 普通刷新以暂停标志为准；显式单步仍由 ObserveStep 推进一次表现时间。
-                if (!paused) AdvanceTo(displayTick / world.Settings.TicksPerSecond);
-                RefreshStates(selectedId);
+                lastTick = world.CurrentTick;
+                var energy = new EnergyFrame { Time = presentationSeconds };
+                energy.Transfers.AddRange(world.Energy.Transfers); energyFrames.Enqueue(energy);
             }
         }
 
         public void ObserveStep(GameWorld value)
         {
-            if (world != value || lastTick == value.CurrentTick) return;
-            AdvanceTo(world.CurrentTick / (double)world.Settings.TicksPerSecond);
+            if (world != value) return;
+            displayQueue.Observe(world.Events, world.Battle?.Shots);
+            enemies?.ObserveStep(world);
+            projectiles?.ObserveStep(world);
+            if (lastTick == world.CurrentTick) return;
             lastTick = world.CurrentTick;
-            RefreshRapidTurretTargets();
-            retiredMuzzles.Clear();
-            foreach (var item in muzzleHandles)
-            {
-                var building = world.FindBuilding(item.Key);
-                if (!item.Value.IsValid || building == null || building.IsSold || !building.IsAlive)
-                { pool.Stop(item.Value); retiredMuzzles.Add(item.Key); }
-            }
-            foreach (long id in retiredMuzzles) muzzleHandles.Remove(id);
-            // 先处理关键结算，最后处理运输与常驻效果，避免装饰挤掉实际伤害反馈。
-            foreach (WorldEventSnapshot result in world.Events)
-            {
-                Vector3 position = Point(result.X, result.Z, .35f);
-                string effect;
-                switch (result.Kind)
-                {
-                    case WorldEventKind.EnemyDeath: effect = "EnemyDeath"; ObservedDeaths++; break;
-                    case WorldEventKind.BuildingDestroyed: effect = "BuildingDestruction"; StopMuzzle(result.SubjectId); break;
-                    case WorldEventKind.BuildingHit: effect = "BuildingHit"; ObservedBuildingHits++; break;
-                    case WorldEventKind.Repair: effect = "RepairComplete"; ObservedRepairs++; break;
-                    case WorldEventKind.ShieldHit: effect = "ShieldHit"; ObservedShieldHits++; break;
-                    case WorldEventKind.ShieldBreak: effect = "ShieldBreak"; ObservedShieldBreaks++; break;
-                    default: effect = "EnemyHit"; break;
-                }
-                // 死亡不借用即将回收的模型；建筑损毁姿态由 BuildingView 的存活状态持续控制。
-                Play(effect, position, position);
-            }
             if (world.Battle != null)
+                foreach (var aim in world.Battle.TurretAims)
+                {
+                    if (!aimFrames.TryGetValue(aim.TurretId, out var frames))
+                    { frames = new List<TurretAimSnapshot>(); aimFrames.Add(aim.TurretId, frames); }
+                    frames.Add(aim);
+                }
+            if (world.Battle != null)
+                foreach (var enemy in world.Battle.Enemies)
+                {
+                    if (enemy.LastAttackTick == world.CurrentTick)
+                        enemyAttacks.Enqueue((world.CurrentTick / (double)world.Settings.TicksPerSecond,
+                            enemy.Kind, Point(enemy.X, enemy.Z, .4f)));
+                    if (enemy.Kind == EnemyKind.Heavy && enemy.LastAttackTick == world.CurrentTick)
+                        heavyContacts.Enqueue((world.CurrentTick / (double)world.Settings.TicksPerSecond, enemy.Id,
+                            Point(enemy.X, enemy.Z, .25f), Point(enemy.LastAttackTargetX, enemy.LastAttackTargetZ, .4f)));
+                }
+            var energy = new EnergyFrame { Time = world.CurrentTick / (double)world.Settings.TicksPerSecond };
+            energy.Departures.AddRange(world.Energy.Departures); energy.Deliveries.AddRange(world.Energy.Deliveries);
+            energy.Transfers.AddRange(world.Energy.Transfers); energyFrames.Enqueue(energy);
+        }
+
+        /// <summary>只推进已显示反馈。先调用再交付新结果，单步的新反馈保持初始状态。</summary>
+        public void AdvanceFeedback(float seconds)
+        {
+            if (seconds <= 0f) return;
+            // 终局后模拟时钟停在最后一步，允许已经发出的短效果完成收尾；主动暂停仍由调用者冻结。
+            if (world?.Battle != null && world.Battle.IsFinished && presentationSeconds >= world.CurrentTick / (double)world.Settings.TicksPerSecond)
             {
-                foreach (ShotSnapshot shot in world.Battle.Shots) if (shot.Tick == lastTick) Fire(shot);
-                foreach (EnemyState enemy in world.Battle.Enemies)
-                    if (enemy.Kind == EnemyKind.Heavy && enemy.LastAttackTick == lastTick)
-                    {
-                        var view = enemies.FindView(enemy.Id);
-                        Play("HeavyContact", Point(enemy.X, enemy.Z, .25f), Point(enemy.LastAttackTargetX, enemy.LastAttackTargetZ, .4f),
-                            view == null ? null : view.ModelRoot);
-                    }
+                foreach (var laser in railgunLasers.Values) if (laser != null) laser.Advance(seconds);
+                foreach (var id in aimFrames.Keys) buildings.FindView(id)?.ModelAnchors?.RailgunMotion?.Advance(seconds);
             }
-            foreach (EnergyTransferSnapshot arrival in world.Energy.Deliveries)
+            pool?.AdvanceDomains(0f, seconds);
+            damageNumbers?.AdvanceFeedback(seconds);
+            enemies?.AdvanceFeedback(seconds);
+        }
+
+        public void Refresh(double displayTick, long selectedId, bool paused, float frameSeconds)
+        {
+            if (world == null) return;
+            presentationPaused = paused;
+            audio?.SetCombatPaused(paused);
+            if (!paused) AdvanceFeedback(Mathf.Max(0f, frameSeconds));
+            FlushToTick(displayTick, selectedId, advanceModelTime: !paused);
+        }
+
+        public void FlushToTick(double displayTick, long selectedId, bool advanceModelTime = true)
+        {
+            if (world == null) return;
+            double seconds = Math.Max(presentationSeconds, displayTick / world.Settings.TicksPerSecond);
+            float elapsed = (float)(seconds - presentationSeconds);
+            // 护盾收拢与恢复使用显示时钟；新命中在本帧推进后交付，避免单步吃掉初始状态。
+            buildings?.AdvanceShieldPresentation(elapsed);
+            // 暂停事务仍即时交付结果，但不推进机械动作；显式单步保留默认推进。
+            if (advanceModelTime) buildings?.AdvanceModelPresentation(elapsed);
+            pool.AdvanceDomains(elapsed, 0f);
+            foreach (var laser in railgunLasers.Values) if (laser != null) laser.Advance(elapsed);
+            AdvanceAims(seconds, elapsed);
+            enemies?.Refresh(world, seconds * world.Settings.TicksPerSecond);
+            projectiles?.Refresh(seconds, presentationPaused);
+            audioDisplaySeconds = seconds;
+            displayQueue.Drain(seconds, PresentResult, Fire);
+            while (enemyAttacks.Count > 0 && enemyAttacks.Peek().time <= seconds + 1e-9)
             {
-                ObservedDeliveries++;
-                PlayEnergyEndpoint("EnergyArrival", Port(arrival.TargetId, arrival.TargetX, arrival.TargetZ));
+                var attack = enemyAttacks.Dequeue();
+                if (seconds - attack.time <= .25)
+                    audio?.PlayAt(attack.kind == EnemyKind.Heavy ? DefenseSoundCue.HeavyEnemyAttack : DefenseSoundCue.EnemyAttack,
+                        attack.position);
             }
-            travelling.Clear();
-            foreach (EnergyTransferSnapshot transfer in world.Energy.Transfers) travelling.Add((transfer.Id, transfer.StartTick));
-            retiredTransfers.Clear();
-            foreach (var item in transferHandles)
-                if (!travelling.Contains(item.Key)) { pool.Stop(item.Value); retiredTransfers.Add(item.Key); }
-            foreach (var key in retiredTransfers) transferHandles.Remove(key);
-            foreach (EnergyTransferSnapshot departure in world.Energy.Departures)
+            while (heavyContacts.Count > 0 && heavyContacts.Peek().time <= seconds + 1e-9)
             {
-                Vector3 from = Port(departure.SourceId, departure.SourceX, departure.SourceZ);
-                Vector3 to = Port(departure.TargetId, departure.TargetX, departure.TargetZ);
-                var request = Request(from, to);
-                request.ConfirmedTransfer = true;
-                var handle = pool.TryPlay("EnergyTransfer", request,
-                    (departure.ArrivalTick - departure.StartTick) / (float)world.Settings.TicksPerSecond);
-                if (handle.IsValid) transferHandles[(departure.Id, departure.StartTick)] = handle;
-                PlayEnergyEndpoint("PortSend", from);
+                var contact = heavyContacts.Dequeue();
+                pool.TryPlay("HeavyContact", Request(contact.source, contact.target, enemies.FindView(contact.enemyId)?.ModelRoot), 0, EffectTimeDomain.Feedback);
             }
+            while (energyFrames.Count > 0 && energyFrames.Peek().Time <= seconds + 1e-9)
+                PresentEnergy(energyFrames.Dequeue(), seconds);
+            presentationSeconds = seconds;
+            if (world.Battle != null && world.Battle.IsFinished && seconds >= world.CurrentTick / (double)world.Settings.TicksPerSecond)
+            {
+                audio?.StopChargeSounds();
+                StopStates();
+                foreach (var handle in transferHandles.Values) pool.Stop(handle);
+                transferHandles.Clear();
+            }
+            else RefreshStates(selectedId);
+        }
+
+        private void AdvanceAims(double seconds, float elapsed)
+        {
+            foreach (var pair in aimFrames)
+            {
+                var frames = pair.Value;
+                while (frames.Count > 1 && frames[0].EndTime < seconds - 1e-9) frames.RemoveAt(0);
+                var aim = frames[0];
+                var sourceState = world.FindBuilding(pair.Key);
+                if (sourceState != null && world.Battle.State == BattleState.Preparing)
+                {
+                    var preparing = buildings.FindView(pair.Key)?.ModelAnchors;
+                    preparing?.ApplyAuthoritativeAim(sourceState.Kind == BuildingKind.PiercingRailgun
+                        ? sourceState.FacingDegrees : sourceState.OrientationDegrees, 0);
+                    preparing?.RailgunMotion?.SetCharge(0);
+                    preparing?.RailgunMotion?.Advance(elapsed);
+                    audio?.SetRailgunCharge(pair.Key, Vector3.zero, 0, false);
+                    continue;
+                }
+                if (sourceState != null && sourceState.Kind == BuildingKind.PiercingRailgun)
+                {
+                    float chargeProgress = aim.EndTime > aim.StartTime
+                        ? Mathf.Lerp((float)aim.PreviousChargeProgress, (float)aim.ChargeProgress,
+                            Mathf.Clamp01((float)((seconds - aim.StartTime) / (aim.EndTime - aim.StartTime))))
+                        : (float)aim.ChargeProgress;
+                    audio?.SetRailgunCharge(pair.Key, new Vector3((float)aim.MuzzleX, (float)aim.MuzzleY, (float)aim.MuzzleZ),
+                        chargeProgress, !presentationPaused && sourceState.IsAlive && !sourceState.IsSold &&
+                        sourceState.LifeGeneration == aim.SourceGeneration && world.Battle.State == BattleState.Combat &&
+                        (aim.CombatState == TurretCombatState.Charging || aim.ChargeProgress > 0) &&
+                        (!displayedRailgunShots.TryGetValue(pair.Key, out double firedAt) || aim.EndTime > firedAt + 1e-9) &&
+                        seconds >= aim.StartTime && seconds <= aim.EndTime + .1);
+                }
+                var anchors = buildings.FindView(pair.Key)?.ModelAnchors;
+                if (anchors == null || seconds < aim.StartTime) continue;
+                float progress = aim.EndTime > aim.StartTime ? Mathf.Clamp01((float)((seconds - aim.StartTime) / (aim.EndTime - aim.StartTime))) : 1f;
+                anchors.ApplyAuthoritativeAim(Mathf.LerpAngle((float)aim.PreviousYawDegrees, (float)aim.YawDegrees, progress),
+                    Mathf.Lerp((float)aim.PreviousPitchDegrees, (float)aim.PitchDegrees, progress));
+                anchors.RapidMotion?.Advance(elapsed);
+                if (anchors.RailgunMotion != null)
+                {
+                    if (sourceState == null || !sourceState.IsAlive || sourceState.IsSold || sourceState.LifeGeneration != aim.SourceGeneration)
+                    { anchors.RailgunMotion.ResetPose(); continue; }
+                    anchors.RailgunMotion.SetCharge(Mathf.Lerp((float)aim.PreviousChargeProgress, (float)aim.ChargeProgress, progress));
+                    anchors.RailgunMotion.Advance(elapsed);
+                }
+            }
+        }
+
+        private void PresentResult(WorldEventSnapshot result)
+        {
+            Vector3 position = Point(result.X, result.Z, .35f);
+            float shieldRadius = 0;
+            if (result.Kind == WorldEventKind.ShieldBreak)
+            {
+                var shield = buildings.FindView(result.SubjectId)?.Shield?.Visual;
+                if (shield != null && shield.IsConfigured)
+                {
+                    position = shield.transform.position;
+                    // 现役护罩由单位球面制作，水平世界缩放就是破裂环应覆盖的半径。
+                    Vector3 scale = shield.transform.lossyScale;
+                    shieldRadius = Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.z));
+                }
+            }
+            PresentResultAudio(result, position);
+            string effect;
+            switch (result.Kind)
+            {
+                case WorldEventKind.ResonanceAbsorbed:
+                case WorldEventKind.ResonanceRepair:
+                case WorldEventKind.MagneticStormCharging:
+                    buildings.ApplyResult(result); return;
+                case WorldEventKind.MagneticStormBurst:
+                    return;
+                case WorldEventKind.EnemyHit:
+                    if (result.Amount <= 0) return;
+                    position = result.Hit.SplashRadius > 0
+                        ? Point(result.Hit.EnemyX, result.Hit.EnemyZ, .35f)
+                        : new Vector3((float)result.Hit.X, (float)result.Hit.Y, (float)result.Hit.Z);
+                    damageNumbers?.Show(result);
+                    enemies?.ApplyResult(result);
+                    // 范围攻击在圆心只有一次完整冲击；每名受伤敌人只产生小型接触火花。
+                    effect = result.Hit.SplashRadius > 0 ? "EnemyHit" :
+                        result.Hit.TurretKind == BuildingKind.BurstTurret ? "HeavyImpact" : "RapidImpact";
+                    break;
+                case WorldEventKind.Explosion:
+                    var explosion = Request(new Vector3((float)result.Hit.ExplosionX, 0, (float)result.Hit.ExplosionZ), position);
+                    explosion.Radius = (float)result.Hit.SplashRadius;
+                    pool.TryPlay("AreaImpact", explosion, 0, EffectTimeDomain.Feedback); return;
+                case WorldEventKind.EnemyDeath:
+                    effect = "EnemyDeath"; ObservedDeaths++; enemies?.ApplyResult(result); break;
+                case WorldEventKind.BuildingDestroyed:
+                    effect = "BuildingDestruction"; StopMuzzle(result.SubjectId); buildings.ApplyResult(result); break;
+                case WorldEventKind.BuildingHit:
+                    effect = "BuildingHit"; ObservedBuildingHits++; buildings.ApplyResult(result); break;
+                case WorldEventKind.Repair:
+                    effect = "RepairComplete"; ObservedRepairs++; buildings.ApplyResult(result); break;
+                case WorldEventKind.ShieldHit:
+                    ObservedShieldHits++; buildings.ApplyResult(result);
+                    if (buildings.FindView(result.SubjectId)?.Shield?.Visual?.IsConfigured == true) return;
+                    effect = "ShieldHit"; break;
+                case WorldEventKind.ShieldBreak:
+                    ObservedShieldBreaks++; buildings.ApplyResult(result); effect = "ShieldBreak"; break;
+                default: return;
+            }
+            Vector3 direction = new Vector3((float)result.Hit.DirectionX, (float)result.Hit.DirectionY, (float)result.Hit.DirectionZ);
+            var feedback = Request(position, position + direction);
+            if (effect == "ShieldBreak" && shieldRadius > 0)
+            {
+                feedback.Radius = shieldRadius;
+                // 破裂环与球形护罩的水平截面一致，不沿攻击方向倾倒整个护罩。
+                feedback.Rotation = Quaternion.identity;
+            }
+            if (effect == "RapidImpact" || effect == "HeavyImpact")
+            {
+                // 接触点与喷射方向分别传递，不能把方向向量当成命中特效的位置偏移。
+                feedback.Destination = position;
+                feedback.Rotation = direction.sqrMagnitude > .000001f
+                    ? Quaternion.LookRotation(-direction.normalized) : Quaternion.identity;
+            }
+            pool.TryPlay(effect, feedback, 0, EffectTimeDomain.Feedback);
         }
 
         private void Fire(ShotSnapshot shot)
         {
             ObservedShots++;
-            if (rapidTurrets.TryGetValue(shot.TurretId, out var tracking))
+            var source = new Vector3((float)shot.SourceX, (float)shot.SourceY, (float)shot.SourceZ);
+            audio?.SetRailgunCharge(shot.TurretId, source, 0, false);
+            if (shot.TurretKind == BuildingKind.PiercingRailgun) displayedRailgunShots[shot.TurretId] = shot.Time;
+            if (audioDisplaySeconds - shot.Time <= .25)
+                audio?.PlayAt(shot.TurretKind == BuildingKind.PiercingRailgun ? DefenseSoundCue.RailgunFire :
+                    shot.TurretKind == BuildingKind.BurstTurret ? DefenseSoundCue.HeavyFire :
+                    shot.TurretKind == BuildingKind.AreaTurret ? DefenseSoundCue.AreaFire : DefenseSoundCue.RapidFire, source);
+            var target = source + new Vector3((float)shot.DirectionX, (float)shot.DirectionY, (float)shot.DirectionZ);
+            var sourceView = buildings.FindView(shot.TurretId);
+            var sourceState = world.FindBuilding(shot.TurretId);
+            bool matchesSource = sourceView != null && sourceView.gameObject.activeInHierarchy &&
+                sourceView.BuildingId == shot.TurretId && sourceState != null && sourceState.LifeGeneration == shot.SourceGeneration;
+            var anchors = matchesSource ? sourceView?.ModelAnchors : null;
+            if (shot.TurretKind == BuildingKind.PiercingRailgun)
             {
-                tracking.LastShotEnemyId = shot.EnemyId;
-                tracking.Target = null;
-                foreach (EnemyState enemy in world.Battle.Enemies)
-                    if (enemy.Id == shot.EnemyId && enemy.IsAlive) { tracking.Target = enemy; break; }
-                // 只保留最新一发未播放快照；转向耗时较长时合并表现，不积压或补射伤害。
-                if (tracking.HasPendingShot) MergedRapidShots++;
-                tracking.PendingShot = shot;
-                tracking.HasPendingShot = true;
-                tracking.PendingAge = 0f;
-                tracking.Motion.SetAimTarget(Point(shot.TargetX, shot.TargetZ, .35f));
-                TryPlayRapidShot(tracking);
+                anchors?.RailgunMotion?.NotifyShot();
+                if (railgunLaserPrefab != null)
+                {
+                    if (!railgunLasers.TryGetValue(shot.TurretId, out var laser) || laser == null)
+                    {
+                        laser = Instantiate(railgunLaserPrefab, transform);
+                        laser.Initialize(); railgunLasers[shot.TurretId] = laser;
+                    }
+                    laser.Play(source, new Vector3((float)shot.TargetX, (float)shot.TargetY, (float)shot.TargetZ));
+                }
                 return;
             }
-            var view = buildings.FindView(shot.TurretId);
-            // 新模型失去有效跟踪记录意味着已损毁或回收，不借用其旧姿态播放本步射击。
-            if (view != null && view.ModelAnchors != null && view.ModelAnchors.RapidMotion != null) return;
-            PlayShot(shot);
+            if (anchors?.RapidMotion != null)
+            {
+                float interval = world.GetTurretDefinition(shot.TurretKind).CooldownTicks / (float)world.Settings.TicksPerSecond;
+                anchors.RapidMotion.NotifyShot(interval); PlayedRapidShots++;
+            }
+            string prefix = shot.TurretKind == BuildingKind.BurstTurret ? "Heavy" : shot.TurretKind == BuildingKind.AreaTurret ? "Area" : "Rapid";
+            // 枪口采用权威发射位置，源建筑之后损毁也不改变已经发射的路径。
+            StopMuzzle(shot.TurretId);
+            var request = Request(source, target, anchors == null ? null : sourceView.VisualRoot);
+            request.AuthoritativeAim = true;
+            muzzleHandles[shot.TurretId] = pool.TryPlay(prefix == "Area" ? "AreaDischarge" : prefix + "Muzzle",
+                request, 0, EffectTimeDomain.Feedback);
         }
 
-        private void PlayShot(ShotSnapshot shot)
+        private void PresentResultAudio(WorldEventSnapshot result, Vector3 position)
         {
-            var view = buildings.FindView(shot.TurretId);
-            if (view == null) return;
-            StopMuzzle(shot.TurretId);
-            bool alive = world.FindBuilding(shot.TurretId)?.IsAlive == true;
-            var anchors = alive ? view.ModelAnchors : null;
-            Vector3 target = Point(shot.TargetX, shot.TargetZ, .35f);
-            Vector3 source = anchors == null ? Point(shot.SourceX, shot.SourceZ, .7f) : anchors.Aim(target, shot.Id);
-            string prefix = shot.TurretKind == BuildingKind.BurstTurret ? "Heavy" : shot.TurretKind == BuildingKind.AreaTurret ? "Area" : "Rapid";
-            muzzleHandles[shot.TurretId] = Play(prefix == "Area" ? "AreaDischarge" : prefix + "Muzzle", source, target, alive ? view.VisualRoot : null);
-            if (prefix != "Area") Play(prefix + "Tracer", source, target);
-            var impact = Request(target, target);
-            impact.Radius = (float)shot.SplashRadius;
-            pool.TryPlay(prefix + "Impact", impact);
+            if (audio == null) return;
+            if (result.Kind == WorldEventKind.BuildingDestroyed)
+                audio.SetRailgunCharge(result.SubjectId, position, 0, false);
+            // 卡顿或快进时只保留靠近当前显示时刻的声音，不补播一串已经过去的攻击。
+            if (audioDisplaySeconds - result.Time > .25) return;
+            switch (result.Kind)
+            {
+                case WorldEventKind.EnemyHit:
+                    if (result.Amount <= 0) return;
+                    position = result.Hit.SplashRadius > 0 ? Point(result.Hit.EnemyX, result.Hit.EnemyZ, .35f) :
+                        new Vector3((float)result.Hit.X, (float)result.Hit.Y, (float)result.Hit.Z);
+                    audio.PlayAt(result.Hit.TurretKind == BuildingKind.PiercingRailgun ? DefenseSoundCue.RailgunImpact :
+                        result.Hit.TurretKind == BuildingKind.BurstTurret ? DefenseSoundCue.HeavyImpact : DefenseSoundCue.MetalImpact, position);
+                    break;
+                case WorldEventKind.Explosion:
+                    audio.PlayAt(DefenseSoundCue.AreaExplosion, Point(result.Hit.ExplosionX, result.Hit.ExplosionZ, .25f));
+                    break;
+                case WorldEventKind.EnemyDeath:
+                    audio.PlayAt(result.Hit.EnemyKind == EnemyKind.Heavy || result.Hit.EnemyKind == EnemyKind.Demolisher
+                        ? DefenseSoundCue.HeavyEnemyDeath : DefenseSoundCue.EnemyDeath, position);
+                    break;
+                case WorldEventKind.BuildingHit:
+                    if (result.Amount > 0)
+                    {
+                        // 护盾吸收有独立事件；这里只反馈已经发生的生命损失。
+                        bool coreHit = world.FindBuilding(result.SubjectId)?.Kind == BuildingKind.Core;
+                        audio.PlayAt(coreHit ? DefenseSoundCue.CoreHit : DefenseSoundCue.BuildingHit, position);
+                    }
+                    break;
+                case WorldEventKind.BuildingDestroyed: audio.PlayAt(DefenseSoundCue.BuildingDestroyed, position); break;
+                case WorldEventKind.Repair: audio.PlayAt(DefenseSoundCue.Repair, position); break;
+                case WorldEventKind.ShieldHit: audio.PlayAt(DefenseSoundCue.ShieldHit, position); break;
+                case WorldEventKind.ShieldBreak: audio.PlayAt(DefenseSoundCue.ShieldBreak, position); break;
+            }
+        }
+
+        private void PresentEnergy(EnergyFrame frame, double displaySeconds)
+        {
+            foreach (EnergyTransferSnapshot arrival in frame.Deliveries)
+            { ObservedDeliveries++; PlayEnergyEndpoint("EnergyArrival", Port(arrival.TargetId, arrival.TargetX, arrival.TargetZ)); }
+            travelling.Clear();
+            foreach (EnergyTransferSnapshot transfer in frame.Transfers) travelling.Add((transfer.Id, transfer.StartTick));
+            retiredTransfers.Clear();
+            foreach (var item in transferHandles)
+                if (!travelling.Contains(item.Key)) { pool.Stop(item.Value); retiredTransfers.Add(item.Key); }
+            foreach (var key in retiredTransfers) transferHandles.Remove(key);
+            foreach (EnergyTransferSnapshot departure in frame.Departures)
+            {
+                Vector3 from = Port(departure.SourceId, departure.SourceX, departure.SourceZ);
+                Vector3 to = Port(departure.TargetId, departure.TargetX, departure.TargetZ);
+                var request = Request(from, to); request.ConfirmedTransfer = true;
+                var handle = pool.TryPlay("EnergyTransfer", request,
+                    (departure.ArrivalTick - departure.StartTick) / (float)world.Settings.TicksPerSecond);
+                pool.AdvanceHandle(handle, (float)Math.Max(0, displaySeconds - frame.Time));
+                if (handle.IsValid) transferHandles[(departure.Id, departure.StartTick)] = handle;
+                PlayEnergyEndpoint("PortSend", from);
+            }
         }
 
         private void StopMuzzle(long id)

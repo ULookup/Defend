@@ -41,6 +41,121 @@ namespace Defend.Unity
         public void Invalidate() { lastAppliedTick = -1; }
         public bool ShowNetwork { get; set; } = true;
         public bool ShowRanges { get; set; } = true;
+        private bool placementPreviewActive;
+        public bool PlacementPreviewActive
+        {
+            get => placementPreviewActive;
+            set { if (placementPreviewActive == value) return; placementPreviewActive = value; Invalidate(); }
+        }
+        private readonly Queue<BuildingDisplayFrame> displayFrames = new Queue<BuildingDisplayFrame>();
+        private readonly Dictionary<long, BuildingDisplayState> displayedBuildings = new Dictionary<long, BuildingDisplayState>();
+        private long lastObservedTick = -1;
+
+        private readonly struct BuildingDisplayState
+        {
+            public readonly BuildingState Source;
+            public readonly int Health, MaximumHealth;
+            public readonly long Energy, Capacity;
+            public readonly bool Alive, Sold;
+            public BuildingDisplayState(BuildingState state)
+            {
+                Source = state; Health = state.Health; MaximumHealth = state.Definition.MaximumHealth;
+                Energy = state.StoredEnergy; Capacity = state.Definition.EnergyCapacity;
+                Alive = state.IsAlive; Sold = state.IsSold;
+            }
+            public BuildingDisplayState(BuildingDisplayState state, int health)
+            {
+                Source = state.Source; Health = health; MaximumHealth = state.MaximumHealth;
+                Energy = state.Energy; Capacity = state.Capacity; Alive = health > 0; Sold = state.Sold;
+            }
+            public BuildingDisplayState(BuildingDisplayState state, long energy)
+            {
+                Source = state.Source; Health = state.Health; MaximumHealth = state.MaximumHealth;
+                Energy = energy; Capacity = state.Capacity; Alive = state.Alive; Sold = state.Sold;
+            }
+        }
+
+        private readonly struct BuildingDisplayFrame
+        {
+            public readonly long Tick;
+            public readonly BuildingDisplayState[] States;
+            public BuildingDisplayFrame(GameWorld world)
+            {
+                Tick = world.CurrentTick;
+                States = new BuildingDisplayState[world.Buildings.Count];
+                for (int index = 0; index < States.Length; index++) States[index] = new BuildingDisplayState(world.Buildings[index]);
+            }
+        }
+
+        /// <summary>保存本步的生命和真实储能；表现延迟期间不再读取可变的生命字段。</summary>
+        public void ObserveStep(GameWorld world)
+        {
+            if (lastObservedTick == world.CurrentTick) return;
+            displayFrames.Enqueue(new BuildingDisplayFrame(world));
+            lastObservedTick = world.CurrentTick;
+        }
+
+        public void ObserveCommands(GameWorld world)
+        {
+            displayFrames.Enqueue(new BuildingDisplayFrame(world));
+            Invalidate();
+        }
+
+        public void AdvanceFeedback(float seconds)
+        {
+            foreach (BuildingView view in buildingViews.Values) view.AdvanceFeedback(seconds);
+        }
+
+        /// <summary>在炮塔和端口读取 Transform 前同步摆放姿态；生命与能源仍由原显示快照顺序提交。</summary>
+        public void SynchronizeBuildingPoses(GameWorld world)
+        {
+            foreach (var pair in buildingViews)
+            {
+                var state = world.FindBuilding(pair.Key);
+                if (state != null && state.IsAlive && !state.IsSold) pair.Value.ApplyPlacementPose(state);
+            }
+        }
+
+        public void AdvanceShieldPresentation(float seconds)
+        {
+            foreach (BuildingView view in buildingViews.Values) view.AdvanceShieldPresentation(seconds);
+        }
+
+        public void AdvanceModelPresentation(float seconds)
+        {
+            foreach (BuildingView view in buildingViews.Values) view.AdvanceModelPresentation(seconds);
+        }
+
+        public void ApplyResult(WorldEventSnapshot result)
+        {
+            if (result.Kind == WorldEventKind.ResonanceAbsorbed || result.Kind == WorldEventKind.MagneticStormCharging)
+            {
+                if (buildingViews.TryGetValue(result.SubjectId, out BuildingView resonanceView))
+                {
+                    if (result.Kind == WorldEventKind.ResonanceAbsorbed) resonanceView.ResonanceMotion?.NotifyAbsorption();
+                    else resonanceView.ResonanceMotion?.NotifyStorm(false);
+                }
+                return;
+            }
+            bool shieldResult = result.Kind == WorldEventKind.ShieldHit || result.Kind == WorldEventKind.ShieldBreak;
+            if (!shieldResult && result.Kind != WorldEventKind.BuildingHit && result.Kind != WorldEventKind.Repair && result.Kind != WorldEventKind.ResonanceRepair) return;
+            if (!buildingViews.TryGetValue(result.SubjectId, out BuildingView view) ||
+                !displayedBuildings.TryGetValue(result.SubjectId, out BuildingDisplayState state)) return;
+            if (shieldResult)
+            {
+                // 先提交真实结算后的储能，再触发表现。破盾不会让空护盾短暂复现。
+                view.ApplyVitals(result.SubjectId, state.Health, state.MaximumHealth,
+                    result.ShieldAfter, state.Capacity, state.Alive && !state.Sold);
+                displayedBuildings[result.SubjectId] = new BuildingDisplayState(state, result.ShieldAfter);
+                if (result.Kind == WorldEventKind.ShieldHit && result.ShieldAbsorbed > 0)
+                    view.NotifyShieldHit(-new Vector3((float)result.Hit.DirectionX, (float)result.Hit.DirectionY, (float)result.Hit.DirectionZ));
+                return;
+            }
+            view.ApplyVitals(result.SubjectId, result.HealthAfter, result.MaximumHealth,
+                state.Energy, state.Capacity, result.HealthAfter > 0);
+            displayedBuildings[result.SubjectId] = new BuildingDisplayState(state, result.HealthAfter);
+            if (result.Kind == WorldEventKind.ResonanceRepair) view.ResonanceMotion?.NotifyRepair(true);
+        }
 
         public void Configure(BuildingView[] prefabs, BuildingView[] placed, EnergyTransferView energyPrefab,
             LineRenderer linePrefab, Transform buildings, Transform energy, Transform connections,
@@ -85,6 +200,8 @@ namespace Defend.Unity
             foreach (BuildingView view in buildingViews.Values)
                 if (!authoredViews.Contains(view)) buildingPools[view.Definition.Kind].Release(view);
             buildingViews.Clear();
+            displayFrames.Clear(); displayedBuildings.Clear(); lastObservedTick = -1;
+            foreach (BuildingState state in world.Buildings) displayedBuildings[state.Id] = new BuildingDisplayState(state);
             foreach (EnergyTransferView view in transferViews) transferPool.Release(view);
             transferViews.Clear();
             lastAppliedTick = -1;
@@ -107,6 +224,8 @@ namespace Defend.Unity
                 int x = Mathf.FloorToInt(view.transform.position.x);
                 int z = Mathf.FloorToInt(view.transform.position.z);
                 BuildingState state = world.FindBuildingAt(x, z);
+                if (world.IsSandbox && (state == null || state.Kind != view.Definition.Kind || buildingViews.ContainsKey(state.Id)))
+                { view.gameObject.SetActive(false); continue; }
                 if (state == null)
                     throw new System.InvalidOperationException("初始建筑未能放置，请检查场景位置与初始资金：" + view.name);
                 buildingViews.Add(state.Id, view);
@@ -115,15 +234,28 @@ namespace Defend.Unity
 
         public void Refresh(GameWorld world, long selectedId, double displayTick)
         {
+            bool changed = false;
+            while (displayFrames.Count > 0 && displayFrames.Peek().Tick <= displayTick + 0.000001)
+            {
+                BuildingDisplayFrame frame = displayFrames.Dequeue();
+                foreach (BuildingDisplayState state in frame.States) displayedBuildings[state.Source.Id] = state;
+                changed = true;
+            }
             // 静止建筑与连接只随逻辑状态或选择变化刷新，运输插值仍然每帧执行。
-            if (lastAppliedTick != world.CurrentTick || lastSelectedId != selectedId)
+            if (changed || lastAppliedTick != world.CurrentTick || lastSelectedId != selectedId)
             {
                 lastSelectedId = selectedId;
                 RefreshBuildings(world, selectedId);
                 RefreshConnections(world);
                 var selected = world.FindBuilding(selectedId);
-                DrawRange(selectionRange, selected == null ? 0 : selected.CenterX, selected == null ? 0 : selected.CenterZ,
-                    selected == null ? 0 : Range(world, selected.Definition), ShowRanges && selected != null && selected.IsAlive && !selected.IsSold);
+                RangeOutline.Draw(selectionRange, selected == null ? 0 : selected.CenterX, selected == null ? 0 : selected.CenterZ,
+                    selected == null ? 0 : Range(world, selected.Definition), ShowRanges && !PlacementPreviewActive && selected != null && selected.IsAlive && !selected.IsSold);
+                if (selected != null && selected.Kind == BuildingKind.PiercingRailgun)
+                {
+                    var weapon = world.GetTurretDefinition(selected.Kind);
+                    RangeOutline.DrawSector(selectionRange, selected.CenterX, selected.CenterZ, weapon.MinimumRange, weapon.Range,
+                        selected.FacingDegrees, weapon.FireArcHalfDegrees, ShowRanges && !PlacementPreviewActive && selected.IsAlive && !selected.IsSold);
+                }
                 lastAppliedTick = world.CurrentTick;
                 lastSelectedId = selectedId;
             }
@@ -135,8 +267,7 @@ namespace Defend.Unity
             removedBuildings.Clear();
             foreach (KeyValuePair<long, BuildingView> item in buildingViews)
             {
-                BuildingState state = world.FindBuilding(item.Key);
-                if (state == null || state.IsSold || !state.IsAlive)
+                if (!displayedBuildings.TryGetValue(item.Key, out BuildingDisplayState state) || state.Sold || !state.Alive)
                 {
                     if (authoredViews.Contains(item.Value)) item.Value.gameObject.SetActive(false);
                     else buildingPools[item.Value.Definition.Kind].Release(item.Value);
@@ -144,17 +275,21 @@ namespace Defend.Unity
                 }
             }
             foreach (long id in removedBuildings) buildingViews.Remove(id);
-            for (int index = 0; index < world.Buildings.Count; index++)
+            foreach (BuildingDisplayState display in displayedBuildings.Values)
             {
-                BuildingState state = world.Buildings[index];
-                if (state.IsSold || !state.IsAlive) continue;
+                BuildingState state = display.Source;
+                if (display.Sold || !display.Alive) continue;
                 if (!buildingViews.TryGetValue(state.Id, out BuildingView view))
                 {
                     view = buildingPools[state.Kind].Get();
                     view.name = state.Definition.DisplayName + " " + state.Id;
                     buildingViews.Add(state.Id, view);
                 }
-                view.Apply(state, state.Id == selectedId, world.CurrentTick);
+                view.ApplyVisualState(state, state.Id == selectedId, world.CurrentTick);
+                if (state.Kind == BuildingKind.PiercingRailgun && world.Battle.State == BattleState.Preparing)
+                    view.ModelAnchors?.ApplyAuthoritativeAim(state.FacingDegrees, 0);
+                view.ApplyVitals(state.Id, display.Health, display.MaximumHealth, display.Energy, display.Capacity, display.Alive);
+                view.ResonanceMotion?.SetCombatActive(world.Battle != null && world.Battle.State == BattleState.Combat);
             }
         }
 
@@ -170,24 +305,27 @@ namespace Defend.Unity
             previewRenderer.SetPropertyBlock(previewProperties);
         }
 
-        public void ShowPreviewRange(GameWorld world, BuildingDefinition definition, int x, int z, bool visible)
-            => DrawRange(previewRange, x + definition.Width * 0.5, z + definition.Depth * 0.5, Range(world, definition), visible);
-
-        private static double Range(GameWorld world, BuildingDefinition definition) =>
-            definition.Kind == BuildingKind.Reactor || definition.Kind == BuildingKind.Relay || definition.Kind == BuildingKind.Battery ? definition.TransmissionRange :
-            world.Battle != null && definition.Kind != BuildingKind.Core ? world.Battle.Settings.GetTurret(definition.Kind).Range : 0;
-
-        private static void DrawRange(LineRenderer line, double x, double z, double radius, bool visible)
+        public void ShowPreviewRange(GameWorld world, BuildingDefinition definition, int x, int z, bool visible, int facingDegrees = 0,
+            int orientationQuarterTurns = 0)
         {
-            if (line == null) return;
-            line.gameObject.SetActive(visible && radius > 0);
-            if (!visible || radius <= 0) return;
-            for (int index = 0; index < line.positionCount; index++)
+            if (previewRange == null) return;
+            bool energy = definition.Kind == BuildingKind.Reactor || definition.Kind == BuildingKind.Relay || definition.Kind == BuildingKind.Battery;
+            previewRange.startColor = previewRange.endColor = energy ? new Color(.3f, .95f, 1, .8f) : new Color(1, .7f, .22f, .8f);
+            double centerX = x + definition.GetFootprintWidth(orientationQuarterTurns) * .5;
+            double centerZ = z + definition.GetFootprintDepth(orientationQuarterTurns) * .5;
+            RangeOutline.Draw(previewRange, centerX, centerZ, Range(world, definition), visible && (PlacementPreviewActive || ShowRanges));
+            if (definition.Kind == BuildingKind.PiercingRailgun)
             {
-                double angle = index * System.Math.PI * 2 / (line.positionCount - 1);
-                line.SetPosition(index, new Vector3((float)(x + System.Math.Cos(angle) * radius), 0.12f, (float)(z + System.Math.Sin(angle) * radius)));
+                var weapon = world.GetTurretDefinition(definition.Kind);
+                RangeOutline.DrawSector(previewRange, centerX, centerZ, weapon.MinimumRange,
+                    weapon.Range, facingDegrees, weapon.FireArcHalfDegrees, visible && (PlacementPreviewActive || ShowRanges));
             }
         }
+
+        private static double Range(GameWorld world, BuildingDefinition definition) =>
+            definition.Resonance != null ? definition.Resonance.AbsorptionRange :
+            definition.Kind == BuildingKind.Reactor || definition.Kind == BuildingKind.Relay || definition.Kind == BuildingKind.Battery ? definition.TransmissionRange :
+            world.Battle != null && definition.Kind != BuildingKind.Core ? world.GetTurretDefinition(definition.Kind).Range : 0;
 
         private void RefreshTransfers(GameWorld world, double displayTick)
         {
