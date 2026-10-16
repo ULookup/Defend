@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!28 &2800000
+Texture2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: EfficiencyPalette
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 4
+  m_Width: 256
+  m_Height: 1
+  m_CompleteImageSize: 1024
+  m_MipsStripped: 0
+  m_TextureFormat: 4
+  m_MipCount: 1
+  m_IsReadable: 1
+  m_IsPreProcessed: 0
+  m_IgnoreMipmapLimit: 1
+  m_MipmapLimitGroupName: 
+  m_StreamingMipmaps: 0
+  m_StreamingMipmapsPriority: 0
+  m_VTOnly: 0
+  m_AlphaIsTransparency: 0
+  m_ImageCount: 1
+  m_TextureDimension: 2
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_LightmapFormat: 0
+  m_ColorSpace: 1
+  m_PlatformBlob: 
+  image data: 1024
+  _typelessdata: 19f29eff19f19fff19f09fff19f0a0ff19efa1ff19eea1ff19eda2ff19eca3ff19eba3ff19eaa4ff19e9a5ff19e8a5ff19e7a6ff18e7a6ff18e6a7ff18e5a8ff18e4a8ff18e3a9ff18e2aaff18e1aaff18e0abff18dfacff18deacff18deadff18ddadff17dcaeff17dbafff17daafff17d9b0ff17d8b1ff17d7b1ff17d6b2ff17d5b3ff17d5b3ff17d4b4ff17d3b5ff17d2b5ff17d1b6ff16d0b6ff16cfb7ff16ceb8ff16cdb8ff16ccb9ff16ccbaff16cbbaff16cabbff16c9bcff16c8bcff16c7bdff16c6bdff15c5beff15c4bfff15c3bfff15c3c0ff15c2c1ff15c1c1ff15c0c2ff15bfc3ff15bec3ff15bdc4ff15bcc5ff15bbc5ff15bac6ff14bac6ff14b9c7ff14b8c8ff14b7c8ff14b6c9ff14b5caff14b4caff14b3cbff14b2ccff14b1ccff14b1cdff14b0cdff13afceff13aecfff13adcfff13acd0ff13abd1ff13aad1ff13a9d2ff13a8d3ff13a8d3ff13a7d4ff13a6d5ff13a5d5ff13a4d6ff12a3d6ff12a2d7ff12a1d8ff12a0d8ff129fd9ff129fdaff129edaff129ddbff129cdcff129bdcff129addff1299ddff1198deff1197dfff1196dfff1196e0ff1195e1ff1194e1ff1193e2ff1192e3ff1191e3ff1190e4ff118fe5ff118ee5ff118de6ff108de6ff108ce7ff108be8ff108ae8ff1089e9ff1088eaff1087eaff1086ebff1085ecff1084ecff1084edff1083edff0f82eeff0f81efff0f80efff107ff0ff107fefff117eefff117eefff127defff127cefff137cefff137beeff147beeff147aeeff157aeeff1579eeff1679edff1678edff1777edff1777edff1876edff1876edff1975ecff1975ecff1a74ecff1a73ecff1b73ecff1c72ebff1c72ebff1d71ebff1d71ebff1e70ebff1e70ebff1f6feaff1f6eeaff206eeaff206deaff216deaff216ce9ff226ce9ff226be9ff236ae9ff236ae9ff2469e9ff2469e8ff2568e8ff2568e8ff2667e8ff2667e8ff2766e8ff2765e7ff2865e7ff2964e7ff2964e7ff2a63e7ff2a63e6ff2b62e6ff2b62e6ff2c61e6ff2c60e6ff2d60e6ff2d5fe5ff2e5fe5ff2e5ee5ff2f5ee5ff2f5de5ff305ce4ff305ce4ff315be4ff315be4ff325ae4ff325ae4ff3359e3ff3359e3ff3458e3ff3457e3ff3557e3ff3656e2ff3656e2ff3755e2ff3755e2ff3854e2ff3854e2ff3953e1ff3952e1ff3a52e1ff3a51e1ff3b51e1ff3b50e0ff3c50e0ff3c4fe0ff3d4ee0ff3d4ee0ff3e4de0ff3e4ddfff3f4cdfff3f4cdfff404bdfff404bdfff414adfff4149deff4249deff4348deff4348deff4447deff4447ddff4546ddff4546ddff4645ddff4644ddff4744ddff4743dcff4843dcff4842dcff4942dcff4941dcff4a40dbff4a40dbff4b3fdbff4b3fdbff4c3edbff4c3edbff4d3ddaff4d3ddaff4e3cdaff4e3bdaff4f3bdaff503ad9ff503ad9ff5139d9ff5139d9ff5238d9ff
+  m_StreamData:
+    serializedVersion: 2
+    offset: 0
+    size: 0
+    path: 
