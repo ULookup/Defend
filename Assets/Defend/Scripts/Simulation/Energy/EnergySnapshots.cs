@@ -47,6 +47,7 @@ namespace Defend.Simulation
     /// <summary>只读总账。预约属于未来空间，不计入 Stored 或 InFlight。</summary>
     public readonly struct EnergyTotals
     {
+        public long ParameterAdjustmentLoss { get; }
         public long Generated { get; }
         public long Consumed { get; }
         public long TransmissionLoss { get; }
@@ -58,8 +59,9 @@ namespace Defend.Simulation
         public int ActiveBatchCount { get; }
 
         internal EnergyTotals(long generated, long consumed, long transmissionLoss, long destructionLoss,
-            long expiredLoss, long inFlight, long stored, int activeBatchCount)
+            long expiredLoss, long inFlight, long stored, int activeBatchCount, long parameterAdjustmentLoss = 0)
         {
+            ParameterAdjustmentLoss = parameterAdjustmentLoss;
             Generated = generated;
             Consumed = consumed;
             TransmissionLoss = transmissionLoss;
@@ -68,7 +70,7 @@ namespace Defend.Simulation
             InFlight = inFlight;
             Stored = stored;
             ActiveBatchCount = activeBatchCount;
-            BalanceError = checked(generated - consumed - transmissionLoss - destructionLoss - expiredLoss - inFlight - stored);
+            BalanceError = checked(generated - consumed - transmissionLoss - destructionLoss - expiredLoss - inFlight - stored - parameterAdjustmentLoss);
         }
     }
 

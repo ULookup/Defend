@@ -7,7 +7,7 @@ namespace Defend.Simulation
     /// 可续算的最短路工作项。反向搜索一次生成通往同一终端的路径树，各供应建筑复用该树。
     /// 每次检查边或取出候选均计入预算；停止时保留当前边游标，下个逻辑步继续。
     /// </summary>
-    internal sealed class EnergyPathSearch
+    internal sealed partial class EnergyPathSearch
     {
         internal struct Entry
         {
@@ -36,7 +36,7 @@ namespace Defend.Simulation
         }
 
         /// <summary>连续数组中的二叉最小堆，避免每次松弛边分配候选对象和树节点。</summary>
-        internal sealed class Frontier
+        internal sealed partial class Frontier
         {
             private readonly List<Entry> entries = new List<Entry>();
             private readonly EntryComparer comparer = new EntryComparer();

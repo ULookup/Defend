@@ -244,6 +244,61 @@ namespace Defend.Tests
             Assert.That(world.Energy.GetTotals().InFlight, Is.Zero);
         }
 
+        [Test, Category("BuildingRotation")]
+        public void RotatingSquareRelayInPlacePreservesItsIncomingEnergyAndPositionRevision()
+        {
+            var world = SimulationTestWorld.Create(
+                reactor: SimulationTestWorld.Definition(BuildingKind.Reactor, capacity: 1000,
+                    production: 1000, outputAmount: 1000, range: 3),
+                relay: SimulationTestWorld.Definition(BuildingKind.Relay, capacity: 1000, outputAmount: 1000, range: 3),
+                turret: SimulationTestWorld.Definition(BuildingKind.Turret, capacity: 1000),
+                energySettings: new EnergySettings(100, 4, 1000, 0));
+            SimulationTestWorld.Place(world, BuildingKind.Turret, 6, 0);
+            var relay = SimulationTestWorld.Place(world, BuildingKind.Relay, 3, 0);
+            var reactor = SimulationTestWorld.Place(world, BuildingKind.Reactor, 0, 0);
+            var transfer = world.Energy.Transfers.Single();
+            Assert.That(transfer.TargetId, Is.EqualTo(relay.Id));
+            int revision = relay.PositionRevision;
+            long incoming = relay.ReservedIncoming, tick = world.CurrentTick;
+
+            Assert.That(world.Submit(WorldCommand.Move(relay.Id, relay.X, relay.Z, 1)).Succeeded, Is.True);
+            Assert.That(relay.OrientationQuarterTurns, Is.EqualTo(1));
+            Assert.That(relay.PositionRevision, Is.EqualTo(revision));
+            Assert.That(relay.ReservedIncoming, Is.EqualTo(incoming));
+            Assert.That(world.Energy.Transfers.Single().Id, Is.EqualTo(transfer.Id));
+            Assert.That(world.Energy.GetTotals().DestructionLoss, Is.Zero);
+            Assert.That(world.CurrentTick, Is.EqualTo(tick));
+
+            Assert.That(world.Submit(WorldCommand.Damage(reactor.Id, 100)).Succeeded, Is.True);
+            SimulationTestWorld.AdvanceUntil(world, () => relay.TotalReceived > 0, 30, "原地旋转后原接收批次仍须按时到货。");
+            Assert.That(relay.TotalReceived, Is.EqualTo(transfer.Amount));
+            SimulationTestWorld.AssertBalanced(world);
+        }
+
+        [TestCase(1, true)]
+        [TestCase(2, false)]
+        [Category("BuildingRotation")]
+        public void RectangularReceiverRotationCancelsIncomingOnlyWhenFootprintChanges(int orientation, bool footprintChanges)
+        {
+            var world = SimulationTestWorld.Create(
+                reactor: SimulationTestWorld.Definition(BuildingKind.Reactor, capacity: 1000,
+                    production: 1000, outputAmount: 1000, range: 8),
+                turret: SimulationTestWorld.Definition(BuildingKind.Turret, capacity: 1000, width: 2, depth: 3),
+                energySettings: new EnergySettings(100, 4, 1000, 0));
+            var turret = SimulationTestWorld.Place(world, BuildingKind.Turret, 3, 0);
+            var reactor = SimulationTestWorld.Place(world, BuildingKind.Reactor, 0, 0);
+            var transfer = world.Energy.Transfers.Single();
+            int revision = turret.PositionRevision;
+
+            Assert.That(world.Submit(WorldCommand.Move(turret.Id, turret.X, turret.Z, orientation)).Succeeded, Is.True);
+            Assert.That(turret.PositionRevision, Is.EqualTo(revision + (footprintChanges ? 1 : 0)));
+            Assert.That(world.Energy.GetTotals().DestructionLoss, Is.EqualTo(footprintChanges ? transfer.Amount : 0));
+            Assert.That(world.Submit(WorldCommand.Damage(reactor.Id, 100)).Succeeded, Is.True);
+            SimulationTestWorld.AdvanceUntil(world, () => world.CurrentTick > transfer.ArrivalTick, 40, "检查原接收批次到货时刻。");
+            Assert.That(turret.TotalReceived, Is.EqualTo(footprintChanges ? 0 : transfer.Amount));
+            SimulationTestWorld.AssertBalanced(world);
+        }
+
         private static GameWorld CreateSingleTransferWorld(
             out BuildingState reactor, out BuildingState turret)
         {

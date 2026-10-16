@@ -7,7 +7,7 @@ namespace Defend.Simulation
     /// 电池仅决定新任务的供给资格和互补数量。已有合法承诺继续运输，不能被启停阈值撤销。
     /// 调度器每笔报价都读取当前库存与承诺；共享调度额度仍由原能源调度器拥有。
     /// </summary>
-    internal sealed class BatterySupplyPolicy
+    internal sealed partial class BatterySupplyPolicy
     {
         private readonly EnergySettings settings;
         private readonly HashSet<long> supportedTerminals = new HashSet<long>();

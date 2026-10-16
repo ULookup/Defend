@@ -87,6 +87,20 @@ namespace Defend.Simulation
         public long TotalDamageEventsObserved { get; internal set; }
         public long TotalDeliveriesObserved { get; internal set; }
 
+        internal void CopyFrom(EnemyBehaviorStatistics other)
+        {
+            EvaluationsThisTick = other.EvaluationsThisTick; PathBuildsThisTick = other.PathBuildsThisTick;
+            DeferredEvaluationsThisTick = other.DeferredEvaluationsThisTick; DeferredPathsThisTick = other.DeferredPathsThisTick;
+            TargetSwitchesThisTick = other.TargetSwitchesThisTick; TotalEvaluations = other.TotalEvaluations;
+            TotalPathBuilds = other.TotalPathBuilds; TotalDeferredEvaluations = other.TotalDeferredEvaluations;
+            TotalDeferredPaths = other.TotalDeferredPaths; TotalTargetSwitches = other.TotalTargetSwitches;
+            CachedPathCount = other.CachedPathCount; MaximumEvaluationsObserved = other.MaximumEvaluationsObserved;
+            MaximumPathBuildsObserved = other.MaximumPathBuildsObserved; BuildingsObservedThisTick = other.BuildingsObservedThisTick;
+            DamageEventsObservedThisTick = other.DamageEventsObservedThisTick; DeliveriesObservedThisTick = other.DeliveriesObservedThisTick;
+            TotalBuildingsObserved = other.TotalBuildingsObserved; TotalDamageEventsObserved = other.TotalDamageEventsObserved;
+            TotalDeliveriesObserved = other.TotalDeliveriesObserved;
+        }
+
         internal void BeginStep()
         {
             EvaluationsThisTick = PathBuildsThisTick = DeferredEvaluationsThisTick = TargetSwitchesThisTick = 0;

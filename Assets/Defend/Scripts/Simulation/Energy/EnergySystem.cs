@@ -7,7 +7,7 @@ namespace Defend.Simulation
     /// 独立于波次与 Unity 对象的能源模拟入口。图、调度、运输事务和账本各自负责一种规则。
     /// 白盒阶段逐逻辑步遍历活跃批次；路径和事件使用共享集合，规模上限仍需性能测试确认。
     /// </summary>
-    public sealed class EnergySystem
+    public sealed partial class EnergySystem
     {
         private readonly IReadOnlyList<BuildingState> buildings;
         private readonly EnergySettings settings;
@@ -35,10 +35,18 @@ namespace Defend.Simulation
         public double DirectEfficiencyAt(BuildingState source, double targetX, double targetZ)
         {
             if (source == null || !source.CanOutput) return 0;
-            double range = source.Definition.TransmissionRange;
+            return DirectEfficiencyAt(source.Definition, source.CenterX, source.CenterZ, targetX, targetZ);
+        }
+
+        /// <summary>查询候选位置的一跳效率，不创建建筑或改变真实运输网络。</summary>
+        public double DirectEfficiencyAt(BuildingDefinition definition, double sourceX, double sourceZ, double targetX, double targetZ)
+        {
+            if (definition == null || (definition.Kind != BuildingKind.Reactor &&
+                definition.Kind != BuildingKind.Relay && definition.Kind != BuildingKind.Battery)) return 0;
+            double range = definition.TransmissionRange;
             if (range <= 0) return 0;
-            double horizontal = targetX - source.CenterX;
-            double vertical = targetZ - source.CenterZ;
+            double horizontal = targetX - sourceX;
+            double vertical = targetZ - sourceZ;
             double distance = Math.Sqrt(horizontal * horizontal + vertical * vertical);
             if (distance > range) return 0;
             long efficiency = EnergyRoutePlanner.EfficiencyAt(distance, range, settings.MaximumLossAtRange);
@@ -112,7 +120,7 @@ namespace Defend.Simulation
             if (amount < 0) throw new ArgumentOutOfRangeException(nameof(amount));
             if (!nodes.TryGetValue(buildingId, out EnergyNodeRuntime node) || !node.Building.IsAlive ||
                 !node.Building.IsConsumer || node.Building.StoredEnergy < amount) return false;
-            Consume(node.Building, amount);
+            if (amount > 0) Consume(node.Building, amount);
             return true;
         }
 
@@ -219,6 +227,8 @@ namespace Defend.Simulation
                 BuildingState building = node.Building;
                 if (building.IsSold) building.EnergyStatus = "已出售";
                 else if (!building.IsAlive) building.EnergyStatus = "已损坏";
+                else if (building.Kind == BuildingKind.ResonanceMagneticTower && !building.Definition.Resonance.RequiresEnergy)
+                    building.EnergyStatus = "由共振驱动";
                 else if (building.Kind == BuildingKind.Battery)
                     building.EnergyStatus = building.ReceivedLastSecond > 0 && building.DischargedLastSecond > 0 ? "充放电中" :
                         building.DischargedLastSecond > 0 ? "放电中" : building.ReceivedLastSecond > 0 ? "充电中" :
@@ -242,7 +252,7 @@ namespace Defend.Simulation
             for (int index = 0; index < transport.Batches.Count; index++)
                 if (transport.Batches[index].InFlight) inFlight = checked(inFlight + transport.Batches[index].Amount);
             return new EnergyTotals(ledger.Generated, ledger.Consumed, ledger.TransmissionLoss,
-                checked(ledger.BuildingLoss + ledger.FailedHopLoss), ledger.ExpiredLoss, inFlight, stored, ActiveBatchCount);
+                checked(ledger.BuildingLoss + ledger.FailedHopLoss), ledger.ExpiredLoss, inFlight, stored, ActiveBatchCount, ledger.ParameterAdjustmentLoss);
         }
 
         public void AssertInvariants()

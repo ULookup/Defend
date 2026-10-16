@@ -22,8 +22,17 @@ namespace Defend.Simulation
             }
             x = z = 0; return false;
         }
+        // 沙盒出生点是精确格子。动态占用时等待，不能溢出到相邻出生点或绕过包围工事。
+        internal bool TrySpawnExact(SpawnPoint entrance, EnemyDefinition definition, out double x, out double z)
+        {
+            x = entrance.X + .5; z = entrance.Z + .5;
+            return CanStand(null, x, z, definition.Radius);
+        }
+        internal bool CanFitSpawn(SpawnPoint entrance, EnemyDefinition definition) =>
+            TerrainFree(entrance.X + .5, entrance.Z + .5, definition.Radius);
         internal void Step(EnemyState enemy, long tick)
         {
+            if (tick > enemy.SlowUntilTick) enemy.MovementSpeedMultiplier = 1;
             enemy.CurrentAttackBuildingId = 0;
             var final = world.FindBuilding(enemy.TargetBuildingId);
             if (final == null || !final.IsAlive || final.IsSold) { enemy.CurrentAction = EnemyAction.WaitingForPassage; return; }
@@ -61,13 +70,6 @@ namespace Defend.Simulation
                 // 当前拆障对象独立于最终目标；仅真实站到近战距离的前排能够造成伤害。
                 enemy.CurrentAttackBuildingId = attack.Id; enemy.CurrentAction = EnemyAction.Attacking;
                 enemy.BlockedSinceTick = -1;
-                if (tick >= enemy.NextAttackTick)
-                {
-                    world.ApplyBattleDamage(attack, enemy.Definition.AttackDamage);
-                    enemy.LastAttackTick = tick; enemy.LastAttackTargetBuildingId = attack.Id;
-                    enemy.LastAttackTargetX = attack.CenterX; enemy.LastAttackTargetZ = attack.CenterZ;
-                    enemy.NextAttackTick = tick + enemy.Definition.AttackIntervalTicks;
-                }
                 return;
             }
             if (enemy.RouteCursor >= route.Cells.Count) { Wait(enemy, tick); return; }
@@ -89,7 +91,7 @@ namespace Defend.Simulation
                     if (gx * gx + gz * gz < .015 * .015) { Wait(enemy, tick); return; }
                 }
             }
-            double remaining = enemy.Definition.Speed / world.Settings.TicksPerSecond;
+            double remaining = enemy.CurrentMovementSpeed / world.Settings.TicksPerSecond;
             bool moved = false, detoured = yielding;
             while (remaining > .000001)
             {
@@ -119,6 +121,16 @@ namespace Defend.Simulation
                 else if (enemy.BlockedSinceTick < 0) enemy.BlockedSinceTick = tick;
             }
             else Wait(enemy, tick);
+        }
+        internal void CommitAttack(EnemyState enemy, long tick)
+        {
+            if (!enemy.IsAlive || tick < enemy.NextAttackTick || enemy.CurrentAttackBuildingId == 0) return;
+            var attack = world.FindBuilding(enemy.CurrentAttackBuildingId);
+            if (attack == null || !attack.IsAlive || attack.IsSold || !BattleSystem.InAttackRange(enemy, attack)) return;
+            world.ApplyBattleDamage(attack, enemy.Definition.AttackDamage);
+            enemy.LastAttackTick = tick; enemy.LastAttackTargetBuildingId = attack.Id;
+            enemy.LastAttackTargetX = attack.CenterX; enemy.LastAttackTargetZ = attack.CenterZ;
+            enemy.NextAttackTick = tick + enemy.Definition.AttackIntervalTicks;
         }
         private static readonly double[] AvoidanceAngles = { -.6, .6, -1.05, 1.05, -1.57, 1.57 };
         private void RequestYield(EnemyState enemy, EnemyState blocker, double dx, double dz, long tick)
@@ -156,7 +168,10 @@ namespace Defend.Simulation
         private bool TryMove(EnemyState enemy, double dx, double dz, out EnemyState blocker)
         {
             if (!CanMove(enemy, dx, dz, out blocker)) return false;
-            enemy.X += dx; enemy.Z += dz; return true;
+            double oldX = enemy.X, oldZ = enemy.Z;
+            enemy.X += dx; enemy.Z += dz;
+            enemy.AddMotion(oldX, oldZ, Math.Sqrt(dx * dx + dz * dz) / enemy.CurrentMovementSpeed);
+            return true;
         }
         private bool CanMove(EnemyState enemy, double dx, double dz, out EnemyState blocker)
         {

@@ -7,7 +7,7 @@ namespace Defend.Simulation
     /// 按最终有效到货量计费的加权额度轮询。成功服务后推进轮次，未用完的额度有界保留。
     /// 调用方先遍历仍有额度的可行目标，全部不可服务后才开启下一轮。
     /// </summary>
-    internal sealed class WeightedEnergySchedule
+    internal sealed partial class WeightedEnergySchedule
     {
         private sealed class Account
         {

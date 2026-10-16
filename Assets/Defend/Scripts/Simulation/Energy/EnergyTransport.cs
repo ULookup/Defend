@@ -7,7 +7,7 @@ namespace Defend.Simulation
     /// 批次运输事务的唯一写入口。一次发送同时转移实际所有权、登记本跳空间和创建到货事件。
     /// 所有调用都发生在单线程逻辑步中，外部动画不参与这里的结算。
     /// </summary>
-    internal sealed class EnergyTransport
+    internal sealed partial class EnergyTransport
     {
         private readonly Dictionary<long, EnergyNodeRuntime> nodes;
         private readonly EnergyLedger ledger;
@@ -77,7 +77,10 @@ namespace Defend.Simulation
             if (travelling.SourceServiceCharge > 0) allocationSchedule.Spend(destination, travelling.SourceServiceCharge);
             // 旧批次换目标后仍占用同一个中继出口，不能绕过该出口的有效量份额。
             if (owner.Building.Kind == BuildingKind.Relay)
+            {
                 owner.OutputSchedule.Spend(destination, travelling.Commitment);
+                travelling.RelayServiceCharges.Add(new EnergyRelayCharge(owner.Building.Id, travelling.Commitment));
+            }
             Depart(owner, travelling, route.Edges[0], sent, tick);
         }
 
@@ -93,6 +96,14 @@ namespace Defend.Simulation
                 previous.Destination.CommittedIncoming -= released;
                 bool chargedAtSource = previous.SourceServiceCharge > 0;
                 if (chargedAtSource) allocationSchedule.Refund(previous.Destination, released);
+                var previousRelayCharges = new List<EnergyRelayCharge>();
+                foreach (EnergyRelayCharge charge in previous.RelayServiceCharges)
+                {
+                    long retainedCharge = Math.Min(charge.Amount, retainedCommitment);
+                    long travellingCharge = Math.Min(Math.Max(0, charge.Amount - retainedCharge), childCommitment);
+                    if (travellingCharge > 0) previousRelayCharges.Add(new EnergyRelayCharge(charge.BuildingId, travellingCharge));
+                    charge.Amount = retainedCharge;
+                }
                 previous.Amount = retainedAmount;
                 previous.Commitment = retainedCommitment;
                 previous.SourceServiceCharge = chargedAtSource ? retainedCommitment : 0;
@@ -109,6 +120,7 @@ namespace Defend.Simulation
                     Commitment = childCommitment
                 };
                 travelling.SourceServiceCharge = chargedAtSource ? childCommitment : 0;
+                travelling.RelayServiceCharges.AddRange(previousRelayCharges);
                 batches.Add(travelling);
                 // 取整后无法再贡献有效到货的残片不保留空承诺，留待改投其他目标或超时。
                 if (retainedCommitment == 0)
@@ -119,6 +131,7 @@ namespace Defend.Simulation
             }
             else owner.Batches.Remove(previous);
             owner.OutputSchedule.Spend(travelling.Destination, childCommitment);
+            travelling.RelayServiceCharges.Add(new EnergyRelayCharge(owner.Building.Id, childCommitment));
             Depart(owner, travelling, travelling.Route.Edges[travelling.RouteEdge], sent, tick);
         }
 
@@ -184,6 +197,7 @@ namespace Defend.Simulation
                     target.CommittedIncoming -= batch.Commitment;
                     batch.Commitment = 0;
                     batch.SourceServiceCharge = 0;
+                    batch.RelayServiceCharges.Clear();
                     batch.Destination = null;
                     if (target.Kind == BuildingKind.Battery)
                     {
@@ -259,6 +273,7 @@ namespace Defend.Simulation
             }
             batch.Commitment = 0;
             batch.SourceServiceCharge = 0;
+            batch.RelayServiceCharges.Clear();
             batch.Destination = null;
             batch.Route = null;
             batch.RouteEdge = 0;

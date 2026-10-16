@@ -11,6 +11,13 @@ namespace Defend.Simulation
         private double signal;
         internal long LastEventTick { get; private set; } = -1;
 
+        internal EnemyObservedActivity Copy()
+        {
+            var copy = new EnemyObservedActivity { first = first, lastSampleTick = lastSampleTick, signal = signal, LastEventTick = LastEventTick };
+            copy.samples.AddRange(samples);
+            return copy;
+        }
+
         internal void Add(double amount, long tick, int memoryTicks)
         {
             Value(tick, memoryTicks);

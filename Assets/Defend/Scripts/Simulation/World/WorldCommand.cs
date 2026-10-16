@@ -11,7 +11,8 @@ namespace Defend.Simulation
         SetTestLoad,
         StartWave,
         RepairAll,
-        ContinuePreparing
+        ContinuePreparing,
+        SetFacing
     }
 
     /// <summary>输入提交的不可变意图。命令事务与时间推进分开，暂停时也由世界验证和执行。</summary>
@@ -23,9 +24,12 @@ namespace Defend.Simulation
         public int X { get; }
         public int Z { get; }
         public int Value { get; }
+        public int? OrientationQuarterTurns { get; }
+        public int? FacingDegrees { get; }
 
         private WorldCommand(WorldCommandKind kind, BuildingKind buildingKind = BuildingKind.Reactor,
-            long buildingId = 0, int x = 0, int z = 0, int value = 0)
+            long buildingId = 0, int x = 0, int z = 0, int value = 0,
+            int? orientationQuarterTurns = null, int? facingDegrees = null)
         {
             Kind = kind;
             BuildingKind = buildingKind;
@@ -33,12 +37,16 @@ namespace Defend.Simulation
             X = x;
             Z = z;
             Value = value;
+            OrientationQuarterTurns = orientationQuarterTurns;
+            FacingDegrees = facingDegrees;
         }
 
-        public static WorldCommand Place(BuildingKind kind, int x, int z) =>
-            new WorldCommand(WorldCommandKind.Place, kind, x: x, z: z);
-        public static WorldCommand Move(long buildingId, int x, int z) =>
-            new WorldCommand(WorldCommandKind.Move, buildingId: buildingId, x: x, z: z);
+        public static WorldCommand Place(BuildingKind kind, int x, int z, int orientationQuarterTurns = 0, int? facingDegrees = null) =>
+            new WorldCommand(WorldCommandKind.Place, kind, x: x, z: z,
+                orientationQuarterTurns: orientationQuarterTurns, facingDegrees: facingDegrees);
+        public static WorldCommand Move(long buildingId, int x, int z, int? orientationQuarterTurns = null, int? facingDegrees = null) =>
+            new WorldCommand(WorldCommandKind.Move, buildingId: buildingId, x: x, z: z,
+                orientationQuarterTurns: orientationQuarterTurns, facingDegrees: facingDegrees);
         public static WorldCommand Sell(long buildingId) =>
             new WorldCommand(WorldCommandKind.Sell, buildingId: buildingId);
         public static WorldCommand Damage(long buildingId, int amount) =>
@@ -52,5 +60,7 @@ namespace Defend.Simulation
         public static WorldCommand StartWave() => new WorldCommand(WorldCommandKind.StartWave);
         public static WorldCommand RepairAll() => new WorldCommand(WorldCommandKind.RepairAll);
         public static WorldCommand ContinuePreparing() => new WorldCommand(WorldCommandKind.ContinuePreparing);
+        public static WorldCommand SetFacing(long buildingId, int yawDegrees) =>
+            new WorldCommand(WorldCommandKind.SetFacing, buildingId: buildingId, value: yawDegrees);
     }
 }
