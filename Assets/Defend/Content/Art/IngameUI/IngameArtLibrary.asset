@@ -1,0 +1,551 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d152d514d1f2b44e87a05347aaef7cd, type: 3}
+  m_Name: IngameArtLibrary
+  m_EditorClassIdentifier: Defend.Unity::Defend.Unity.IngameArtLibrary
+  entries:
+  - key: header
+    sprite: {fileID: 21300000, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: details
+    sprite: {fileID: 21300000, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: modal
+    sprite: {fileID: 21300000, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: sandboxPanel
+    sprite: {fileID: 21300000, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: scrim
+    sprite: {fileID: 21300008, guid: b424fd5c82ec30747b42bb071ed1b715, type: 3}
+  - key: headerWide
+    sprite: {fileID: 21300000, guid: d6729d7b4b0ce8145a5156dbd007c9a9, type: 3}
+  - key: pausePanel
+    sprite: {fileID: 21300000, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: confirmationPanel
+    sprite: {fileID: 21300000, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: sandboxWide
+    sprite: {fileID: 21300000, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: button
+    sprite: {fileID: 21300004, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: primaryButton
+    sprite: {fileID: 21300002, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: iconButton
+    sprite: {fileID: 21300004, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: buildingCard
+    sprite: {fileID: 21300000, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: input
+    sprite: {fileID: 21300004, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: gaugeTrack
+    sprite: {fileID: 21300008, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: greenHealthFill
+    sprite: {fileID: 21300010, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: cyanEnergyFill
+    sprite: {fileID: 21300010, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: amberCooldownFill
+    sprite: {fileID: 21300010, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: reactor
+    sprite: {fileID: 21300000, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: relay
+    sprite: {fileID: 21300002, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: battery
+    sprite: {fileID: 21300004, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: rapidTurret
+    sprite: {fileID: 21300006, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: heavyTurret
+    sprite: {fileID: 21300008, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: areaTurret
+    sprite: {fileID: 21300010, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: core
+    sprite: {fileID: 21300012, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: health
+    sprite: {fileID: 21300014, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: shield
+    sprite: {fileID: 21300016, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: credits
+    sprite: {fileID: 21300018, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: wave
+    sprite: {fileID: 21300020, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: enemy
+    sprite: {fileID: 21300022, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: pause
+    sprite: {fileID: 21300024, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: play
+    sprite: {fileID: 21300026, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: speed
+    sprite: {fileID: 21300028, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: network
+    sprite: {fileID: 21300030, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: range
+    sprite: {fileID: 21300032, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: close
+    sprite: {fileID: 21300034, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: move
+    sprite: {fileID: 21300036, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: sell
+    sprite: {fileID: 21300038, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: repair
+    sprite: {fileID: 21300040, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: locate
+    sprite: {fileID: 21300042, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: priorityLow
+    sprite: {fileID: 21300044, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: priorityNormal
+    sprite: {fileID: 21300046, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: priorityHigh
+    sprite: {fileID: 21300048, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: warning
+    sprite: {fileID: 21300050, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: settings
+    sprite: {fileID: 21300052, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: help
+    sprite: {fileID: 21300054, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: archive
+    sprite: {fileID: 21300056, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: sandbox
+    sprite: {fileID: 21300058, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: previous
+    sprite: {fileID: 21300060, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: next
+    sprite: {fileID: 21300062, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: add
+    sprite: {fileID: 21300064, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: copy
+    sprite: {fileID: 21300066, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: delete
+    sprite: {fileID: 21300068, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: save
+    sprite: {fileID: 21300070, guid: b50c156fdffd1ec4c8cde3325593683d, type: 3}
+  - key: buildDock
+    sprite: {fileID: 21300000, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: disabledButton
+    sprite: {fileID: 21300004, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: scrollTrack
+    sprite: {fileID: 21300008, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: sliderThumb
+    sprite: {fileID: 21300010, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: warningPanel
+    sprite: {fileID: 21300000, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: astralPanel
+    sprite: {fileID: 21300000, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: astralPrimaryButton
+    sprite: {fileID: 21300002, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: astralSecondaryButton
+    sprite: {fileID: 21300004, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: selectedCard
+    sprite: {fileID: 21300006, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: astralTrack
+    sprite: {fileID: 21300008, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: astralFill
+    sprite: {fileID: 21300010, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: astralInput
+    sprite: {fileID: 21300004, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: astralCard
+    sprite: {fileID: 21300000, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: astralSliderHandle
+    sprite: {fileID: 21300010, guid: b60c8031c2c7020438bed54138310775, type: 3}
+  - key: portrait_reactor
+    sprite: {fileID: 21300000, guid: 79da01ed1bb0dd74785c0879b17a2a74, type: 3}
+  - key: portrait_relay
+    sprite: {fileID: 21300002, guid: 79da01ed1bb0dd74785c0879b17a2a74, type: 3}
+  - key: portrait_battery
+    sprite: {fileID: 21300004, guid: 79da01ed1bb0dd74785c0879b17a2a74, type: 3}
+  - key: portrait_rapidTurret
+    sprite: {fileID: 21300006, guid: 79da01ed1bb0dd74785c0879b17a2a74, type: 3}
+  - key: portrait_heavyTurret
+    sprite: {fileID: 21300008, guid: 79da01ed1bb0dd74785c0879b17a2a74, type: 3}
+  - key: portrait_areaTurret
+    sprite: {fileID: 21300010, guid: 79da01ed1bb0dd74785c0879b17a2a74, type: 3}
+  - key: replica_cardName_reactor
+    sprite: {fileID: 21300072, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_cardName_relay
+    sprite: {fileID: 21300078, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_cardPortraitBody_areaTurret
+    sprite: {fileID: 21300100, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_cardPortraitBody_battery
+    sprite: {fileID: 21300082, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_cardPortraitBody_heavyTurret
+    sprite: {fileID: 21300094, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_cardPortraitBody_rapidTurret
+    sprite: {fileID: 21300088, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_cardPortraitBody_reactor
+    sprite: {fileID: 21300070, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_cardPortraitBody_relay
+    sprite: {fileID: 21300076, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_cardPortraitUpper_areaTurret
+    sprite: {fileID: 21300098, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_cardPortraitUpper_battery
+    sprite: {fileID: 21300080, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_cardPortraitUpper_heavyTurret
+    sprite: {fileID: 21300092, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_cardPortraitUpper_rapidTurret
+    sprite: {fileID: 21300086, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_cardPortraitUpper_reactor
+    sprite: {fileID: 21300068, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_cardPortraitUpper_relay
+    sprite: {fileID: 21300074, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_cardSurface
+    sprite: {fileID: 21300064, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_creditsIcon
+    sprite: {fileID: 21300012, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_darkSurface
+    sprite: {fileID: 21300060, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_detailDamageLabel
+    sprite: {fileID: 21300038, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_detailDescription_rapidTurret
+    sprite: {fileID: 21300032, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_detailEnergyBar
+    sprite: {fileID: 21300056, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_detailEnergyCostLabel
+    sprite: {fileID: 21300042, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_detailHealthBar
+    sprite: {fileID: 21300054, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_detailHealthLabel
+    sprite: {fileID: 21300036, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_detailPortrait_rapidTurret
+    sprite: {fileID: 21300034, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_detailRangeLabel
+    sprite: {fileID: 21300040, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_detailSubtitle_rapidTurret
+    sprite: {fileID: 21300030, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_detailSurface
+    sprite: {fileID: 21300062, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_detailTitle_rapidTurret
+    sprite: {fileID: 21300028, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_footerMotto
+    sprite: {fileID: 21300048, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_goldSeparator
+    sprite: {fileID: 21300058, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_healthBar
+    sprite: {fileID: 21300050, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_healthIcon
+    sprite: {fileID: 21300004, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_healthLabel
+    sprite: {fileID: 21300006, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_lowerEnergyLabel
+    sprite: {fileID: 21300046, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_lowerHealthLabel
+    sprite: {fileID: 21300044, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_move
+    sprite: {fileID: 21300020, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_pause
+    sprite: {fileID: 21300016, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_phasePreparation
+    sprite: {fileID: 21300002, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_repair
+    sprite: {fileID: 21300022, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_rightHero_rapidTurret
+    sprite: {fileID: 21300026, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_selectedCardSurface
+    sprite: {fileID: 21300066, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_sell
+    sprite: {fileID: 21300024, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_shieldBar
+    sprite: {fileID: 21300052, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_shieldIcon
+    sprite: {fileID: 21300008, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_shieldLabel
+    sprite: {fileID: 21300010, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_startButton
+    sprite: {fileID: 21300018, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_title
+    sprite: {fileID: 21300000, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_waveLabel
+    sprite: {fileID: 21300014, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_cardName_areaTurret
+    sprite: {fileID: 21300102, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_cardName_battery
+    sprite: {fileID: 21300084, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_cardName_heavyTurret
+    sprite: {fileID: 21300096, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_cardName_rapidTurret
+    sprite: {fileID: 21300090, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_cleanDetails
+    sprite: {fileID: 21300002, guid: 2c2bccdafee6eb245a372fcc3ef14705, type: 3}
+  - key: replica_cleanDock
+    sprite: {fileID: 21300004, guid: 2c2bccdafee6eb245a372fcc3ef14705, type: 3}
+  - key: replica_cleanHeader
+    sprite: {fileID: 21300000, guid: 2c2bccdafee6eb245a372fcc3ef14705, type: 3}
+  - key: replica_portrait_reactor
+    sprite: {fileID: 21300000, guid: 8347f4f015924e04a84cf33bd0e6f648, type: 3}
+  - key: replica_portrait_relay
+    sprite: {fileID: 21300002, guid: 8347f4f015924e04a84cf33bd0e6f648, type: 3}
+  - key: replica_portrait_rapidTurret
+    sprite: {fileID: 21300006, guid: 8347f4f015924e04a84cf33bd0e6f648, type: 3}
+  - key: replica_portrait_areaTurret
+    sprite: {fileID: 21300010, guid: 8347f4f015924e04a84cf33bd0e6f648, type: 3}
+  - key: replica_portrait_battery
+    sprite: {fileID: 21300004, guid: 8347f4f015924e04a84cf33bd0e6f648, type: 3}
+  - key: replica_portrait_heavyTurret
+    sprite: {fileID: 21300008, guid: 8347f4f015924e04a84cf33bd0e6f648, type: 3}
+  - key: replica_originalDetails
+    sprite: {fileID: 21300108, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_originalDock
+    sprite: {fileID: 21300106, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: replica_originalHeader
+    sprite: {fileID: 21300104, guid: 5483361d766c53d42a7c16f4b829e9b6, type: 3}
+  - key: ref7_button_selected
+    sprite: {fileID: 21300012, guid: 00bb60b5f8f7c724f86526b794e74acb, type: 3}
+  - key: ref7_primary_disabled
+    sprite: {fileID: 21300018, guid: 00bb60b5f8f7c724f86526b794e74acb, type: 3}
+  - key: ref7_primary_hover
+    sprite: {fileID: 21300006, guid: 00bb60b5f8f7c724f86526b794e74acb, type: 3}
+  - key: ref7_primary_normal
+    sprite: {fileID: 21300002, guid: 00bb60b5f8f7c724f86526b794e74acb, type: 3}
+  - key: ref7_primary_pressed
+    sprite: {fileID: 21300010, guid: 00bb60b5f8f7c724f86526b794e74acb, type: 3}
+  - key: ref7_primary_selected
+    sprite: {fileID: 21300014, guid: 00bb60b5f8f7c724f86526b794e74acb, type: 3}
+  - key: ref7_button_disabled
+    sprite: {fileID: 21300016, guid: 00bb60b5f8f7c724f86526b794e74acb, type: 3}
+  - key: ref7_button_hover
+    sprite: {fileID: 21300004, guid: 00bb60b5f8f7c724f86526b794e74acb, type: 3}
+  - key: ref7_button_normal
+    sprite: {fileID: 21300000, guid: 00bb60b5f8f7c724f86526b794e74acb, type: 3}
+  - key: ref7_button_pressed
+    sprite: {fileID: 21300008, guid: 00bb60b5f8f7c724f86526b794e74acb, type: 3}
+  - key: ref7_card_selected
+    sprite: {fileID: 21300006, guid: 429562e36ed62a945961d17d7f628227, type: 3}
+  - key: ref7_card_pressed
+    sprite: {fileID: 21300004, guid: 429562e36ed62a945961d17d7f628227, type: 3}
+  - key: ref7_card_disabled
+    sprite: {fileID: 21300008, guid: 429562e36ed62a945961d17d7f628227, type: 3}
+  - key: ref7_card_hover
+    sprite: {fileID: 21300002, guid: 429562e36ed62a945961d17d7f628227, type: 3}
+  - key: ref7_card_normal
+    sprite: {fileID: 21300000, guid: 429562e36ed62a945961d17d7f628227, type: 3}
+  - key: ref7_panel_detail
+    sprite: {fileID: 21300000, guid: 57b1fec8a5cc3cf418484f13b88a268a, type: 3}
+  - key: ref7_panel_dock
+    sprite: {fileID: 21300004, guid: 57b1fec8a5cc3cf418484f13b88a268a, type: 3}
+  - key: ref7_panel_top
+    sprite: {fileID: 21300002, guid: 57b1fec8a5cc3cf418484f13b88a268a, type: 3}
+  - key: ref7_bar_wave
+    sprite: {fileID: 21300006, guid: e60af0b53bf2c0043b243b8a4eaf371f, type: 3}
+  - key: ref7_bar_energy
+    sprite: {fileID: 21300004, guid: e60af0b53bf2c0043b243b8a4eaf371f, type: 3}
+  - key: ref7_bar_health
+    sprite: {fileID: 21300002, guid: e60af0b53bf2c0043b243b8a4eaf371f, type: 3}
+  - key: ref7_bar_track
+    sprite: {fileID: 21300000, guid: e60af0b53bf2c0043b243b8a4eaf371f, type: 3}
+  - key: ref7_title_build
+    sprite: {fileID: 21300004, guid: 23ef57561b50fc345bd246eb6e9825e2, type: 3}
+  - key: ref7_title_defense
+    sprite: {fileID: 21300000, guid: 23ef57561b50fc345bd246eb6e9825e2, type: 3}
+  - key: ref7_title_start
+    sprite: {fileID: 21300002, guid: 23ef57561b50fc345bd246eb6e9825e2, type: 3}
+  - key: exact8_title_defense
+    sprite: {fileID: 21300000, guid: 96ae0bf0d91510b4fa808692d9fbc006, type: 3}
+  - key: exact8_title_start
+    sprite: {fileID: 21300002, guid: 96ae0bf0d91510b4fa808692d9fbc006, type: 3}
+  - key: exact8_title_category_defense
+    sprite: {fileID: 21300006, guid: 96ae0bf0d91510b4fa808692d9fbc006, type: 3}
+  - key: exact8_title_category_function
+    sprite: {fileID: 21300008, guid: 96ae0bf0d91510b4fa808692d9fbc006, type: 3}
+  - key: exact8_title_category_support
+    sprite: {fileID: 21300010, guid: 96ae0bf0d91510b4fa808692d9fbc006, type: 3}
+  - key: exact8_title_build
+    sprite: {fileID: 21300004, guid: 96ae0bf0d91510b4fa808692d9fbc006, type: 3}
+  - key: exact8_icon_cooldown
+    sprite: {fileID: 21300008, guid: 4841528568a594c4ba16d1bfc5ef14fd, type: 3}
+  - key: exact8_icon_core
+    sprite: {fileID: 21300012, guid: 4841528568a594c4ba16d1bfc5ef14fd, type: 3}
+  - key: exact8_icon_credits
+    sprite: {fileID: 21300010, guid: 4841528568a594c4ba16d1bfc5ef14fd, type: 3}
+  - key: exact8_icon_damage
+    sprite: {fileID: 21300002, guid: 4841528568a594c4ba16d1bfc5ef14fd, type: 3}
+  - key: exact8_icon_down
+    sprite: {fileID: 21300034, guid: 4841528568a594c4ba16d1bfc5ef14fd, type: 3}
+  - key: exact8_icon_energy
+    sprite: {fileID: 21300006, guid: 4841528568a594c4ba16d1bfc5ef14fd, type: 3}
+  - key: exact8_icon_health
+    sprite: {fileID: 21300000, guid: 4841528568a594c4ba16d1bfc5ef14fd, type: 3}
+  - key: exact8_icon_move
+    sprite: {fileID: 21300024, guid: 4841528568a594c4ba16d1bfc5ef14fd, type: 3}
+  - key: exact8_icon_next
+    sprite: {fileID: 21300038, guid: 4841528568a594c4ba16d1bfc5ef14fd, type: 3}
+  - key: exact8_icon_pause
+    sprite: {fileID: 21300030, guid: 4841528568a594c4ba16d1bfc5ef14fd, type: 3}
+  - key: exact8_icon_range
+    sprite: {fileID: 21300004, guid: 4841528568a594c4ba16d1bfc5ef14fd, type: 3}
+  - key: exact8_icon_repair
+    sprite: {fileID: 21300026, guid: 4841528568a594c4ba16d1bfc5ef14fd, type: 3}
+  - key: exact8_icon_sell
+    sprite: {fileID: 21300028, guid: 4841528568a594c4ba16d1bfc5ef14fd, type: 3}
+  - key: exact8_icon_settings
+    sprite: {fileID: 21300016, guid: 4841528568a594c4ba16d1bfc5ef14fd, type: 3}
+  - key: exact8_icon_shield
+    sprite: {fileID: 21300014, guid: 4841528568a594c4ba16d1bfc5ef14fd, type: 3}
+  - key: exact8_icon_up
+    sprite: {fileID: 21300032, guid: 4841528568a594c4ba16d1bfc5ef14fd, type: 3}
+  - key: exact8_icon_close
+    sprite: {fileID: 21300036, guid: 4841528568a594c4ba16d1bfc5ef14fd, type: 3}
+  - key: exact8_icon_category_defense
+    sprite: {fileID: 21300018, guid: 4841528568a594c4ba16d1bfc5ef14fd, type: 3}
+  - key: exact8_icon_category_function
+    sprite: {fileID: 21300020, guid: 4841528568a594c4ba16d1bfc5ef14fd, type: 3}
+  - key: exact8_icon_category_support
+    sprite: {fileID: 21300022, guid: 4841528568a594c4ba16d1bfc5ef14fd, type: 3}
+  - key: exact8_icon_phase
+    sprite: {fileID: 21300000, guid: a8c7ab48529dd614986cdc19036d08ad, type: 3}
+  - key: exact8_primary_selected
+    sprite: {fileID: 21300006, guid: 790ca419ac5202d4e8da2593daaa89ec, type: 3}
+  - key: exact8_primary_pressed
+    sprite: {fileID: 21300004, guid: 790ca419ac5202d4e8da2593daaa89ec, type: 3}
+  - key: exact8_primary_normal
+    sprite: {fileID: 21300000, guid: 790ca419ac5202d4e8da2593daaa89ec, type: 3}
+  - key: exact8_primary_hover
+    sprite: {fileID: 21300002, guid: 790ca419ac5202d4e8da2593daaa89ec, type: 3}
+  - key: exact8_primary_disabled
+    sprite: {fileID: 21300008, guid: 790ca419ac5202d4e8da2593daaa89ec, type: 3}
+  - key: exact8_action_selected
+    sprite: {fileID: 21300006, guid: 71e69eb3ce09bdc429bd3980462fcd79, type: 3}
+  - key: exact8_action_pressed
+    sprite: {fileID: 21300004, guid: 71e69eb3ce09bdc429bd3980462fcd79, type: 3}
+  - key: exact8_action_disabled
+    sprite: {fileID: 21300008, guid: 71e69eb3ce09bdc429bd3980462fcd79, type: 3}
+  - key: exact8_action_hover
+    sprite: {fileID: 21300002, guid: 71e69eb3ce09bdc429bd3980462fcd79, type: 3}
+  - key: exact8_action_normal
+    sprite: {fileID: 21300000, guid: 71e69eb3ce09bdc429bd3980462fcd79, type: 3}
+  - key: exact8_category_selected
+    sprite: {fileID: 21300006, guid: 4dd1f3f0ce1799f4cab98b4e68268191, type: 3}
+  - key: exact8_category_pressed
+    sprite: {fileID: 21300004, guid: 4dd1f3f0ce1799f4cab98b4e68268191, type: 3}
+  - key: exact8_category_disabled
+    sprite: {fileID: 21300008, guid: 4dd1f3f0ce1799f4cab98b4e68268191, type: 3}
+  - key: exact8_category_hover
+    sprite: {fileID: 21300002, guid: 4dd1f3f0ce1799f4cab98b4e68268191, type: 3}
+  - key: exact8_category_normal
+    sprite: {fileID: 21300000, guid: 4dd1f3f0ce1799f4cab98b4e68268191, type: 3}
+  - key: exact8_pause_hover
+    sprite: {fileID: 21300002, guid: 9c4edf9fa5433a140ab298d5063b5f85, type: 3}
+  - key: exact8_pause_normal
+    sprite: {fileID: 21300000, guid: 9c4edf9fa5433a140ab298d5063b5f85, type: 3}
+  - key: exact8_pause_disabled
+    sprite: {fileID: 21300008, guid: 9c4edf9fa5433a140ab298d5063b5f85, type: 3}
+  - key: exact8_pause_pressed
+    sprite: {fileID: 21300004, guid: 9c4edf9fa5433a140ab298d5063b5f85, type: 3}
+  - key: exact8_pause_selected
+    sprite: {fileID: 21300006, guid: 9c4edf9fa5433a140ab298d5063b5f85, type: 3}
+  - key: exact8_card_selected
+    sprite: {fileID: 21300006, guid: f7aff38958ca5c246babfdf20cf81c30, type: 3}
+  - key: exact8_card_pressed
+    sprite: {fileID: 21300004, guid: f7aff38958ca5c246babfdf20cf81c30, type: 3}
+  - key: exact8_card_disabled
+    sprite: {fileID: 21300008, guid: f7aff38958ca5c246babfdf20cf81c30, type: 3}
+  - key: exact8_card_hover
+    sprite: {fileID: 21300002, guid: f7aff38958ca5c246babfdf20cf81c30, type: 3}
+  - key: exact8_card_normal
+    sprite: {fileID: 21300000, guid: f7aff38958ca5c246babfdf20cf81c30, type: 3}
+  - key: exact8_detailToggle_selected
+    sprite: {fileID: 21300006, guid: 49427bbbdb61ee440bb655465589e2ae, type: 3}
+  - key: exact8_detailToggle_pressed
+    sprite: {fileID: 21300004, guid: 49427bbbdb61ee440bb655465589e2ae, type: 3}
+  - key: exact8_detailToggle_normal
+    sprite: {fileID: 21300000, guid: 49427bbbdb61ee440bb655465589e2ae, type: 3}
+  - key: exact8_detailToggle_hover
+    sprite: {fileID: 21300002, guid: 49427bbbdb61ee440bb655465589e2ae, type: 3}
+  - key: exact8_detailToggle_disabled
+    sprite: {fileID: 21300008, guid: 49427bbbdb61ee440bb655465589e2ae, type: 3}
+  - key: exact8_shopToggle_selected
+    sprite: {fileID: 21300006, guid: 4c4a52463c35adb4194c39d543177817, type: 3}
+  - key: exact8_shopToggle_pressed
+    sprite: {fileID: 21300004, guid: 4c4a52463c35adb4194c39d543177817, type: 3}
+  - key: exact8_shopToggle_disabled
+    sprite: {fileID: 21300008, guid: 4c4a52463c35adb4194c39d543177817, type: 3}
+  - key: exact8_shopToggle_hover
+    sprite: {fileID: 21300002, guid: 4c4a52463c35adb4194c39d543177817, type: 3}
+  - key: exact8_shopToggle_normal
+    sprite: {fileID: 21300000, guid: 4c4a52463c35adb4194c39d543177817, type: 3}
+  - key: exact8_modal_selected
+    sprite: {fileID: 21300006, guid: 3227107a7badf9e42968f94a3321ca48, type: 3}
+  - key: exact8_modal_pressed
+    sprite: {fileID: 21300004, guid: 3227107a7badf9e42968f94a3321ca48, type: 3}
+  - key: exact8_modal_disabled
+    sprite: {fileID: 21300008, guid: 3227107a7badf9e42968f94a3321ca48, type: 3}
+  - key: exact8_modal_hover
+    sprite: {fileID: 21300002, guid: 3227107a7badf9e42968f94a3321ca48, type: 3}
+  - key: exact8_modal_normal
+    sprite: {fileID: 21300000, guid: 3227107a7badf9e42968f94a3321ca48, type: 3}
+  - key: ex8_panel_top_left
+    sprite: {fileID: 21300000, guid: 91ec13cea2a5aea4aace132b8c9dec05, type: 3}
+  - key: ex8_panel_top_right
+    sprite: {fileID: 21300000, guid: 286a88e86a4169147b238262d952183e, type: 3}
+  - key: ex8_panel_detail
+    sprite: {fileID: 21300000, guid: 0be781032a689db4fafa894530e7b28c, type: 3}
+  - key: ex8_panel_detail_expanded
+    sprite: {fileID: 21300000, guid: 67ab4d8020e083049a14748801323951, type: 3}
+  - key: ex8_panel_dock
+    sprite: {fileID: 21300000, guid: 6fc5e95f8453dd448919438096404be4, type: 3}
+  - key: ex8_panel_intel
+    sprite: {fileID: 21300000, guid: 1291172c6cc7c3c479d696f246741339, type: 3}
+  - key: ex8_panel_start
+    sprite: {fileID: 21300000, guid: b7db6bbc3d1f7264a8399fd5de2c918f, type: 3}
+  - key: ex8_core_health_track
+    sprite: {fileID: 21300000, guid: 799674f7b2d11ce4ab4aa19c4a1f2719, type: 3}
+  - key: ex8_detail_health_fill
+    sprite: {fileID: 21300004, guid: dfae8a795a8253c4fa287f753a2483f1, type: 3}
+  - key: ex8_core_shield_track
+    sprite: {fileID: 21300002, guid: dfae8a795a8253c4fa287f753a2483f1, type: 3}
+  - key: ex8_detail_energy_track
+    sprite: {fileID: 21300006, guid: dfae8a795a8253c4fa287f753a2483f1, type: 3}
+  - key: ex8_core_health_fill
+    sprite: {fileID: 21300000, guid: dfae8a795a8253c4fa287f753a2483f1, type: 3}
+  - key: ex8_core_shield_fill
+    sprite: {fileID: 21300000, guid: 536a2f5683e92d04c9fcfb815ccf95a1, type: 3}
+  - key: ex8_detail_health_track
+    sprite: {fileID: 21300000, guid: f22710bced610db46ad6429685a1f32a, type: 3}
+  - key: ex8_detail_energy_fill
+    sprite: {fileID: 21300000, guid: 7cfe87aa1c04ce64fa9869ca0fa7a4a8, type: 3}
+  - key: ex8_wave_track
+    sprite: {fileID: 21300000, guid: 789900c40ca044a4d8acae9fc06808f4, type: 3}
+  - key: ex8_wave_fill
+    sprite: {fileID: 21300002, guid: 789900c40ca044a4d8acae9fc06808f4, type: 3}
+  - key: exact8_icon_enemy
+    sprite: {fileID: 21300002, guid: 7d7c21fab6d6d0246ac69c6885d22472, type: 3}
+  - key: exact8_icon_home
+    sprite: {fileID: 21300022, guid: 7d7c21fab6d6d0246ac69c6885d22472, type: 3}
+  - key: exact8_icon_add
+    sprite: {fileID: 21300024, guid: 7d7c21fab6d6d0246ac69c6885d22472, type: 3}
+  - key: exact8_icon_copy
+    sprite: {fileID: 21300026, guid: 7d7c21fab6d6d0246ac69c6885d22472, type: 3}
+  - key: exact8_icon_network
+    sprite: {fileID: 21300000, guid: 7d7c21fab6d6d0246ac69c6885d22472, type: 3}
+  - key: exact8_icon_priorityHigh
+    sprite: {fileID: 21300012, guid: 7d7c21fab6d6d0246ac69c6885d22472, type: 3}
+  - key: exact8_icon_sandbox
+    sprite: {fileID: 21300006, guid: 7d7c21fab6d6d0246ac69c6885d22472, type: 3}
+  - key: exact8_icon_delete
+    sprite: {fileID: 21300028, guid: 7d7c21fab6d6d0246ac69c6885d22472, type: 3}
+  - key: exact8_icon_help
+    sprite: {fileID: 21300018, guid: 7d7c21fab6d6d0246ac69c6885d22472, type: 3}
+  - key: exact8_icon_priorityLow
+    sprite: {fileID: 21300008, guid: 7d7c21fab6d6d0246ac69c6885d22472, type: 3}
+  - key: exact8_icon_restart
+    sprite: {fileID: 21300020, guid: 7d7c21fab6d6d0246ac69c6885d22472, type: 3}
+  - key: exact8_icon_speed
+    sprite: {fileID: 21300004, guid: 7d7c21fab6d6d0246ac69c6885d22472, type: 3}
+  - key: exact8_icon_locate
+    sprite: {fileID: 21300016, guid: 7d7c21fab6d6d0246ac69c6885d22472, type: 3}
+  - key: exact8_icon_priorityNormal
+    sprite: {fileID: 21300010, guid: 7d7c21fab6d6d0246ac69c6885d22472, type: 3}
+  - key: exact8_icon_warning
+    sprite: {fileID: 21300014, guid: 7d7c21fab6d6d0246ac69c6885d22472, type: 3}
+  - key: exact8_shopPortrait_reactor
+    sprite: {fileID: 21300012, guid: 8347f4f015924e04a84cf33bd0e6f648, type: 3}
+  - key: exact8_shopPortrait_relay
+    sprite: {fileID: 21300014, guid: 8347f4f015924e04a84cf33bd0e6f648, type: 3}
+  - key: exact8_shopPortrait_battery
+    sprite: {fileID: 21300016, guid: 8347f4f015924e04a84cf33bd0e6f648, type: 3}
+  - key: exact8_shopPortrait_rapidTurret
+    sprite: {fileID: 21300018, guid: 8347f4f015924e04a84cf33bd0e6f648, type: 3}
+  - key: exact8_shopPortrait_heavyTurret
+    sprite: {fileID: 21300020, guid: 8347f4f015924e04a84cf33bd0e6f648, type: 3}
+  - key: exact8_shopPortrait_areaTurret
+    sprite: {fileID: 21300022, guid: 8347f4f015924e04a84cf33bd0e6f648, type: 3}
