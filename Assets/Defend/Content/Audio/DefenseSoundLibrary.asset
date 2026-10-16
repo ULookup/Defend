@@ -1,0 +1,479 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c5011f8c30838d44a8556e96326e94b, type: 3}
+  m_Name: DefenseSoundLibrary
+  m_EditorClassIdentifier: Defend.Unity::Defend.Unity.DefenseSoundLibrary
+  sounds:
+  - cue: 0
+    clips:
+    - {fileID: 8300000, guid: 565b6181bb4682248be73cde85e85c15, type: 3}
+    gain: 0.48
+    spatialBlend: 0.35
+    minimumInterval: 0.045
+    maximumConcurrent: 4
+    priority: 35
+    combat: 1
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 1
+    clips:
+    - {fileID: 8300000, guid: 26ce390cc8a064a45872f54a6da1d19d, type: 3}
+    gain: 0.64
+    spatialBlend: 0.35
+    minimumInterval: 0.075
+    maximumConcurrent: 3
+    priority: 45
+    combat: 1
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 2
+    clips:
+    - {fileID: 8300000, guid: b2467202f01e80f408321f1bc68ca079, type: 3}
+    gain: 0.6
+    spatialBlend: 0.35
+    minimumInterval: 0.09
+    maximumConcurrent: 3
+    priority: 43
+    combat: 1
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 3
+    clips:
+    - {fileID: 8300000, guid: 58e813fe7c2e5b9408d019252e7ab966, type: 3}
+    - {fileID: 8300000, guid: be53220dc0af462409e5bb966f558cf2, type: 3}
+    - {fileID: 8300000, guid: 648413fdda293284f85fad887117c29d, type: 3}
+    gain: 0.72
+    spatialBlend: 0.35
+    minimumInterval: 0.07
+    maximumConcurrent: 3
+    priority: 68
+    combat: 1
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 4
+    clips:
+    - {fileID: 8300000, guid: 092e2f54b776e7349acb7461bd60ff74, type: 3}
+    - {fileID: 8300000, guid: cec687cff659ea74dbe7b45504d10939, type: 3}
+    gain: 0.38
+    spatialBlend: 0.35
+    minimumInterval: 0
+    maximumConcurrent: 3
+    priority: 25
+    combat: 1
+    duckWeapons: 0
+    loop: 1
+    pitchRange: {x: 1, y: 1}
+  - cue: 5
+    clips:
+    - {fileID: 8300000, guid: 5d2a9ab2d6d4e1e49a39e877b6852c8a, type: 3}
+    gain: 0.72
+    spatialBlend: 0.22
+    minimumInterval: 0.045
+    maximumConcurrent: 4
+    priority: 62
+    combat: 1
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 6
+    clips:
+    - {fileID: 8300000, guid: 5d2a9ab2d6d4e1e49a39e877b6852c8a, type: 3}
+    gain: 0.78
+    spatialBlend: 0.25
+    minimumInterval: 0.055
+    maximumConcurrent: 3
+    priority: 68
+    combat: 1
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 7
+    clips:
+    - {fileID: 8300000, guid: 815d48540e873fa4ab6f55d54ebcc562, type: 3}
+    - {fileID: 8300000, guid: 42a24ba4da885a946aed59f2c036b2f2, type: 3}
+    - {fileID: 8300000, guid: d286cfbe5e8786b4cbfcb7e28015e619, type: 3}
+    gain: 0.72
+    spatialBlend: 0.35
+    minimumInterval: 0.09
+    maximumConcurrent: 3
+    priority: 64
+    combat: 1
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 8
+    clips:
+    - {fileID: 8300000, guid: 5d2a9ab2d6d4e1e49a39e877b6852c8a, type: 3}
+    gain: 0.78
+    spatialBlend: 0.25
+    minimumInterval: 0.055
+    maximumConcurrent: 3
+    priority: 68
+    combat: 1
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 9
+    clips:
+    - {fileID: 8300000, guid: 240bbe9248bb93a46b852d440cfa70aa, type: 3}
+    gain: 0.88
+    spatialBlend: 0.12
+    minimumInterval: 0.065
+    maximumConcurrent: 4
+    priority: 82
+    combat: 1
+    duckWeapons: 1
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 10
+    clips:
+    - {fileID: 8300000, guid: 240bbe9248bb93a46b852d440cfa70aa, type: 3}
+    gain: 0.9
+    spatialBlend: 0.18
+    minimumInterval: 0.09
+    maximumConcurrent: 3
+    priority: 86
+    combat: 1
+    duckWeapons: 1
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 11
+    clips:
+    - {fileID: 8300000, guid: 63aaa8104e3dc6a4cb8b5f8eff4a03cb, type: 3}
+    - {fileID: 8300000, guid: 6cea2f23acbbb8f4cb8935e6e099694d, type: 3}
+    - {fileID: 8300000, guid: 7015b1da8d660b84196dab54ce395f58, type: 3}
+    gain: 0.7
+    spatialBlend: 0.35
+    minimumInterval: 0.11
+    maximumConcurrent: 3
+    priority: 72
+    combat: 1
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 12
+    clips:
+    - {fileID: 8300000, guid: bcec1e1c3036a7d4e8054387de24e24e, type: 3}
+    gain: 0.86
+    spatialBlend: 0.2
+    minimumInterval: 0.12
+    maximumConcurrent: 3
+    priority: 90
+    combat: 1
+    duckWeapons: 1
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 13
+    clips:
+    - {fileID: 8300000, guid: 450053446b723f042baa443c3de9c8e4, type: 3}
+    - {fileID: 8300000, guid: 50dec25006ec4db449821e5fb7703d65, type: 3}
+    - {fileID: 8300000, guid: 1e6dc3d7a33186e49ac6c6f9955a2444, type: 3}
+    gain: 0.66
+    spatialBlend: 0.2
+    minimumInterval: 0.12
+    maximumConcurrent: 3
+    priority: 70
+    combat: 1
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 14
+    clips:
+    - {fileID: 8300000, guid: 6db380764fb9d4d49940caef2fb65eb7, type: 3}
+    - {fileID: 8300000, guid: a4a31f0c33e0d894d91043dfb462d103, type: 3}
+    gain: 0.85
+    spatialBlend: 0.1
+    minimumInterval: 0.6
+    maximumConcurrent: 1
+    priority: 92
+    combat: 1
+    duckWeapons: 1
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 15
+    clips:
+    - {fileID: 8300000, guid: 5066f5b2593970c49b67f8afbe319093, type: 3}
+    - {fileID: 8300000, guid: 53dd597208748a74f9f877068179a864, type: 3}
+    gain: 0.6
+    spatialBlend: 0.1
+    minimumInterval: 2
+    maximumConcurrent: 1
+    priority: 76
+    combat: 0
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 16
+    clips:
+    - {fileID: 8300000, guid: 1cc2fda4b08572645b6d11989c35dc5d, type: 3}
+    gain: 0.56
+    spatialBlend: 0
+    minimumInterval: 3
+    maximumConcurrent: 1
+    priority: 70
+    combat: 0
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 17
+    clips:
+    - {fileID: 8300000, guid: 40cb05255c849de45b9415a390edb2ed, type: 3}
+    - {fileID: 8300000, guid: 0262475a92e11b247a1f84f891c941e8, type: 3}
+    gain: 0.56
+    spatialBlend: 0
+    minimumInterval: 3
+    maximumConcurrent: 1
+    priority: 70
+    combat: 0
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 18
+    clips:
+    - {fileID: 8300000, guid: c15ee04e1c7232744bcc34c8958026c3, type: 3}
+    gain: 0.68
+    spatialBlend: 0.2
+    minimumInterval: 0.08
+    maximumConcurrent: 3
+    priority: 74
+    combat: 0
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 19
+    clips:
+    - {fileID: 8300000, guid: e653b9e9eedfd9849a31b6ddaf64c0df, type: 3}
+    - {fileID: 8300000, guid: 44c921430d8b25649aa3704a8085f804, type: 3}
+    - {fileID: 8300000, guid: b7c662978ee30ac48b8967924656ed21, type: 3}
+    gain: 0.68
+    spatialBlend: 0.2
+    minimumInterval: 0.08
+    maximumConcurrent: 3
+    priority: 74
+    combat: 0
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 20
+    clips:
+    - {fileID: 8300000, guid: 093b12dcabfe1c3419b9233213f9e44f, type: 3}
+    gain: 0.68
+    spatialBlend: 0.2
+    minimumInterval: 0.08
+    maximumConcurrent: 3
+    priority: 74
+    combat: 0
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 21
+    clips:
+    - {fileID: 8300000, guid: 1532836b534b3644a89d5ed1728853bc, type: 3}
+    gain: 0.68
+    spatialBlend: 0.2
+    minimumInterval: 0.08
+    maximumConcurrent: 3
+    priority: 74
+    combat: 0
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 22
+    clips:
+    - {fileID: 8300000, guid: bc9126050d650ab458921b6ec5bfbd34, type: 3}
+    gain: 0.55
+    spatialBlend: 0
+    minimumInterval: 0.055
+    maximumConcurrent: 2
+    priority: 60
+    combat: 0
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.98, y: 1.02}
+  - cue: 23
+    clips:
+    - {fileID: 8300000, guid: 4339c8deb729be14cbc22548a5884f81, type: 3}
+    - {fileID: 8300000, guid: 07697fa21cdecdd4f93dbc28cdab25d8, type: 3}
+    gain: 0.66
+    spatialBlend: 0
+    minimumInterval: 0.09
+    maximumConcurrent: 2
+    priority: 78
+    combat: 0
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.985, y: 1.015}
+  - cue: 24
+    clips:
+    - {fileID: 8300000, guid: 91b30dec6efed9b44b05a304f6648413, type: 3}
+    gain: 0.72
+    spatialBlend: 0
+    minimumInterval: 0.35
+    maximumConcurrent: 1
+    priority: 80
+    combat: 0
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.985, y: 1.015}
+  - cue: 25
+    clips:
+    - {fileID: 8300000, guid: 85f71bee893c889428e02d07daa2f5b3, type: 3}
+    gain: 0.76
+    spatialBlend: 0
+    minimumInterval: 0.8
+    maximumConcurrent: 1
+    priority: 94
+    combat: 0
+    duckWeapons: 1
+    loop: 0
+    pitchRange: {x: 1, y: 1}
+  - cue: 26
+    clips:
+    - {fileID: 8300000, guid: 581a9b5dea73419418919e0303c2c9a7, type: 3}
+    gain: 0.76
+    spatialBlend: 0
+    minimumInterval: 0.8
+    maximumConcurrent: 1
+    priority: 94
+    combat: 0
+    duckWeapons: 1
+    loop: 0
+    pitchRange: {x: 1, y: 1}
+  - cue: 27
+    clips:
+    - {fileID: 8300000, guid: 1ecc452b017de104eb6bc6eb51be0f3f, type: 3}
+    gain: 0.85
+    spatialBlend: 0
+    minimumInterval: 2
+    maximumConcurrent: 1
+    priority: 100
+    combat: 0
+    duckWeapons: 1
+    loop: 0
+    pitchRange: {x: 1, y: 1}
+  - cue: 28
+    clips:
+    - {fileID: 8300000, guid: 032c94c877f55e048b8c9a95f6a2769c, type: 3}
+    gain: 0.85
+    spatialBlend: 0
+    minimumInterval: 2
+    maximumConcurrent: 1
+    priority: 100
+    combat: 0
+    duckWeapons: 1
+    loop: 0
+    pitchRange: {x: 1, y: 1}
+  - cue: 29
+    clips:
+    - {fileID: 8300000, guid: 08942c720dbd1984ebfb8910e851499a, type: 3}
+    - {fileID: 8300000, guid: b5b1ce2a8cec9e44482a713733467b06, type: 3}
+    gain: 0.8
+    spatialBlend: 0
+    minimumInterval: 4
+    maximumConcurrent: 1
+    priority: 96
+    combat: 0
+    duckWeapons: 1
+    loop: 0
+    pitchRange: {x: 1, y: 1}
+  - cue: 30
+    clips:
+    - {fileID: 8300000, guid: 9ae548763f7c4fe4d9fdd57de8af6d9b, type: 3}
+    - {fileID: 8300000, guid: aa4bd939002befe48a382cab7bfb8a31, type: 3}
+    gain: 0.66
+    spatialBlend: 0
+    minimumInterval: 0.09
+    maximumConcurrent: 2
+    priority: 78
+    combat: 0
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.985, y: 1.015}
+  - cue: 31
+    clips:
+    - {fileID: 8300000, guid: 128ba3ceeff6cce419086f713f38da63, type: 3}
+    gain: 0.66
+    spatialBlend: 0
+    minimumInterval: 0.09
+    maximumConcurrent: 2
+    priority: 78
+    combat: 0
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.985, y: 1.015}
+  - cue: 32
+    clips:
+    - {fileID: 8300000, guid: aa5d428266c7835459b67f6b7e756ee2, type: 3}
+    gain: 0.66
+    spatialBlend: 0
+    minimumInterval: 0.09
+    maximumConcurrent: 2
+    priority: 78
+    combat: 0
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.985, y: 1.015}
+  - cue: 33
+    clips:
+    - {fileID: 8300000, guid: 2741c4597827daf4a8ff812bcc238e49, type: 3}
+    gain: 0.25
+    spatialBlend: 0
+    minimumInterval: 0.08
+    maximumConcurrent: 2
+    priority: 60
+    combat: 0
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.98, y: 1.02}
+  - cue: 34
+    clips:
+    - {fileID: 8300000, guid: 2934ae26236b8b64c96dad64d98b553a, type: 3}
+    - {fileID: 8300000, guid: 76a568062c5e2de40b62650178788e23, type: 3}
+    - {fileID: 8300000, guid: 31bad50c19d2f6844b99f847e82f3ecd, type: 3}
+    gain: 0.48
+    spatialBlend: 0.35
+    minimumInterval: 0.14
+    maximumConcurrent: 2
+    priority: 30
+    combat: 1
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 35
+    clips:
+    - {fileID: 8300000, guid: fb79e0150fd7d3944950f417c53fd870, type: 3}
+    - {fileID: 8300000, guid: ee9c22878ffa9a14096620491dae6d60, type: 3}
+    gain: 0.58
+    spatialBlend: 0.35
+    minimumInterval: 0.18
+    maximumConcurrent: 2
+    priority: 40
+    combat: 1
+    duckWeapons: 0
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
+  - cue: 36
+    clips:
+    - {fileID: 8300000, guid: 6e1d60013e84646429cf644f669b6c2d, type: 3}
+    gain: 0.8
+    spatialBlend: 0.1
+    minimumInterval: 0.14
+    maximumConcurrent: 2
+    priority: 88
+    combat: 1
+    duckWeapons: 1
+    loop: 0
+    pitchRange: {x: 0.965, y: 1.035}
