@@ -23,3 +23,7 @@ MonoBehaviour:
   enableTestLoad: 0
   maximumVisibleTransfers: 160
   maximumVisibleConnections: 600
+  batterySupportStartRatio: 0.3
+  batterySupportStopRatio: 0.75
+  batteryBalanceStartDifference: 0.25
+  batteryBalanceStopDifference: 0.1
