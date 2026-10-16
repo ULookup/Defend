@@ -51,7 +51,7 @@ namespace Defend.Simulation
             foreach (var building in world.Buildings)
                 if (world.Battle != null && building.IsTurret && building.IsAlive && !building.IsSold && supplied.Contains(building.Id))
                 {
-                    var weapon = world.Battle.Settings.GetTurret(building.Kind);
+                    var weapon = world.GetTurretDefinition(building.Kind);
                     result.FullFireDemandPerSecond += weapon.EnergyPerShot * (double)world.Settings.TicksPerSecond / weapon.CooldownTicks / 1000;
                 }
             foreach (var edge in world.Energy.Connections)

@@ -20,6 +20,13 @@ namespace Defend.Simulation
         }
     }
 
+    internal sealed class EnergyRelayCharge
+    {
+        internal long BuildingId;
+        internal long Amount;
+        internal EnergyRelayCharge(long buildingId, long amount) { BuildingId = buildingId; Amount = amount; }
+    }
+
     internal sealed class EnergyBatch
     {
         public long Id;
@@ -29,6 +36,7 @@ namespace Defend.Simulation
         public BuildingState Destination;
         public long Commitment;
         public long SourceServiceCharge;
+        internal readonly List<EnergyRelayCharge> RelayServiceCharges = new List<EnergyRelayCharge>();
         public EnergyRoute Route;
         public int RouteEdge;
         public int StalledTicks;
@@ -71,10 +79,10 @@ namespace Defend.Simulation
         public long NextOutputTick;
         public long AvailableOutput;
         public long LastOutputTick = -1;
-        public EnergyNodeRuntime(BuildingState building, long quantum)
+        public EnergyNodeRuntime(BuildingState building, long quantum, EnergyHistory initialHistory = null)
         {
             Building = building;
-            InitialHistory = new EnergyHistory(building.Id);
+            InitialHistory = initialHistory ?? new EnergyHistory(building.Id);
             OutputSchedule = new WeightedEnergySchedule(quantum);
         }
     }

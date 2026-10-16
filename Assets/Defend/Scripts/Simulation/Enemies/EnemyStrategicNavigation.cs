@@ -20,6 +20,7 @@ namespace Defend.Simulation
         private static readonly int[] OffsetX = { 0, 1, 0, -1 };
         private static readonly int[] OffsetZ = { 1, 0, -1, 0 };
         private long dangerTick = -1;
+        internal void Invalidate() => dangerTick = -1;
         internal EnemyStrategicNavigation(GameWorld world, BuildingGrid grid, BattleSystem battle, EnemyBehaviorSystem observation)
         {
             this.world = world; this.grid = grid; this.battle = battle; this.observation = observation;
@@ -36,7 +37,7 @@ namespace Defend.Simulation
                 foreach (var turret in world.Buildings)
                 {
                     if (!turret.IsAlive || turret.IsSold || !turret.IsTurret) continue;
-                    double range = battle.Settings.GetTurret(turret.Kind).Range, rate = observation.Threat(turret, tick);
+                    double range = world.GetTurretDefinition(turret.Kind).Range, rate = observation.Threat(turret, tick);
                     for (int z = Math.Max(0, (int)(turret.CenterZ - range)); z < Math.Min(grid.Depth, turret.CenterZ + range + 1); z++)
                     for (int x = Math.Max(0, (int)(turret.CenterX - range)); x < Math.Min(grid.Width, turret.CenterX + range + 1); x++)
                     {
@@ -96,13 +97,13 @@ namespace Defend.Simulation
         internal EnemyRoute RouteTo(EnemyState enemy, BuildingState target, long tick)
         {
             int chosen = -1; double best = double.PositiveInfinity;
-            for (int z = Math.Max(0, target.Z - 1); z <= Math.Min(grid.Depth - 1, target.Z + target.Definition.Depth); z++)
-            for (int x = Math.Max(0, target.X - 1); x <= Math.Min(grid.Width - 1, target.X + target.Definition.Width); x++)
+            for (int z = Math.Max(0, target.Z - 1); z <= Math.Min(grid.Depth - 1, target.Z + target.FootprintDepth); z++)
+            for (int x = Math.Max(0, target.X - 1); x <= Math.Min(grid.Width - 1, target.X + target.FootprintWidth); x++)
             {
                 long occupant = grid.Find(x, z);
                 if (occupant < 0 || occupant == target.Id) continue;
-                double dx = x + .5 - Math.Max(target.X, Math.Min(x + .5, target.X + target.Definition.Width));
-                double dz = z + .5 - Math.Max(target.Z, Math.Min(z + .5, target.Z + target.Definition.Depth));
+                double dx = x + .5 - Math.Max(target.X, Math.Min(x + .5, target.X + target.FootprintWidth));
+                double dz = z + .5 - Math.Max(target.Z, Math.Min(z + .5, target.Z + target.FootprintDepth));
                 if (dx * dx + dz * dz > enemy.Definition.AttackRange * enemy.Definition.AttackRange) continue;
                 int cell = z * grid.Width + x;
                 // 不能先穿过最终目标占地再抵达其背面攻击；目标的拆除只在终点计费。

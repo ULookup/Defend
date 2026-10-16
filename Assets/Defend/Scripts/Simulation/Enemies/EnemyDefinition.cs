@@ -11,6 +11,7 @@ namespace Defend.Simulation
         public int BaseHealth { get; }
         public double Radius { get; }
         public double Speed { get; }
+        public double BodyHeight { get; }
         public int AttackDamage { get; }
         public int AttackIntervalTicks { get; }
         public double AttackRange { get; }
@@ -20,7 +21,7 @@ namespace Defend.Simulation
         public double RiskWeight { get; }
         public EnemyDefinition(EnemyKind kind, string displayName, string description, int baseHealth,
             double radius, double speed, int attackDamage, int attackIntervalTicks, double attackRange,
-            int killReward, double relayPreference = 1, double reactorPreference = 1, double riskWeight = 8)
+            int killReward, double relayPreference = 1, double reactorPreference = 1, double riskWeight = 8, double bodyHeight = 0)
         {
             if (!Enum.IsDefined(typeof(EnemyKind), kind) || baseHealth <= 0 || attackDamage <= 0 || attackIntervalTicks <= 0 || killReward < 0)
                 throw new ArgumentOutOfRangeException(nameof(baseHealth));
@@ -28,6 +29,8 @@ namespace Defend.Simulation
                 !Finite(attackRange) || attackRange < radius || !Finite(relayPreference) || relayPreference <= 0 ||
                 !Finite(reactorPreference) || reactorPreference <= 0 || !Finite(riskWeight) || riskWeight < 0)
                 throw new ArgumentOutOfRangeException(nameof(radius));
+            if (!Finite(bodyHeight) || bodyHeight < 0) throw new ArgumentOutOfRangeException(nameof(bodyHeight));
+            BodyHeight = bodyHeight > 0 ? bodyHeight : (kind == EnemyKind.Fast ? .55 : kind == EnemyKind.Heavy ? 1.3 : .9);
             Kind = kind; DisplayName = displayName; Description = description; BaseHealth = baseHealth;
             Radius = radius; Speed = speed; AttackDamage = attackDamage; AttackIntervalTicks = attackIntervalTicks;
             AttackRange = attackRange; KillReward = killReward; RelayPreference = relayPreference;

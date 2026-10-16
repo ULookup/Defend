@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Defend.Simulation
 {
-    internal sealed class EnergyEdge
+    internal sealed partial class EnergyEdge
     {
         public readonly BuildingState Source;
         public readonly BuildingState Target;
@@ -68,7 +68,7 @@ namespace Defend.Simulation
     /// 图只描述几何连接。容量是查询时的临时过滤，不会永久删掉边。
     /// 共用反向最短路树，历史约束查询在可用时以该树提供 A* 的损耗下界。
     /// </summary>
-    internal sealed class EnergyRoutePlanner
+    internal sealed partial class EnergyRoutePlanner
     {
         private sealed class NodeVersion
         {
@@ -77,6 +77,7 @@ namespace Defend.Simulation
             public int Life;
             public int Position;
             public bool Alive;
+            public BuildingDefinition Definition;
         }
         private const int BucketSize = 4;
         private readonly Stack<EnergyPathSearch.Workspace> workspacePool = new Stack<EnergyPathSearch.Workspace>();
@@ -139,12 +140,14 @@ namespace Defend.Simulation
                 }
                 bool alive = building.IsAlive && !building.IsSold;
                 if (version.X != building.X || version.Z != building.Z || version.Life != building.LifeGeneration ||
-                    version.Position != building.PositionRevision || version.Alive != alive) changed = true;
+                    version.Position != building.PositionRevision || version.Alive != alive || version.Definition == null ||
+                    version.Definition.TransmissionRange != building.Definition.TransmissionRange) changed = true;
                 version.X = building.X;
                 version.Z = building.Z;
                 version.Life = building.LifeGeneration;
                 version.Position = building.PositionRevision;
                 version.Alive = alive;
+                version.Definition = building.Definition;
             }
             if (!changed) return false;
             topologyVersion++;

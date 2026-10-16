@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Defend.Simulation
 {
     /// <summary>目标分配与输出仲裁。所有候选都用真实库存报价，成交时才创建承诺。</summary>
-    internal sealed class EnergyDispatch
+    internal sealed partial class EnergyDispatch
     {
         private sealed class Offer
         {

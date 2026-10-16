@@ -16,6 +16,33 @@ namespace Defend.Simulation
         private readonly int memoryTicks, evaluationTicks, lockTicks;
         private long cursor;
         internal EnemyBehaviorStatistics Statistics { get; } = new EnemyBehaviorStatistics();
+        internal sealed class Checkpoint
+        {
+            internal long Cursor;
+            internal readonly Dictionary<long, EnemyObservedActivity> Damage = new Dictionary<long, EnemyObservedActivity>();
+            internal readonly Dictionary<long, EnemyObservedActivity> Delivered = new Dictionary<long, EnemyObservedActivity>();
+            internal readonly Dictionary<(long, long), EnemyObservedActivity> Support = new Dictionary<(long, long), EnemyObservedActivity>();
+            internal EnemyBehaviorStatistics Statistics;
+        }
+        internal Checkpoint CaptureCheckpoint()
+        {
+            var state = new Checkpoint { Cursor = cursor, Statistics = new EnemyBehaviorStatistics() };
+            foreach (var entry in damage) state.Damage.Add(entry.Key, entry.Value.Copy());
+            foreach (var entry in delivered) state.Delivered.Add(entry.Key, entry.Value.Copy());
+            foreach (var entry in support) state.Support.Add(entry.Key, entry.Value.Copy());
+            state.Statistics.CopyFrom(Statistics);
+            return state;
+        }
+        internal void RestoreCheckpoint(Checkpoint state)
+        {
+            cursor = state.Cursor; damage.Clear(); delivered.Clear(); support.Clear();
+            foreach (var entry in state.Damage) damage.Add(entry.Key, entry.Value.Copy());
+            foreach (var entry in state.Delivered) delivered.Add(entry.Key, entry.Value.Copy());
+            foreach (var entry in state.Support) support.Add(entry.Key, entry.Value.Copy());
+            Statistics.CopyFrom(state.Statistics);
+            // 路线搜索每次从敌人位置完整构建；仅当步火力图有缓存，恢复后必须丢弃旧当步图。
+            navigation.Invalidate();
+        }
         internal EnemyBehaviorSystem(GameWorld world, BuildingGrid grid, BattleSystem battle, EnemyNavigation unused)
         {
             this.world = world; this.grid = grid; this.battle = battle; settings = battle.Settings.EnemyBehavior;
@@ -54,8 +81,8 @@ namespace Defend.Simulation
         private double Damage(long id, long tick) => damage.TryGetValue(id, out var value) ? value.Value(tick, memoryTicks) / settings.ObservationMemorySeconds : 0;
         internal double Threat(BuildingState turret, long tick)
         {
-            var weapon = battle.Settings.GetTurret(turret.Kind);
-            double energy = Math.Min(1, (double)turret.StoredEnergy / weapon.EnergyPerShot);
+            var weapon = world.GetTurretDefinition(turret.Kind);
+            double energy = weapon.EnergyPerShot == 0 ? 1 : Math.Min(1, (double)turret.StoredEnergy / weapon.EnergyPerShot);
             double remainingCooldown = Math.Max(weapon.CooldownTicks, turret.NextShotTick - tick);
             double potential = weapon.Damage * world.Settings.TicksPerSecond / remainingCooldown * energy;
             return Math.Max(potential, Damage(turret.Id, tick));

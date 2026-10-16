@@ -10,6 +10,7 @@ namespace Defend.Simulation
         public int Width => occupants.GetLength(0);
         public int Depth => occupants.GetLength(1);
         public long Revision { get; private set; }
+        internal void RestoreRevision(long revision) { Revision = revision; }
 
         public BuildingGrid(int width, int depth)
         {
@@ -44,11 +45,11 @@ namespace Defend.Simulation
 
         public void Occupy(BuildingState building)
         {
-            if (!CanPlace(building.X, building.Z, building.Definition.Width, building.Definition.Depth, building.Id))
+            if (!CanPlace(building.X, building.Z, building.FootprintWidth, building.FootprintDepth, building.Id))
                 throw new InvalidOperationException("建筑占地未通过校验，不能写入格子。");
             bool changed = false;
-            for (int column = building.X; column < building.X + building.Definition.Width; column++)
-            for (int row = building.Z; row < building.Z + building.Definition.Depth; row++)
+            for (int column = building.X; column < building.X + building.FootprintWidth; column++)
+            for (int row = building.Z; row < building.Z + building.FootprintDepth; row++)
             {
                 changed |= occupants[column, row] != building.Id;
                 occupants[column, row] = building.Id;
@@ -59,8 +60,8 @@ namespace Defend.Simulation
         public void Release(BuildingState building)
         {
             bool changed = false;
-            for (int column = building.X; column < building.X + building.Definition.Width; column++)
-            for (int row = building.Z; row < building.Z + building.Definition.Depth; row++)
+            for (int column = building.X; column < building.X + building.FootprintWidth; column++)
+            for (int row = building.Z; row < building.Z + building.FootprintDepth; row++)
                 if (occupants[column, row] == building.Id)
                 {
                     occupants[column, row] = 0;

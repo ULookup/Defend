@@ -10,7 +10,9 @@ namespace Defend.Simulation
         Core,
         BurstTurret,
         AreaTurret,
-        Battery = 6
+        Battery = 6,
+        PiercingRailgun = 7,
+        ResonanceMagneticTower = 8
     }
 
     /// <summary>
@@ -34,11 +36,28 @@ namespace Defend.Simulation
         public int PurchaseCost { get; }
         public int SaleRefund { get; }
         public int RepairCost { get; }
+        public ResonanceDefinition Resonance { get; }
+
+        /// <summary>四向摆放后的实际占地；定义本身始终保留未旋转尺寸。</summary>
+        public int GetFootprintWidth(int orientationQuarterTurns)
+        {
+            if (orientationQuarterTurns < 0 || orientationQuarterTurns > 3)
+                throw new ArgumentOutOfRangeException(nameof(orientationQuarterTurns));
+            return (orientationQuarterTurns & 1) == 0 ? Width : Depth;
+        }
+
+        public int GetFootprintDepth(int orientationQuarterTurns)
+        {
+            if (orientationQuarterTurns < 0 || orientationQuarterTurns > 3)
+                throw new ArgumentOutOfRangeException(nameof(orientationQuarterTurns));
+            return (orientationQuarterTurns & 1) == 0 ? Depth : Width;
+        }
 
         public BuildingDefinition(BuildingKind kind, string displayName, int width, int depth,
             long energyCapacity, long productionPerTick, long consumptionPerTick,
             long outputAmount, int outputIntervalTicks, double transmissionRange,
-            int maximumHealth, int purchaseCost, int saleRefund, int repairCost, long maximumChargePerTick = 8000)
+            int maximumHealth, int purchaseCost, int saleRefund, int repairCost, long maximumChargePerTick = 8000,
+            ResonanceDefinition resonance = null)
         {
             if (!Enum.IsDefined(typeof(BuildingKind), kind))
                 throw new ArgumentOutOfRangeException(nameof(kind));
@@ -74,6 +93,10 @@ namespace Defend.Simulation
                 throw new ArgumentException("当前白盒仅允许炮塔和核心设置自用测试负载。");
             if (!isSupplier && outputAmount != 0)
                 throw new ArgumentException("终端用能建筑不能向外转发能量。");
+            if (resonance != null && kind != BuildingKind.ResonanceMagneticTower)
+                throw new ArgumentException("只有共振磁暴塔可以配置共振规则。", nameof(resonance));
+            if (kind == BuildingKind.ResonanceMagneticTower && (width != 2 || depth != 2))
+                throw new ArgumentException("共振磁暴塔占地必须为 2 × 2 格。");
 
             Kind = kind;
             DisplayName = displayName;
@@ -90,6 +113,7 @@ namespace Defend.Simulation
             PurchaseCost = purchaseCost;
             SaleRefund = saleRefund;
             RepairCost = repairCost;
+            Resonance = kind == BuildingKind.ResonanceMagneticTower ? resonance ?? new ResonanceDefinition() : null;
         }
     }
 }

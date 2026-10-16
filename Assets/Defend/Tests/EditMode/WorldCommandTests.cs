@@ -5,6 +5,62 @@ namespace Defend.Tests
 {
     public sealed class WorldCommandTests
     {
+        [Test, Category("BuildingRotation")]
+        public void RotatedRectangleUsesSwappedFootprintForPlacementMovementAndRelease()
+        {
+            var world = SimulationTestWorld.Create(
+                relay: SimulationTestWorld.Definition(BuildingKind.Relay, width: 2, depth: 3));
+            Assert.That(world.PlacementIssue(BuildingKind.Relay, 37, 38, orientationQuarterTurns: 1), Is.Null);
+            Assert.That(world.PlacementIssue(BuildingKind.Relay, 37, 38, orientationQuarterTurns: 0), Is.Not.Null);
+            var result = world.Submit(WorldCommand.Place(BuildingKind.Relay, 37, 38, 1));
+            Assert.That(result.Succeeded, Is.True, result.Message);
+            var building = world.FindBuilding(result.BuildingId);
+            Assert.That(building.CenterX, Is.EqualTo(38.5));
+            Assert.That(building.CenterZ, Is.EqualTo(39));
+            for (int x = 37; x < 40; x++)
+                for (int z = 38; z < 40; z++)
+                    Assert.That(world.FindBuildingAt(x, z), Is.SameAs(building));
+
+            Assert.That(world.Submit(WorldCommand.Move(building.Id, 5, 6)).Succeeded, Is.True);
+            Assert.That(building.OrientationQuarterTurns, Is.EqualTo(1), "旧移动调用保持已放置方向。");
+            Assert.That(world.FindBuildingAt(39, 39), Is.Null);
+            Assert.That(world.FindBuildingAt(7, 7), Is.SameAs(building));
+            Assert.That(world.Submit(WorldCommand.Sell(building.Id)).Succeeded, Is.True);
+            for (int x = 5; x < 8; x++)
+                for (int z = 6; z < 8; z++)
+                    Assert.That(world.FindBuildingAt(x, z), Is.Null);
+        }
+
+        [Test, Category("BuildingRotation")]
+        public void FailedRotationPreservesOldDirectionOccupancyAndCreditsThenSucceedsAtomically()
+        {
+            var world = SimulationTestWorld.Create(
+                relay: SimulationTestWorld.Definition(BuildingKind.Relay, width: 2, depth: 3));
+            var building = SimulationTestWorld.Place(world, BuildingKind.Relay, 4, 6);
+            var obstacle = SimulationTestWorld.Place(world, BuildingKind.Turret, 6, 6);
+            long tick = world.CurrentTick;
+            int credits = world.Credits, revision = building.PositionRevision;
+
+            Assert.That(world.PlacementIssue(building.Kind, 4, 6, building.Id, 1), Is.Not.Null);
+            Assert.That(world.Submit(WorldCommand.Move(building.Id, 4, 6, 1, 105)).Succeeded, Is.False);
+            Assert.That(building.OrientationQuarterTurns, Is.Zero);
+            Assert.That(building.FacingDegrees, Is.Zero);
+            Assert.That(building.PositionRevision, Is.EqualTo(revision));
+            Assert.That(world.Credits, Is.EqualTo(credits));
+            Assert.That(world.CurrentTick, Is.EqualTo(tick));
+            Assert.That(world.FindBuildingAt(4, 8), Is.SameAs(building));
+            Assert.That(world.FindBuildingAt(6, 6), Is.SameAs(obstacle));
+
+            Assert.That(world.Submit(WorldCommand.Sell(obstacle.Id)).Succeeded, Is.True);
+            Assert.That(world.Submit(WorldCommand.Move(building.Id, 4, 6, 1, 105)).Succeeded, Is.True);
+            Assert.That(building.OrientationQuarterTurns, Is.EqualTo(1));
+            Assert.That(building.FacingDegrees, Is.EqualTo(105));
+            Assert.That(building.PositionRevision, Is.EqualTo(revision + 1));
+            Assert.That(world.FindBuildingAt(4, 8), Is.Null);
+            Assert.That(world.FindBuildingAt(6, 6), Is.SameAs(building));
+            Assert.That(world.CurrentTick, Is.EqualTo(tick));
+        }
+
         [Test]
         public void PlacementClaimsEveryCellOfBuildingFootprint()
         {

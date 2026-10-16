@@ -7,7 +7,7 @@ namespace Defend.Simulation
     /// 每局唯一的模拟组合入口。负责命令顺序、建筑生命周期和经济事务；能量结算委托给 EnergySystem。
     /// 可选战斗系统与能源试验负载互斥，原有能源白盒构造和行为保持兼容。
     /// </summary>
-    public sealed class GameWorld
+    public sealed partial class GameWorld
     {
         private readonly Dictionary<BuildingKind, BuildingDefinition> definitions;
         private readonly Dictionary<long, BuildingState> buildingsById = new Dictionary<long, BuildingState>();
@@ -16,8 +16,17 @@ namespace Defend.Simulation
         private readonly BuildingGrid grid;
         private readonly List<WorldEventSnapshot> events = new List<WorldEventSnapshot>();
         public IReadOnlyList<WorldEventSnapshot> Events { get; }
-        internal void Record(WorldEventKind kind, long id, double x, double z, int amount = 0)
-            => events.Add(new WorldEventSnapshot(kind, id, x, z, amount));
+        private long nextEventId = 1;
+        internal void Record(WorldEventKind kind, long id, double x, double z, int amount = 0,
+            HitContext hit = default, double time = -1, long shieldBefore = 0, long shieldAfter = 0, long shieldAbsorbed = 0)
+        {
+            bool enemy = kind == WorldEventKind.EnemyHit || kind == WorldEventKind.EnemyDeath || kind == WorldEventKind.Explosion;
+            var building = enemy ? null : FindBuilding(id);
+            events.Add(new WorldEventSnapshot(kind, id, x, z, amount, nextEventId++, CurrentTick,
+                time >= 0 ? time : (double)CurrentTick / Settings.TicksPerSecond, hit,
+                enemy ? hit.HealthAfter : building?.Health ?? 0, enemy ? hit.MaximumHealth : building?.Definition.MaximumHealth ?? 0,
+                shieldBefore, shieldAfter, shieldAbsorbed));
+        }
         private long nextBuildingId = 1;
         private long nextCommandSequence = 1;
 
@@ -37,7 +46,7 @@ namespace Defend.Simulation
         public CommandResult LastCommandResult { get; private set; }
 
         public GameWorld(IEnumerable<BuildingDefinition> definitions, WorldSettings settings = null,
-            EnergySettings energySettings = null, BattleSettings battleSettings = null)
+            EnergySettings energySettings = null, BattleSettings battleSettings = null, bool sandbox = false)
         {
             if (definitions == null)
                 throw new ArgumentNullException(nameof(definitions));
@@ -50,19 +59,27 @@ namespace Defend.Simulation
             }
             if (this.definitions.Count == 0)
                 throw new ArgumentException("世界至少需要一种建筑定义。", nameof(definitions));
+            IsSandbox = sandbox;
+            originalDefinitions = new Dictionary<BuildingKind, BuildingDefinition>(this.definitions);
+            originalEnergySettings = energySettings ?? new EnergySettings();
+            originalBattleSettings = battleSettings;
+            if (battleSettings != null)
+                foreach (BuildingKind kind in new[] { BuildingKind.Turret, BuildingKind.BurstTurret, BuildingKind.AreaTurret, BuildingKind.PiercingRailgun })
+                    turretDefinitions[kind] = battleSettings.GetTurret(kind);
             Settings = settings ?? new WorldSettings();
             Credits = Settings.StartingCredits;
             grid = new BuildingGrid(Settings.Width, Settings.Depth);
             if (battleSettings != null) foreach (var cell in battleSettings.BlockedCells) grid.Block(cell.X, cell.Z);
             Buildings = buildings.AsReadOnly();
             Events = events.AsReadOnly();
-            Energy = new EnergySystem(Buildings, energySettings ?? new EnergySettings());
+            Energy = new EnergySystem(Buildings, originalEnergySettings);
             if (battleSettings != null)
             {
                 Battle = new BattleSystem(this, grid, battleSettings);
                 TestLoadEnabled = false;
             }
             LastCommandResult = new CommandResult(0, true, "白盒世界已就绪。", 0);
+            if (sandbox) Sandbox = new SandboxConfigurationService(this);
         }
 
         public long Enqueue(WorldCommand command)
@@ -97,13 +114,14 @@ namespace Defend.Simulation
             {
                 QueuedCommand queued = commands.Dequeue();
                 LastCommandResult = Apply(queued.Sequence, queued.Command);
+                if (LastCommandResult.Succeeded) Revision++;
             }
         }
 
         private static bool IsBuildingEdit(WorldCommandKind kind)
             => kind == WorldCommandKind.Place || kind == WorldCommandKind.Move ||
                kind == WorldCommandKind.Sell || kind == WorldCommandKind.Repair ||
-               kind == WorldCommandKind.RepairAll || kind == WorldCommandKind.SetPriority;
+               kind == WorldCommandKind.RepairAll || kind == WorldCommandKind.SetPriority || kind == WorldCommandKind.SetFacing;
 
         public BuildingState FindBuilding(long buildingId)
         {
@@ -119,23 +137,28 @@ namespace Defend.Simulation
         public bool IsTerrainBlocked(int x, int z) => grid.Find(x, z) < 0;
 
         /// <summary>预览与实际操作共用边界条件；调用只读取状态，不扣费也不修改世界。</summary>
-        public string PlacementIssue(BuildingKind kind, int x, int z, long movingId = 0)
+        public string PlacementIssue(BuildingKind kind, int x, int z, long movingId = 0, int? orientationQuarterTurns = null)
         {
             if (!definitions.TryGetValue(kind, out var definition)) return "尚未配置这种建筑。";
             if (!CanEditBuildings) return "只能在准备阶段调整建筑。";
+            int orientation = orientationQuarterTurns ?? 0;
             if (movingId != 0)
             {
                 BuildingState moving = FindBuilding(movingId);
                 if (moving == null || !moving.IsAlive || moving.IsSold) return "已毁或出售建筑不能移动。";
+                if (moving.Kind != kind) return "移动建筑的类型不匹配。";
+                orientation = orientationQuarterTurns ?? moving.OrientationQuarterTurns;
             }
+            if (orientation < 0 || orientation > 3) return "建筑方向必须为四个网格方向之一。";
+            int width = definition.GetFootprintWidth(orientation), depth = definition.GetFootprintDepth(orientation);
             if (Battle != null && kind == BuildingKind.Core && (movingId != 0 || Battle.CoreBuildingId != 0)) return "核心不能移动或重复建造。";
-            if (!grid.CanPlace(x, z, definition.Width, definition.Depth, movingId)) return "位置超出地图、位于岩体或已被占用。";
+            if (!grid.CanPlace(x, z, width, depth, movingId)) return "位置超出地图、位于岩体或已被占用。";
             if (Battle != null)
             {
-                string reason = Battle.ValidatePlacement(x, z, definition.Width, definition.Depth);
+                string reason = Battle.ValidatePlacement(x, z, width, depth);
                 if (reason != null) return reason;
             }
-            return movingId == 0 && Credits < definition.PurchaseCost ? "资金不足。" : null;
+            return movingId == 0 && !HasUnlimitedFunds && Credits < definition.PurchaseCost ? "资金不足。" : null;
         }
 
         public void Step()
@@ -145,6 +168,7 @@ namespace Defend.Simulation
             ProcessCommands();
             if (Battle != null && Battle.IsFinished) return;
             CurrentTick = checked(CurrentTick + 1);
+            Revision++;
 
             if (TestLoadEnabled)
             {
@@ -175,7 +199,14 @@ namespace Defend.Simulation
             if (Battle != null && Battle.IsFinished)
                 return Result(sequence, false, "本局已经结束，请重新开始。", command.BuildingId);
             if (command.Kind == WorldCommandKind.StartWave)
+            {
+                if (IsSandbox && Battle != null && Battle.State == BattleState.Preparing)
+                {
+                    if (!Battle.ValidateSandboxWave(out string issue)) return Result(sequence, false, issue, 0);
+                    CaptureSandboxCheckpoint();
+                }
                 return Battle == null ? Result(sequence, false, "能源试验场没有战斗波次。", 0) : Battle.StartWave(sequence);
+            }
             if (command.Kind == WorldCommandKind.ContinuePreparing)
                 return Battle == null ? Result(sequence, false, "能源试验场没有战斗波次。", 0) : Battle.ContinuePreparing(sequence);
             if (IsBuildingEdit(command.Kind) && !CanEditBuildings)
@@ -198,8 +229,14 @@ namespace Defend.Simulation
 
             switch (command.Kind)
             {
+                case WorldCommandKind.SetFacing:
+                    if (building.Kind != BuildingKind.PiercingRailgun)
+                        return Result(sequence, false, "只有贯穿轨道炮需要设定主要射击方向。", building.Id);
+                    building.FacingDegrees = (command.Value % 360 + 360) % 360;
+                    Battle?.ResetTurretAim(building);
+                    return Result(sequence, true, "主要射击方向已更新。", building.Id);
                 case WorldCommandKind.Move:
-                    return Move(sequence, building, command.X, command.Z);
+                    return Move(sequence, building, command.X, command.Z, command.OrientationQuarterTurns, command.FacingDegrees);
                 case WorldCommandKind.Sell:
                     return Sell(sequence, building);
                 case WorldCommandKind.Damage:
@@ -220,68 +257,98 @@ namespace Defend.Simulation
         {
             if (!definitions.TryGetValue(command.BuildingKind, out BuildingDefinition definition))
                 return Result(sequence, false, "尚未配置这种建筑。", 0);
-            if (!grid.CanPlace(command.X, command.Z, definition.Width, definition.Depth))
+            int orientation = command.OrientationQuarterTurns ?? 0;
+            if (orientation < 0 || orientation > 3)
+                return Result(sequence, false, "建筑方向必须为四个网格方向之一。", 0);
+            int width = definition.GetFootprintWidth(orientation), depth = definition.GetFootprintDepth(orientation);
+            if (!grid.CanPlace(command.X, command.Z, width, depth))
                 return Result(sequence, false, "位置超出地图或与其他建筑重叠。", 0);
             if (Battle != null)
             {
                 if (definition.Kind == BuildingKind.Core && Battle.CoreBuildingId != 0)
                     return Result(sequence, false, "每局只能有一座核心。", 0);
-                string reason = Battle.ValidatePlacement(command.X, command.Z, definition.Width, definition.Depth);
+                string reason = Battle.ValidatePlacement(command.X, command.Z, width, depth);
                 if (reason != null) return Result(sequence, false, reason, 0);
             }
-            if (Credits < definition.PurchaseCost)
+            if (!HasUnlimitedFunds && Credits < definition.PurchaseCost)
                 return Result(sequence, false, "资源不足，无法购买建筑。", 0);
 
             long identifier = nextBuildingId;
             long followingIdentifier = checked(nextBuildingId + 1);
-            var building = new BuildingState(identifier, definition, command.X, command.Z);
+            var building = new BuildingState(identifier, definition, command.X, command.Z)
+            {
+                OrientationQuarterTurns = orientation,
+                FacingDegrees = NormalizeFacing(command.FacingDegrees ?? orientation * 90)
+            };
             grid.Occupy(building);
             buildings.Add(building);
             buildingsById.Add(building.Id, building);
             nextBuildingId = followingIdentifier;
-            Credits -= definition.PurchaseCost;
+            if (!HasUnlimitedFunds) Credits -= definition.PurchaseCost;
             Battle?.RegisterCore(building);
             return Result(sequence, true, definition.DisplayName + "已放置。", building.Id);
         }
 
-        private CommandResult Move(long sequence, BuildingState building, int x, int z)
+        private CommandResult Move(long sequence, BuildingState building, int x, int z,
+            int? orientationQuarterTurns, int? facingDegrees)
         {
             if (building.Kind == BuildingKind.Core)
                 return Result(sequence, false, "核心不能移动。", building.Id);
-            if (building.X == x && building.Z == z)
-                return Result(sequence, true, "建筑位置未改变。", building.Id);
-            if (!grid.CanPlace(x, z, building.Definition.Width, building.Definition.Depth, building.Id))
+            int orientation = orientationQuarterTurns ?? building.OrientationQuarterTurns;
+            if (orientation < 0 || orientation > 3)
+                return Result(sequence, false, "建筑方向必须为四个网格方向之一。", building.Id);
+            int facing = NormalizeFacing(facingDegrees ?? building.FacingDegrees + (orientation - building.OrientationQuarterTurns) * 90);
+            int width = building.Definition.GetFootprintWidth(orientation), depth = building.Definition.GetFootprintDepth(orientation);
+            bool geometryChanged = building.X != x || building.Z != z || building.FootprintWidth != width || building.FootprintDepth != depth;
+            bool directionChanged = building.OrientationQuarterTurns != orientation || building.FacingDegrees != facing;
+            if (!geometryChanged && !directionChanged)
+                return Result(sequence, true, "建筑位置和方向未改变。", building.Id);
+            if (!grid.CanPlace(x, z, width, depth, building.Id))
                 return Result(sequence, false, "目标位置超出地图或已被占用。", building.Id);
             if (Battle != null)
             {
-                string reason = Battle.ValidatePlacement(x, z, building.Definition.Width, building.Definition.Depth);
+                string reason = Battle.ValidatePlacement(x, z, width, depth);
                 if (reason != null) return Result(sequence, false, reason, building.Id);
             }
-            int nextPositionRevision = checked(building.PositionRevision + 1);
-            Energy.BeforeBuildingChanged(building, false);
-            grid.Release(building);
+
+            // 原地旋转且占地未变时，能源端点仍然有效；不能损失已发出的接收批次。
+            int nextPositionRevision = geometryChanged ? checked(building.PositionRevision + 1) : building.PositionRevision;
+            if (geometryChanged)
+            {
+                Energy.BeforeBuildingChanged(building, false);
+                grid.Release(building); // 必须在写入新方向之前释放旧占地。
+            }
             building.X = x;
             building.Z = z;
+            building.OrientationQuarterTurns = orientation;
+            building.FacingDegrees = facing;
             building.PositionRevision = nextPositionRevision;
-            if (building.IsAlive)
+            if (geometryChanged)
+            {
+                BattleSystem.CancelResonanceBurst(building);
+                building.NextResonanceBurstTick = 0;
                 grid.Occupy(building);
-            return Result(sequence, true, "建筑已移动，旧位置的未完成接收已取消。", building.Id);
+            }
+            if (building.IsTurret) Battle?.ResetTurretAim(building);
+            return Result(sequence, true, geometryChanged ? "建筑已移动，旧位置的未完成接收已取消。" : "建筑方向已更新。", building.Id);
         }
+
+        private static int NormalizeFacing(int degrees) => (degrees % 360 + 360) % 360;
 
         private CommandResult Sell(long sequence, BuildingState building)
         {
             if (building.Kind == BuildingKind.Core)
                 return Result(sequence, false, "核心不能出售。", building.Id);
-            if (Credits > int.MaxValue - building.Definition.SaleRefund)
+            if (!HasUnlimitedFunds && Credits > int.MaxValue - building.Definition.SaleRefund)
                 return Result(sequence, false, "资源数量达到上限，无法完成出售。", building.Id);
             Energy.BeforeBuildingChanged(building, true);
             grid.Release(building);
             building.IsSold = true;
             building.IsAlive = false;
             building.Health = 0;
+            Battle?.ResetTurretAim(building);
             building.CombatState = TurretCombatState.None;
-            Credits += building.Definition.SaleRefund;
-            TotalIncome += building.Definition.SaleRefund;
+            if (!HasUnlimitedFunds) { Credits += building.Definition.SaleRefund; TotalIncome += building.Definition.SaleRefund; }
             return Result(sequence, true, "建筑已出售，内部储能已损失。", building.Id);
         }
 
@@ -293,16 +360,18 @@ namespace Defend.Simulation
             if (building.Kind == BuildingKind.Core)
             {
                 // 白盒阶段按 1 点能量吸收 1 点伤害；生命值为整数，剩余伤害向上取整。
+                long shieldBefore = building.StoredEnergy;
                 long absorbed = Energy.ConsumeUpTo(building.Id, (long)amount * 1000);
                 healthDamage = (int)(((long)amount * 1000 - absorbed + 999) / 1000);
                 if (absorbed > 0)
                 {
-                    Record(WorldEventKind.ShieldHit, building.Id, building.CenterX, building.CenterZ);
-                    if (building.StoredEnergy == 0) Record(WorldEventKind.ShieldBreak, building.Id, building.CenterX, building.CenterZ);
+                    Record(WorldEventKind.ShieldHit, building.Id, building.CenterX, building.CenterZ, shieldBefore: shieldBefore, shieldAfter: building.StoredEnergy, shieldAbsorbed: absorbed);
+                    if (building.StoredEnergy == 0) Record(WorldEventKind.ShieldBreak, building.Id, building.CenterX, building.CenterZ, shieldBefore: shieldBefore, shieldAfter: 0, shieldAbsorbed: absorbed);
                 }
             }
-            if (healthDamage > 0) Record(WorldEventKind.BuildingHit, building.Id, building.CenterX, building.CenterZ, Math.Min(healthDamage, building.Health));
+            int actualDamage = Math.Min(healthDamage, building.Health);
             building.Health = Math.Max(0, building.Health - healthDamage);
+            if (actualDamage > 0) Record(WorldEventKind.BuildingHit, building.Id, building.CenterX, building.CenterZ, actualDamage);
             if (healthDamage > 0) building.LastDamageTick = CurrentTick;
             if (building.Health == 0)
             {
@@ -325,8 +394,8 @@ namespace Defend.Simulation
         {
             BuildingRepairQuote quote = BuildingEconomy.Quote(building);
             if (!quote.CanRepair) return Result(sequence, false, quote.Issue, building.Id);
-            if (Credits < quote.Cost) return Result(sequence, false, "资金不足，无法维修建筑。", building.Id);
-            Credits -= (int)quote.Cost;
+            if (!HasUnlimitedFunds && Credits < quote.Cost) return Result(sequence, false, "资金不足，无法维修建筑。", building.Id);
+            if (!HasUnlimitedFunds) Credits -= (int)quote.Cost;
             RestoreHealth(building);
             return Result(sequence, true, "建筑已维修，储能保持不变。", building.Id);
         }
@@ -336,8 +405,8 @@ namespace Defend.Simulation
             // 单线程事务先重新检查全部对象与总价，足额后一次扣款；失败不能留下部分修复。
             BuildingRepairQuote quote = RepairAllQuote();
             if (!quote.CanRepair) return Result(sequence, false, quote.Issue, 0);
-            if (Credits < quote.Cost) return Result(sequence, false, "资金不足，全部维修未执行。", 0);
-            Credits -= (int)quote.Cost;
+            if (!HasUnlimitedFunds && Credits < quote.Cost) return Result(sequence, false, "资金不足，全部维修未执行。", 0);
+            if (!HasUnlimitedFunds) Credits -= (int)quote.Cost;
             foreach (BuildingState building in buildings)
                 if (BuildingEconomy.Quote(building).CanRepair) RestoreHealth(building);
             return Result(sequence, true, "已维修全部受损建筑。", 0);
@@ -353,11 +422,18 @@ namespace Defend.Simulation
 
         internal void ApplyBattleDamage(BuildingState building, int amount)
         {
+            int before = building.Health;
             Damage(0, building, amount);
+            if (building.Kind == BuildingKind.ResonanceMagneticTower && building.IsAlive && building.Health < before)
+            {
+                building.LastEnemyDamageTick = CurrentTick;
+                building.ResonanceFeedbackReady = true;
+            }
         }
 
         internal int GrantBattleReward(int amount)
         {
+            if (HasUnlimitedFunds) return 0;
             int actual = Math.Min(Math.Max(0, amount), int.MaxValue - Credits);
             Credits += actual;
             TotalIncome += actual;

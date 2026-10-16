@@ -56,6 +56,15 @@ namespace Defend.Simulation
                 throw new ArgumentException("战斗至少需要一波有效的敌人配置。", nameof(waves));
             Waves = configuredWaves.AsReadOnly();
             SpawnPoints = new List<SpawnPoint>(spawnPoints ?? Array.Empty<SpawnPoint>()).AsReadOnly();
+            for (int waveIndex = 0; waveIndex < Waves.Count; waveIndex++)
+                if (Waves[waveIndex].IndependentGroups)
+                    foreach (var group in Waves[waveIndex].Groups)
+                    {
+                        if (group.EntranceIndex < 0 || group.EntranceIndex >= SpawnPoints.Count)
+                            throw new ArgumentException("独立生成队伍必须引用有效入口。", nameof(waves));
+                        if (!SpawnPoints[group.EntranceIndex].IsOpenAtWave(waveIndex + 1))
+                            throw new ArgumentException("队伍不能早于入口开放波次生成。", nameof(waves));
+                    }
             MaximumBuildings = maximumBuildings;
             MaximumLivingEnemies = maximumLivingEnemies;
             EnemySpeedCellsPerSecond = enemySpeedCellsPerSecond;
@@ -74,6 +83,11 @@ namespace Defend.Simulation
             turrets.Add(BuildingKind.Turret, new TurretDefinition(BuildingKind.Turret, turretRange, turretDamage, turretEnergyPerShot, turretCooldownTicks));
             turrets.Add(BuildingKind.BurstTurret, new TurretDefinition(BuildingKind.BurstTurret, 9, 100, 10000, 50));
             turrets.Add(BuildingKind.AreaTurret, new TurretDefinition(BuildingKind.AreaTurret, 7, 32, 8000, 32, 2.2));
+            turrets.Add(BuildingKind.PiercingRailgun, new TurretDefinition(BuildingKind.PiercingRailgun, 14, 180, 12000, 72,
+                projectileRadius: .06, maximumFlightDistance: 14, yawSpeedDegrees: 35, pitchSpeedDegrees: 30,
+                minimumPitchDegrees: -12, maximumPitchDegrees: 12, alignmentToleranceDegrees: .35, maximumLeadSeconds: 0,
+                muzzleHeight: 1.07, muzzleForwardOffset: 1.79, pivotHeight: 1.04, pivotForwardOffset: -.62,
+                minimumRange: 3.5, fireArcHalfDegrees: 25, chargeTicks: 24, maximumPierceTargets: 5, pierceDamageMultiplier: .8));
             if (turretDefinitions != null) foreach (var turret in turretDefinitions) turrets[turret.Kind] = turret;
         }
     }

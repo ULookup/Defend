@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Defend.Simulation
 {
@@ -8,6 +9,29 @@ namespace Defend.Simulation
     public sealed class EnemyState
     {
         public long Id { get; }
+        private readonly List<EnemyMotionSegment> motionSegments = new List<EnemyMotionSegment>();
+        public IReadOnlyList<EnemyMotionSegment> MotionSegments { get; }
+        internal double MotionStartTime, MotionCursorTime, PreviousVelocityX, PreviousVelocityZ, StepStartX, StepStartZ;
+        internal void BeginMotion(double startTime)
+        { motionSegments.Clear(); MotionStartTime = MotionCursorTime = startTime; StepStartX = X; StepStartZ = Z; }
+        internal void AddMotion(double oldX, double oldZ, double duration)
+        {
+            motionSegments.Add(new EnemyMotionSegment(MotionCursorTime, MotionCursorTime + duration, oldX, oldZ, X, Z));
+            MotionCursorTime += duration;
+        }
+        internal void EndMotion(double endTime)
+        {
+            if (MotionCursorTime < endTime) motionSegments.Add(new EnemyMotionSegment(MotionCursorTime, endTime, X, Z, X, Z));
+            double duration = endTime - MotionStartTime;
+            PreviousVelocityX = duration > 0 ? (X - StepStartX) / duration : 0;
+            PreviousVelocityZ = duration > 0 ? (Z - StepStartZ) / duration : 0;
+        }
+        internal void SampleMotion(double time, out double x, out double z)
+        {
+            foreach (var segment in motionSegments)
+                if (time <= segment.EndTime) { segment.Sample(time, out x, out z); return; }
+            x = X; z = Z;
+        }
         public EnemyKind Kind { get; }
         public EnemyDefinition Definition { get; }
         public long FinalTargetBuildingId => TargetBuildingId;
@@ -40,14 +64,18 @@ namespace Defend.Simulation
         public long LastBehaviorEvaluationTick { get; internal set; } = -1;
         public long TargetAssignedTick { get; internal set; } = -1;
         public long NextAttackTick { get; internal set; }
+        public long SlowUntilTick { get; internal set; } = -1;
+        public double MovementSpeedMultiplier { get; internal set; } = 1;
+        public double CurrentMovementSpeed => Definition.Speed * MovementSpeedMultiplier;
         public bool IsAlive => Health > 0;
         internal int CellX;
         internal int CellZ;
         internal int NextCellX;
         internal int NextCellZ;
 
-        internal EnemyState(long id, SpawnPoint spawn, int health, EnemyKind kind = EnemyKind.Normal, EnemyDefinition definition = null)
+        internal EnemyState(long id, SpawnPoint spawn, int health, EnemyKind kind = EnemyKind.Normal, EnemyDefinition definition = null, bool exactHealth = false)
         {
+            MotionSegments = motionSegments.AsReadOnly();
             Id = id;
             Kind = kind;
             Definition = definition ?? EnemyDefinition.Default(kind);
@@ -55,7 +83,7 @@ namespace Defend.Simulation
             CellZ = NextCellZ = spawn.Z;
             X = spawn.X + 0.5;
             Z = spawn.Z + 0.5;
-            Health = MaximumHealth = Math.Max(1, (int)Math.Min(int.MaxValue, (long)health * Definition.BaseHealth / 60));
+            Health = MaximumHealth = exactHealth ? health : Math.Max(1, (int)Math.Min(int.MaxValue, (long)health * Definition.BaseHealth / 60));
         }
     }
 }
