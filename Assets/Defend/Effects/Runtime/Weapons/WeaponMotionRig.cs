@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Defend.PhaseFiveEffects
 {
@@ -10,16 +10,17 @@ namespace Defend.PhaseFiveEffects
         private Quaternion restingYaw;
         private Vector3 restingRecoil;
         private uint generation;
-        private bool ownsPose;
+        private bool ownsPose, ownsYaw;
 
-        public uint Acquire(Vector3 destination)
+        public uint Acquire(Vector3 destination, bool rotateAim = true)
         {
             Restore();
             if (turretYaw == null) turretYaw = FindPivot(transform, "TurretYaw");
             if (barrelRecoil == null) barrelRecoil = FindPivot(transform, "BarrelRecoil");
             generation++;
             ownsPose = true;
-            if (turretYaw != null)
+            ownsYaw = rotateAim;
+            if (turretYaw != null && ownsYaw)
             {
                 restingYaw = turretYaw.localRotation;
                 Vector3 direction = destination - turretYaw.position;
@@ -37,7 +38,7 @@ namespace Defend.PhaseFiveEffects
         public void SetRecoil(uint token, float distance)
         {
             if (ownsPose && token == generation && barrelRecoil != null)
-                barrelRecoil.localPosition = restingRecoil + Vector3.back * distance;
+                barrelRecoil.localPosition = restingRecoil + barrelRecoil.localRotation * (Vector3.back * distance);
         }
 
         public void Release(uint token)
@@ -48,7 +49,7 @@ namespace Defend.PhaseFiveEffects
         private void Restore()
         {
             if (!ownsPose) return;
-            if (turretYaw != null) turretYaw.localRotation = restingYaw;
+            if (turretYaw != null && ownsYaw) turretYaw.localRotation = restingYaw;
             if (barrelRecoil != null) barrelRecoil.localPosition = restingRecoil;
             ownsPose = false;
         }

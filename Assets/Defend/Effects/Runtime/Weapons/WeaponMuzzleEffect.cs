@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Defend.PhaseFiveEffects
 {
@@ -30,19 +30,20 @@ namespace Defend.PhaseFiveEffects
         protected override void OnBegin()
         {
             intensity = Mathf.Clamp(Context.Intensity, 0.25f, 1.5f);
-            if (Context.Subject != null)
+            if (Context.Subject != null && Context.Subject.gameObject.activeInHierarchy)
             {
                 rapidMotion = Context.Subject.GetComponent<RapidTurretMotion>();
-                if (rapidMotion != null && rapidMotion.IsConfigured)
+                if (rapidMotion != null && rapidMotion.IsConfigured && !Context.AuthoritativeAim)
                     transform.SetPositionAndRotation(rapidMotion.MuzzlePosition, rapidMotion.MuzzleRotation);
                 else
                 {
                     rapidMotion = null;
                     motionRig = Context.Subject.GetComponent<WeaponMotionRig>();
-                    if (motionRig == null)
-                        motionRig = Context.Subject.gameObject.AddComponent<WeaponMotionRig>();
-                    motionToken = motionRig.Acquire(Context.Destination);
-                    motionRig.SetRecoil(motionToken, recoilDistance * intensity);
+                    if (motionRig != null)
+                    {
+                        motionToken = motionRig.Acquire(Context.Destination, !Context.AuthoritativeAim);
+                        motionRig.SetRecoil(motionToken, recoilDistance * intensity);
+                    }
                 }
             }
             if (radialDischarge) transform.rotation = Quaternion.identity;

@@ -1,9 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Defend.PhaseFiveEffects
 {
+    public enum EffectTimeDomain { Simulation, Feedback }
+
     public readonly struct EffectHandle
     {
         internal readonly PhaseFiveEffect Effect;
@@ -32,7 +34,7 @@ namespace Defend.PhaseFiveEffects
         public readonly int[] PeakBudget = new int[4];
         readonly int[] budget = new int[4];
         sealed class Bucket { public PhaseFiveEffect Prefab; public readonly Stack<PhaseFiveEffect> Free = new Stack<PhaseFiveEffect>(); public int Created; }
-        struct Active { public Bucket Bucket; public PhaseFiveEffect Effect; public int Group, Cost; }
+        struct Active { public Bucket Bucket; public PhaseFiveEffect Effect; public int Group, Cost; public EffectTimeDomain TimeDomain; }
         readonly Dictionary<string, Bucket> buckets = new Dictionary<string, Bucket>(32, StringComparer.Ordinal);
         readonly List<Active> active = new List<Active>(256);
         readonly HashSet<(string, long)> sequences = new HashSet<(string, long)>();
@@ -60,7 +62,7 @@ namespace Defend.PhaseFiveEffects
         void Awake() { if (Library != null) Initialize(); }
         void Update() { if (AutomaticAdvance) Advance(Time.deltaTime); }
 
-        public EffectHandle TryPlay(string id, EffectRequest request, float duration = 0)
+        public EffectHandle TryPlay(string id, EffectRequest request, float duration = 0, EffectTimeDomain timeDomain = EffectTimeDomain.Simulation)
         {
             Initialize();
             if (!buckets.TryGetValue(id, out var bucket) || !bucket.Prefab.CanPlay(request)) { Dropped++; return default; }
@@ -78,7 +80,7 @@ namespace Defend.PhaseFiveEffects
             instance.Begin(request);
             budget[group] += cost;
             PeakBudget[group] = Mathf.Max(PeakBudget[group], budget[group]);
-            active.Add(new Active { Bucket = bucket, Effect = instance, Group = group, Cost = cost });
+            active.Add(new Active { Bucket = bucket, Effect = instance, Group = group, Cost = cost, TimeDomain = timeDomain });
             PeakActive = Mathf.Max(PeakActive, active.Count);
             PeakParticles = Mathf.Max(PeakParticles, ParticleCount);
             if (request.EventSequence != 0)
@@ -88,16 +90,31 @@ namespace Defend.PhaseFiveEffects
             }
             return new EffectHandle(instance);
         }
-        public void Advance(float deltaTime)
+        public void Advance(float deltaTime) => AdvanceDomains(deltaTime, deltaTime);
+
+        public void AdvanceDomains(float simulationSeconds, float feedbackSeconds)
         {
-            if (Paused || deltaTime <= 0) return;
+            if (Paused || (simulationSeconds <= 0 && feedbackSeconds <= 0)) return;
             for (int i = active.Count - 1; i >= 0; i--)
             {
                 if (active[i].Effect == null) { Release(i); continue; }
-                active[i].Effect.Advance(deltaTime);
+                float elapsed = active[i].TimeDomain == EffectTimeDomain.Feedback ? feedbackSeconds : simulationSeconds;
+                if (elapsed > 0) active[i].Effect.Advance(elapsed);
                 if (!active[i].Effect.IsRunning) Release(i);
             }
             PeakParticles = Mathf.Max(PeakParticles, ParticleCount);
+        }
+        /// <summary>补齐本帧较早出发的运输年龄，不推进其他对象的时间。</summary>
+        public void AdvanceHandle(EffectHandle handle, float seconds)
+        {
+            if (!handle.IsValid || seconds <= 0f) return;
+            for (int index = active.Count - 1; index >= 0; index--)
+                if (active[index].Effect == handle.Effect)
+                {
+                    active[index].Effect.Advance(seconds);
+                    if (!active[index].Effect.IsRunning) Release(index);
+                    return;
+                }
         }
         void Release(int index)
         {

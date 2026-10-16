@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Defend.PhaseFiveEffects
 {
@@ -14,7 +14,7 @@ namespace Defend.PhaseFiveEffects
         [SerializeField] private float spinAcceleration = 3600f, spinDeceleration = 1800f;
         private Quaternion restingYaw, restingPitch, restingSpin;
         private Vector3 restingRecoil, aimTarget;
-        private bool hasRestPose, hasAimTarget;
+        private bool hasRestPose, hasAimTarget, authoritativeAim;
         private float yawAngle, elevation, yawVelocity, elevationVelocity;
         private float recoilAge, spinAngle, spinSpeed, firingSeconds;
 
@@ -41,6 +41,15 @@ namespace Defend.PhaseFiveEffects
             restingSpin = barrelSpin.localRotation;
             hasRestPose = true;
             return true;
+        }
+
+        public void SetAuthoritativeAim(float yawDegrees, float pitchDegrees)
+        {
+            if (!CaptureRestPose()) return;
+            authoritativeAim = true; hasAimTarget = false;
+            yawAngle = yawDegrees; elevation = pitchDegrees;
+            turretYaw.rotation = Quaternion.AngleAxis(yawDegrees, Vector3.up);
+            barrelPitch.localRotation = restingPitch * Quaternion.AngleAxis(-pitchDegrees, Vector3.right);
         }
 
         public void SetAimTarget(Vector3 destination)
@@ -83,7 +92,7 @@ namespace Defend.PhaseFiveEffects
 
         private void AdvancePose(float seconds)
         {
-            if (hasAimTarget)
+            if (hasAimTarget && !authoritativeAim)
             {
                 Vector3 direction = aimTarget - turretYaw.position;
                 if (turretYaw.parent != null) direction = turretYaw.parent.InverseTransformDirection(direction);
@@ -120,7 +129,7 @@ namespace Defend.PhaseFiveEffects
 
         public void ResetPose()
         {
-            hasAimTarget = false;
+            hasAimTarget = authoritativeAim = false;
             aimTarget = Vector3.zero;
             yawAngle = elevation = yawVelocity = elevationVelocity = spinAngle = spinSpeed = firingSeconds = 0f;
             recoilAge = recoilReturnSeconds;
