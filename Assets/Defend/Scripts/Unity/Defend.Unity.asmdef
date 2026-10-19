@@ -5,6 +5,7 @@
     "Defend.Simulation",
     "Unity.InputSystem",
     "Unity.ugui",
+    "Unity.TextMeshPro",
     "Defend.PhaseFiveEffects"
   ],
   "autoReferenced": true

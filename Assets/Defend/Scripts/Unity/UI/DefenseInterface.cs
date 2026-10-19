@@ -7,7 +7,7 @@ using UnityEngine.UI;
 namespace Defend.Unity
 {
     /// <summary>正式页面只保存导航状态并读取模拟。所有控件由制作工具预先保存，运行时不创建界面。</summary>
-    public sealed class DefenseInterface : MonoBehaviour
+    public sealed partial class DefenseInterface : MonoBehaviour
     {
         [SerializeField] private InterfaceMotionCoordinator motionCoordinator;
         [SerializeField] private GameObject hud, startPage, pausePage, helpPage, archivePage, settingsPage, confirmationPage, settlementPage;
@@ -42,7 +42,7 @@ namespace Defend.Unity
         private int pageTransitionFrame = -1;
         public bool IsSandboxPanelOpen => sandboxPanel != null && sandboxPanel.IsOpen;
         public bool HasUnappliedSandboxChanges => sandboxPanel != null && sandboxPanel.HasUnappliedChanges;
-        public void CloseForSessionChange() { sandboxPanel?.CloseForSessionChange(); formalWaveIntel?.Close(); }
+        public void CloseForSessionChange() { sandboxPanel?.CloseForSessionChange(); formalWaveIntel?.Close(); newPlayerGuide?.CloseForSessionChange(); }
         public void ConfigureCoverageLegend(EnergyCoverageLegend legend) { energyCoverageLegend = legend; }
         private GameSessionRoot session;
         private enum Modal { None, Pause, Help, Archive, Settings, Confirmation }
@@ -55,7 +55,7 @@ namespace Defend.Unity
         private readonly StringBuilder text = new StringBuilder(1024);
         private static readonly BuildingKind[] ShopKinds = { BuildingKind.Reactor, BuildingKind.Relay, BuildingKind.Battery, BuildingKind.Turret, BuildingKind.BurstTurret, BuildingKind.AreaTurret, BuildingKind.PiercingRailgun, BuildingKind.ResonanceMagneticTower };
         private static readonly EnemyKind[] EnemyKinds = { EnemyKind.Normal, EnemyKind.Demolisher, EnemyKind.Converger, EnemyKind.Fast, EnemyKind.Heavy };
-        public bool BlocksWorldInput => (sandboxPanel != null && sandboxPanel.BlocksWorldInput) || modal != Modal.None
+        public bool BlocksWorldInput => (newPlayerGuide != null && newPlayerGuide.IsManualOpen) || (sandboxPanel != null && sandboxPanel.BlocksWorldInput) || modal != Modal.None
             || (motionCoordinator != null && motionCoordinator.AnyModalExiting)
             || (session != null && (session.AtStartPage || session.Battle.State == BattleState.WaveCleared || session.Battle.IsFinished));
 
@@ -65,16 +65,16 @@ namespace Defend.Unity
             startGame.onClick.AddListener(session.StartNormal);
             sandboxPanel?.Initialize(session, cameraViewport);
             openHelp.onClick.AddListener(() => Open(Modal.Help)); openArchive.onClick.AddListener(() => Open(Modal.Archive));
-            openSettings.onClick.AddListener(() => Open(Modal.Settings)); quit.onClick.AddListener(Application.Quit);
+            openSettings.onClick.AddListener(() => Open(Modal.Settings)); quit.onClick.AddListener(session.RequestQuit);
             pause.onClick.AddListener(TogglePause); resume.onClick.AddListener(Resume);
             arrangePaused.onClick.AddListener(() => { modal = Modal.None; Refresh(); });
             pauseHelp.onClick.AddListener(() => Open(Modal.Help)); pauseSettings.onClick.AddListener(() => Open(Modal.Settings));
             redeploy.onClick.AddListener(() => RequestReset(false)); returnHome.onClick.AddListener(() => RequestReset(true));
             closeHelp.onClick.AddListener(CloseModal); closeArchive.onClick.AddListener(CloseModal); closeSettings.onClick.AddListener(CloseModal);
             cancelConfirmation.onClick.AddListener(() => { modal = Modal.Pause; Refresh(); });
-            confirm.onClick.AddListener(() => { if (confirmHome) session.ReturnToStart(); else session.Restart(); });
+            confirm.onClick.AddListener(() => { if (confirmHome) ReturnFromBattle(); else session.Restart(); });
             nextPreparation.onClick.AddListener(() => session.Submit(WorldCommand.ContinuePreparing()));
-            resultRestart.onClick.AddListener(session.Restart); resultHome.onClick.AddListener(session.ReturnToStart);
+            resultRestart.onClick.AddListener(session.Restart); resultHome.onClick.AddListener(ReturnFromBattle);
             settlementPause.onClick.AddListener(() => session.SetPaused(!session.Paused));
             startWave.onClick.AddListener(session.StartWave); repairAll.onClick.AddListener(() => session.Submit(WorldCommand.RepairAll()));
             move.onClick.AddListener(() => session.GridInput.BeginMove()); sell.onClick.AddListener(session.SellSelected); repair.onClick.AddListener(session.RepairSelected);
@@ -111,6 +111,8 @@ namespace Defend.Unity
             }
             if (outgameInterface != null) outgameInterface.Initialize(session, audioSettings, archiveStory);
             else RefreshArchive(0);
+            campaignSelection?.Initialize(session, this);
+            newPlayerGuide?.Initialize(session, this);
         }
 
         private void PlayButtonFeedback(Button button)
@@ -129,11 +131,12 @@ namespace Defend.Unity
             else audioSettings.PlayClick();
         }
 
-        public void ShowStart() { pageTransitionFrame = Time.frameCount; modal = returnModal = Modal.None; motionCoordinator?.ResetPresentation(); Refresh(); }
-        public void SessionStarted() { pageTransitionFrame = Time.frameCount; modal = returnModal = Modal.None; showSelection = true; deadEnemyId = 0; motionCoordinator?.ResetPresentation(); Refresh(); }
+        public void ShowStart() { newPlayerGuide?.CloseForSessionChange(); campaignSelectionOpen = false; pageTransitionFrame = Time.frameCount; modal = returnModal = Modal.None; motionCoordinator?.ResetPresentation(); Refresh(); }
+        public void SessionStarted() { campaignSelectionOpen = false; pageTransitionFrame = Time.frameCount; modal = returnModal = Modal.None; showSelection = true; deadEnemyId = 0; motionCoordinator?.ResetPresentation(); newPlayerGuide?.OnSessionStarted(); Refresh(); }
         public bool ConsumePageShortcut(bool escape)
         {
             if (pageTransitionFrame == Time.frameCount) return true;
+            if (newPlayerGuide != null && newPlayerGuide.ConsumeShortcut(escape)) return true;
             if (modal == Modal.Pause || modal == Modal.Confirmation)
             {
                 if (escape)
@@ -148,6 +151,7 @@ namespace Defend.Unity
                 if (escape) CloseModal();
                 return true;
             }
+            if (campaignSelectionOpen && session != null && session.AtStartPage) { if (escape) ShowStart(); return true; }
             return session != null && session.AtStartPage;
         }
         public void RevealDetails() { showSelection = true; }
@@ -177,10 +181,11 @@ namespace Defend.Unity
         {
             confirmHome = home; session.SetPaused(true); modal = Modal.Confirmation;
             audioSettings.PlayClick();
-            if (confirmationTitle != null) confirmationTitle.text = home ? "返回开始界面" : "重新部署";
-            confirmationText.text = home ? "返回开始界面后，当前对局进度不会保留。\n确定离开本局？" : "重新部署将重置本局建筑、资金和波次。\n确定重新开始？";
+            string returnTitle = session.IsCampaign || session.IsTutorial ? "返回关卡选择" : "返回开始界面";
+            if (confirmationTitle != null) confirmationTitle.text = home ? returnTitle : "重新部署";
+            confirmationText.text = home ? returnTitle + "后，当前对局的建筑与波次不会保留。\n已完成关卡的通关标记会保留。确定离开本局？" : "重新部署将重置本局建筑、资金和波次。\n确定重新开始？";
             var confirmationLabel = confirm.GetComponentInChildren<Text>(true);
-            if (confirmationLabel != null) confirmationLabel.text = home ? "返回开始界面" : "重新部署";
+            if (confirmationLabel != null) confirmationLabel.text = home ? returnTitle : "重新部署";
             Refresh();
         }
 
@@ -194,10 +199,16 @@ namespace Defend.Unity
             observedPlacementPreview = preview;
             audioSettings.Present(home, battle.State);
             bool settling = !home && (battle.State == BattleState.WaveCleared || battle.IsFinished);
-            hud.SetActive(!home); startPage.SetActive(home && modal == Modal.None);
+            bool guideOpen = newPlayerGuide != null && newPlayerGuide.IsManualOpen;
+            bool selecting = home && campaignSelectionOpen && modal == Modal.None && !guideOpen;
+            hud.SetActive(!home); startPage.SetActive(home && !campaignSelectionOpen && modal == Modal.None);
+            if (campaignSelection != null) campaignSelection.gameObject.SetActive(selecting);
             SetMotionVisible(pausePage, modal == Modal.Pause); SetMotionVisible(helpPage, modal == Modal.Help); SetMotionVisible(archivePage, modal == Modal.Archive);
             SetMotionVisible(settingsPage, modal == Modal.Settings); SetMotionVisible(confirmationPage, modal == Modal.Confirmation);
-            outgameInterface?.Present(home && modal == Modal.None, modal == Modal.Archive, modal == Modal.Help, modal == Modal.Settings);
+            outgameInterface?.Present(home && !campaignSelectionOpen && modal == Modal.None, modal == Modal.Archive, modal == Modal.Help, modal == Modal.Settings,
+                guideOpen ? newPlayerGuide.ManualRoot : selecting ? campaignSelection.gameObject : null);
+            newPlayerGuide?.Present(!home && modal == Modal.None && !settling);
+            RefreshCampaignReturnLabels();
             SetMotionVisible(settlementPage, settling && modal == Modal.None);
             bool hasSelection = preview != null || session.SelectedBuilding != null || session.SelectedEnemy != null;
             SetMotionVisible(shop, editing);
@@ -413,6 +424,11 @@ namespace Defend.Unity
             var baseCore = session.World.FindBuilding(battle.CoreBuildingId); var quote = session.World.RepairAllQuote();
             settlementBody.text = ordinary ? "固定奖励 " + battle.LastWaveFixedReward + "\n击杀奖励 " + battle.LastWaveKillReward + "\n合计收入 " + battle.LastWaveReward + "\n\n本波建筑损失 " + battle.LastWaveBuildingLosses + "\n受损建筑 " + quote.BuildingCount + "    全部维修 " + quote.Cost + "\n核心生命 " + (baseCore?.Health ?? 0) + "\n\n" + (session.Paused ? "已暂停能源运行" : "能源网络继续运行，护盾按实际供能恢复。") : "完成波次 " + (battle.State == BattleState.Victory ? battle.WaveNumber : Math.Max(0, battle.WaveNumber - 1)) + "\n击杀数 " + battle.Kills + "\n累计收入 " + session.World.TotalIncome + "\n建筑损失 " + session.World.DestroyedBuildingCount + "\n核心剩余生命 " + (baseCore?.Health ?? 0);
             if (session.IsSandbox) settlementBody.text = "本波建筑损失 " + battle.LastWaveBuildingLosses + "\n核心生命 " + (baseCore?.Health ?? 0) + "\n\n损伤、库存与运输保持当前状态。\n可通过沙盒试验工具恢复开战前状态。";
+            if ((session.IsCampaign || session.IsTutorial) && battle.State == BattleState.Victory)
+            {
+                if (session.IsTutorial && session.HasCompletedTutorial) settlementBody.text += "\n\n训练场已通关，第一关已解锁。";
+                settlementBody.text += "\n" + session.CampaignSaveStatus;
+            }
             nextPreparation.gameObject.SetActive(ordinary); settlementPause.gameObject.SetActive(ordinary);
             if (settlementPauseText != null) settlementPauseText.text = session.Paused ? "恢复能源运转" : "暂停能源运转";
             resultRestart.gameObject.SetActive(!ordinary); resultHome.gameObject.SetActive(!ordinary);
@@ -425,7 +441,87 @@ namespace Defend.Unity
             if (archiveCategory == 0) archiveBody.text = archiveStory != null ? archiveStory.text : "暂无背景资料。";
             else if (archiveCategory == 1) { var kind = entry == ShopKinds.Length ? BuildingKind.Core : ShopKinds[entry]; var definition = session.FindEffectiveDefinition(kind); archiveBody.text = BuildingDescription(kind) + "\n\n最大耐久 " + definition.MaximumHealth + (definition.Resonance == null ? "\n储能容量 " + Energy(definition.EnergyCapacity) : "\n" + ResonanceRules(definition.Resonance)) + (kind == BuildingKind.Core ? "\n核心不可购买、移动、出售或维修生命。" : session.World.HasUnlimitedFunds ? "\n购买与维修免费；出售不累计资金。" : "\n购买 " + definition.PurchaseCost + "    出售 " + definition.SaleRefund); }
             else { var definition = session.Battle.Settings.GetEnemy(EnemyKinds[entry]); archiveBody.text = definition.Description + "\n\n" + definition.AttackDescription + "\n伤害 " + definition.AttackDamage + "\n攻击间隔 " + (definition.AttackIntervalTicks / (float)session.World.Settings.TicksPerSecond).ToString("0.##") + " 秒\n移动速度 " + definition.Speed.ToString("0.##"); }
+            var copy = archiveCategory == 1
+                ? GetArchiveCopy(entry == ShopKinds.Length ? BuildingKind.Core : ShopKinds[entry])
+                : archiveCategory == 2 ? GetArchiveCopy(EnemyKinds[entry]) : null;
+            if (copy != null) archiveBody.text = copy.Body;
         }
+        // Archive copy from the planning document; combat definitions remain authoritative for gameplay.
+        internal sealed class ArchiveCopy
+        {
+            public readonly string Subtitle, Description, Behavior, Attributes;
+            public ArchiveCopy(string subtitle, string description, string behavior, string attributes)
+            {
+                Subtitle = subtitle; Description = description; Behavior = behavior; Attributes = attributes;
+            }
+            public string Body => Subtitle + "\n\n" + Description
+                + (string.IsNullOrEmpty(Behavior) ? "" : "\n\n能量行为：" + Behavior) + "\n\n" + Attributes;
+        }
+
+        internal static ArchiveCopy GetArchiveCopy(BuildingKind kind)
+        {
+            switch (kind)
+            {
+                case BuildingKind.Core: return new ArchiveCopy("基地的保护目标",
+                    "垣城留下的最后一座枢纽。它不生产能量,只把送来的能量化作护盾;护盾破碎之前,伤害不会触及它的生命。",
+                    "接收能量补充护盾,不主动消耗;被攻击时优先扣护盾。",
+                    "占位：3X3\n耐久 600 / 护盾上限 160");
+                case BuildingKind.Reactor: return new ArchiveCopy("持续产能",
+                    "仍在按旧指令运转的产能装置。它每隔一段时间凝出一粒能量,向三格内可接收的节点轮流送出。",
+                    "周围没有可接收的节点时,它会停下等待,不会积攒。",
+                    "占位：2X2\n耐久 180 / 储能 64 / 产能 8 点每 0.55 秒");
+                case BuildingKind.Relay: return new ArchiveCopy("轮流转发",
+                    "最不起眼的部件,也是整张网络的关节。它不判断能量该去哪里,只把收到的能量依次分给所有能接收的邻居。",
+                    "轮流转发,不复制、不寻路;同一粒能量走过的节点不会回头;自身储能满了就拒收,让上游等待。",
+                    "占位：1X1\n耐久 90 / 储能 48 / 感知 3 格");
+                case BuildingKind.Battery: return new ArchiveCopy("缓冲储能",
+                    "只在身边有节点缺能时放电的蓄能柜。它看不见全局,只看得到感知范围内的事——所以它能救急,也可能在错误的位置白白蓄满。",
+                    "接收并储存附近送来的能量,按局部缺能情况决定是否释放,不需要玩家手动控制。",
+                    "占位：2X1\n耐久 150 / 储能 120");
+                case BuildingKind.Turret: return new ArchiveCopy("快速单体",
+                    "旧城的信号塔,如今打出去的是光。它自动锁定射程内最近的守城者,每发只耗很少的能量,射速很快。",
+                    "储能不足时停火,等待网络补充。",
+                    "占位：2X1\n耐久 240 / 储能 72 / 攻击 16 / 射程 7.5 格 / 耗能 3 每发");
+                case BuildingKind.BurstTurret: return new ArchiveCopy("慢速重击",
+                    "灾后用来敲碎坍塌路段的重锤,如今用来对付重甲。它每开一炮都要先喝下大量能量。",
+                    "单发耗能极高,需要一条稳定、低损耗的供电线才回得起枪;供能跟不上就会长时间停火。",
+                    "占位：3X2\n耐久 300 / 储能 120 / 攻击 120 / 射程 6 格 / 耗能 20 每发");
+                case BuildingKind.AreaTurret: return new ArchiveCopy("范围溅射",
+                    "广场除尘的旧机组,一吹就能清走一片积灰。它一次攻击会波及目标周围的一小片区域。",
+                    "对成群的敌人最划算,对单个硬目标则很浪费——所以供能要算性价比。",
+                    "占位：3X1\n耐久 260 / 储能 96 / 攻击 18 / 溅射 2.5 格 / 射程 5.5 格 / 耗能 10 每发");
+                default: return null;
+            }
+        }
+
+        internal static ArchiveCopy GetArchiveCopy(EnemyKind kind)
+        {
+            switch (kind)
+            {
+                case EnemyKind.Normal: return new ArchiveCopy("四足清扫单元",
+                    "旧城留下的清障装置。它按最省力的路线走向最近的可到达建筑,到达后开始拆解。它不憎恨你,只是在执行几百年前的最后一道命令。",
+                    "",
+                    "耐久 48 / 速度 0.85 / 攻击 12 / 目标偏好 最近建筑");
+                case EnemyKind.Demolisher: return new ArchiveCopy("双足工程单元",
+                    "比巡猎者更专注的拆解者。它优先寻找中继器——城市最初造它们,是为了切断纠缠的线路,如今它切断的是你的。",
+                    "",
+                    "耐久 75 / 速度 0.95 / 攻击 19 / 目标偏好 中继器");
+                case EnemyKind.Converger: return new ArchiveCopy("履带回收单元",
+                    "厚重的履带机体,身前挂着回收斗。它绕过一切挡路的建筑,径直扑向反应堆。它一倒下,整条供能线都会跟着缺电。",
+                    "",
+                    "耐久 140 / 速度 0.55 / 攻击 25 / 目标偏好 反应堆");
+                case EnemyKind.Fast: return new ArchiveCopy("小型清扫虫",
+                    "只有巴掌大的清扫虫,成群从崖缝里涌出。它们很难造成威胁,却会逼你的炮塔为每一只都开一枪——真正被消耗的,是你的储能。",
+                    "",
+                    "耐久 12 / 速度 1.3 / 攻击 4 / 目标偏好 最近建筑");
+                case EnemyKind.Heavy: return new ArchiveCopy("重型碾压单元",
+                    "只会朝核心直线前进的重型机械。它不挑选目标,只清除挡路的建筑。想拦住它,唯一的办法是用布局把它困在火力网里。",
+                    "",
+                    "耐久 400 / 速度 0.35 / 攻击 40 / 目标偏好 防线核心");
+                default: return null;
+            }
+        }
+
         public static string BuildingDescription(BuildingKind kind)
         {
             switch (kind) {

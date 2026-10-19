@@ -14,6 +14,7 @@ namespace Defend.PhaseFiveEffects.Editor
             BuildImpact("RapidImpact", 0.14f, 5, 0.018f, 0.11f, 0.012f, 0.045f, false);
             BuildImpact("HeavyImpact", 0.28f, 9, 0.035f, 0.24f, 0.021f, 0.075f, false);
             BuildImpact("AreaImpact", 0.35f, 10, 0.07f, 0.68f, 0.022f, 0.065f, true);
+            RapidFireEffectsAuthoring.BuildAssets();
         }
 
         private static void BuildMuzzle(string id, float lifetime, float flashSeconds,

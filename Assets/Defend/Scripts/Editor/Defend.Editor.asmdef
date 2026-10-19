@@ -6,6 +6,7 @@
     "Defend.Unity",
     "Unity.InputSystem",
     "Unity.ugui",
+    "Unity.TextMeshPro",
     "Defend.PhaseFiveEffects"
   ],
   "includePlatforms": [

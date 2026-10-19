@@ -17,8 +17,12 @@ namespace Defend.Unity
             presentation.Refresh(World, SelectedBuildingId, World.CurrentTick);
             RefreshPanels();
         }
-        public void StartSandbox() { sandboxMode = true; CreateWorld(); defenseInterface?.SessionStarted(); }
-        public void StartNormal() { sandboxMode = false; CreateWorld(); defenseInterface?.SessionStarted(); }
+        public void StartSandbox() { FlushProgressForLifecycle(); ResetTutorialSession(); ActiveCampaignLevel = null; sandboxMode = true; CreateWorld(); defenseInterface?.SessionStarted(); }
+        public void StartNormal()
+        {
+            if (campaignCatalog != null) { ReturnToCampaignSelection(); return; }
+            FlushProgressForLifecycle(); ResetTutorialSession(); ActiveCampaignLevel = null; sandboxMode = false; CreateWorld(); defenseInterface?.SessionStarted();
+        }
         public void EndSandboxWave()
         {
             if (!IsSandbox || AtStartPage) return;

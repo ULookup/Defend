@@ -27,6 +27,7 @@ namespace Defend.Unity
         private bool ownsDetachedStage;
         private GameObject currentModel;
         private Vector3 localFocus;
+        private Vector3 localExtents = Vector3.one;
         private float localRadius = 1f;
         private float azimuth;
         private float zoom = 1f;
@@ -60,12 +61,13 @@ namespace Defend.Unity
             output.texture = null;
             output.enabled = false;
             InitializeStage();
-            HideModels(buildingModels);
-            HideModels(enemyModels);
+            PrepareModels(buildingModels);
+            PrepareModels(enemyModels);
             if (modelRoot != null) modelRoot.gameObject.SetActive(false);
             if (previewCamera != null)
             {
                 previewCamera.enabled = false;
+                previewCamera.cullingMask = 1 << 31;
                 previewCamera.targetTexture = null;
                 previewCamera.clearFlags = CameraClearFlags.SolidColor;
                 previewCamera.backgroundColor = new Color(0, 0, 0, 0);
@@ -113,6 +115,7 @@ namespace Defend.Unity
                 else
                 {
                     localFocus = modelRoot.InverseTransformPoint(bounds.center);
+                    localExtents = bounds.extents / RootScale();
                     localRadius = Mathf.Max(.01f, bounds.extents.magnitude) / RootScale();
                 }
             }
@@ -206,8 +209,19 @@ namespace Defend.Unity
             float radius = localRadius * RootScale();
             float verticalHalfAngle = previewCamera.fieldOfView * .5f * Mathf.Deg2Rad;
             float horizontalHalfAngle = Mathf.Atan(Mathf.Tan(verticalHalfAngle) * Mathf.Max(.1f, previewCamera.aspect));
-            float distance = radius / Mathf.Sin(Mathf.Min(verticalHalfAngle, horizontalHalfAngle)) * 1.12f * zoom;
             Quaternion rotation = Quaternion.Euler(elevation, azimuth, 0);
+            Quaternion inverseRotation = Quaternion.Inverse(rotation);
+            Vector3 extents = localExtents * RootScale();
+            float distance = .01f;
+            // 依当前视角容纳包围盒，不以外接球取景，避免细长敌人和扁平建筑缩成小点。
+            for (int corner = 0; corner < 8; corner++)
+            {
+                Vector3 sign = new Vector3((corner & 1) == 0 ? -1 : 1, (corner & 2) == 0 ? -1 : 1, (corner & 4) == 0 ? -1 : 1);
+                Vector3 point = inverseRotation * Vector3.Scale(extents, sign);
+                distance = Mathf.Max(distance, Mathf.Max(Mathf.Abs(point.x) / Mathf.Tan(horizontalHalfAngle) - point.z,
+                    Mathf.Abs(point.y) / Mathf.Tan(verticalHalfAngle) - point.z));
+            }
+            distance *= 1.08f * zoom;
             previewCamera.transform.SetPositionAndRotation(focus - rotation * Vector3.forward * distance, rotation);
             previewCamera.nearClipPlane = Mathf.Max(.005f, distance - radius * 1.25f);
             previewCamera.farClipPlane = distance + radius * 3f;
@@ -268,10 +282,16 @@ namespace Defend.Unity
             ownsDetachedStage = false;
         }
 
-        private static void HideModels(GameObject[] models)
+        private static void PrepareModels(GameObject[] models)
         {
             if (models == null) return;
-            foreach (GameObject model in models) if (model != null) model.SetActive(false);
+            foreach (GameObject model in models)
+            {
+                if (model == null) continue;
+                // 新美术副本可能沿用战场层。预览只使用独立层，避免模型存在但相机完全看不到。
+                foreach (Transform part in model.GetComponentsInChildren<Transform>(true)) part.gameObject.layer = 31;
+                model.SetActive(false);
+            }
         }
 
         private static bool TryGetVisualBounds(GameObject model, out Bounds bounds)
@@ -280,9 +300,16 @@ namespace Defend.Unity
             bool found = false;
             foreach (Renderer renderer in model.GetComponentsInChildren<Renderer>(true))
             {
-                if (!renderer.enabled || !(renderer is MeshRenderer || renderer is SkinnedMeshRenderer)) continue;
+                if (!renderer.enabled || !LocallyActive(renderer.transform, model.transform) || !(renderer is MeshRenderer || renderer is SkinnedMeshRenderer)) continue;
                 Bounds localBounds;
-                if (renderer is SkinnedMeshRenderer skinned) localBounds = skinned.localBounds;
+                if (renderer is SkinnedMeshRenderer skinned)
+                {
+                    // 蒙皮剔除范围包含攻击和倒地的极限姿态，构图应采用当前待机的实际轮廓。
+                    var posedMesh = new Mesh();
+                    // true 保留此蒙皮模型的网格局部空间；100倍单位换算的FBX在false时会把该比例先烘入顶点。
+                    try { skinned.BakeMesh(posedMesh, true); posedMesh.RecalculateBounds(); localBounds = posedMesh.bounds; }
+                    finally { if (Application.isPlaying) Destroy(posedMesh); else DestroyImmediate(posedMesh); }
+                }
                 else
                 {
                     MeshFilter filter = renderer.GetComponent<MeshFilter>();
@@ -299,6 +326,14 @@ namespace Defend.Unity
                 }
             }
             return found;
+        }
+
+        private static bool LocallyActive(Transform part, Transform root)
+        {
+            // 舞台为隐藏状态时 activeInHierarchy 为假，构图仍需排除模型内部关闭的枪焰等节点。
+            for (Transform current = part; current != null && current != root; current = current.parent)
+                if (!current.gameObject.activeSelf) return false;
+            return true;
         }
     }
 }

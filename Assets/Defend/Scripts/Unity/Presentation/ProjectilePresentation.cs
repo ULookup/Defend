@@ -15,6 +15,7 @@ namespace Defend.Unity
         {
             public LineRenderer View;
             public RapidProjectileVisual RapidVisual;
+            public DangchenjiProjectileVisual DangchenjiVisual;
             public Vector3 LaunchPosition;
             public BuildingKind Kind;
             public readonly List<ProjectileSnapshot> Segments = new List<ProjectileSnapshot>();
@@ -54,9 +55,12 @@ namespace Defend.Unity
                     flight = new Flight { Kind = segment.TurretKind, View = pool.Get() };
                     if (segment.TurretKind == BuildingKind.Turret)
                         flight.RapidVisual = flight.View.GetComponent<RapidProjectileVisual>();
+                    if (segment.TurretKind == BuildingKind.AreaTurret)
+                        flight.DangchenjiVisual = flight.View.GetComponent<DangchenjiProjectileVisual>();
                     flight.LaunchPosition = new Vector3((float)segment.PreviousX, (float)segment.PreviousY, (float)segment.PreviousZ);
                     flight.View.enabled = false;
                     if (flight.RapidVisual != null) flight.RapidVisual.SetVisible(false);
+                    if (flight.DangchenjiVisual != null) flight.DangchenjiVisual.SetVisible(false);
                     flights.Add(segment.Id, flight);
                 }
                 if (flight.Segments.Count > 0)
@@ -85,6 +89,7 @@ namespace Defend.Unity
                 {
                     flight.View.enabled = false;
                     if (flight.RapidVisual != null) flight.RapidVisual.SetVisible(false);
+                    if (flight.DangchenjiVisual != null) flight.DangchenjiVisual.SetVisible(false);
                     continue;
                 }
                 bool ended = segment.IsEnded && seconds >= segment.EndTime - 1e-9;
@@ -93,8 +98,9 @@ namespace Defend.Unity
                 { retired.Add(pair.Key); continue; }
                 var from = new Vector3((float)segment.PreviousX, (float)segment.PreviousY, (float)segment.PreviousZ);
                 var to = new Vector3((float)segment.X, (float)segment.Y, (float)segment.Z);
-                float progress = segment.EndTime > segment.StartTime ? Mathf.Clamp01((float)((seconds - segment.StartTime) / (segment.EndTime - segment.StartTime))) : 1f;
-                var head = Vector3.Lerp(from, to, progress);
+                // 快照采样权威曲线，避免抛物线在墙顶附近被线性插值画进墙内。
+                segment.SamplePosition(seconds, out double headX, out double headY, out double headZ);
+                var head = new Vector3((float)headX, (float)headY, (float)headZ);
                 Vector3 tail = ended ? from : Vector3.Lerp(from, head, .65f);
                 if (flight.Kind == BuildingKind.Turret)
                 {
@@ -103,16 +109,38 @@ namespace Defend.Unity
                     float length = travelled.magnitude;
                     tail = length > .00001f ? head - travelled / length * Mathf.Min(.48f, length) : head;
                 }
-                if (flight.RapidVisual != null) flight.RapidVisual.SetSegment(tail, head);
+                if (flight.DangchenjiVisual != null) flight.DangchenjiVisual.SetPose(head, to - from, seconds);
+                else if (flight.RapidVisual != null) flight.RapidVisual.SetSegment(tail, head);
                 else
                 {
-                    flight.View.positionCount = 2;
-                    flight.View.SetPosition(0, tail); flight.View.SetPosition(1, head);
+                    if (segment.SplashRadius > 0)
+                    {
+                        double visibleEnd = System.Math.Min(seconds, segment.EndTime);
+                        double visibleStart = ended ? segment.StartTime : segment.StartTime + (visibleEnd - segment.StartTime) * .65;
+                        SetTrajectoryTrail(flight.View, segment, visibleStart, visibleEnd);
+                    }
+                    else
+                    {
+                        flight.View.positionCount = 2;
+                        flight.View.SetPosition(0, tail); flight.View.SetPosition(1, head);
+                    }
                     flight.View.enabled = true;
                 }
                 if (ended && flight.LastVisibleFrame < 0) flight.LastVisibleFrame = Time.frameCount;
             }
             foreach (long id in retired) { var flight = flights[id]; Pool(flight.Kind).Release(flight.View); flights.Remove(id); }
+        }
+        internal static void SetTrajectoryTrail(LineRenderer line, ProjectileSnapshot segment, double fromTime, double toTime)
+        {
+            // 对范围弹的短尾迹也采样同一曲线，不能用整步直线弦穿过墙顶。
+            int count = segment.SplashRadius > 0 ? 5 : 2;
+            line.positionCount = count;
+            for (int index = 0; index < count; index++)
+            {
+                double time = fromTime + (toTime - fromTime) * index / (count - 1);
+                segment.SamplePosition(time, out double x, out double y, out double z);
+                line.SetPosition(index, new Vector3((float)x, (float)y, (float)z));
+            }
         }
         public void ResetSession()
         {

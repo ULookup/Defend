@@ -15,22 +15,37 @@ namespace Defend.Unity
         [SerializeField] private bool industrialModel;
         [SerializeField] private MechanicalEnemyMotion mechanicalMotion;
         [SerializeField] private ReactorEnemyMotion reactorMotion;
+        [SerializeField] private EnemyCombatAnimation combatAnimation;
         [SerializeField] private GameObject selectionMarker;
         public long EnemyId { get; private set; }
-        public void ShowSelection(bool selected) { if (selectionMarker != null) selectionMarker.SetActive(selected); }
+        public bool IsDying { get; private set; }
+        public void ShowSelection(bool selected)
+        {
+            selected &= !IsDying;
+            if (selectionMarker != null) selectionMarker.SetActive(selected);
+            healthBar?.SetSelected(selected);
+        }
         public EnemyKind Kind { get; private set; }
         public Transform ModelRoot => facingRoot;
         private MaterialPropertyBlock bodyProperties;
         private Vector3 facingRestPosition;
         private Quaternion facingRestRotation;
         private bool hasRestPose;
+        private double travelledDistance;
+        private bool moving;
+        private Collider[] selectionColliders;
+        private bool[] colliderEnabledStates;
         
         private HitFlashEffect hitFlashEffect;
         private void Awake()
         {
             hitFlashEffect = GetComponent<HitFlashEffect>();
             if (hitFlashEffect == null) hitFlashEffect = GetComponentInChildren<HitFlashEffect>(true);
+            CacheAnimation();
         }
+        private void CacheAnimation()
+        { if (combatAnimation == null) combatAnimation = GetComponentInChildren<EnemyCombatAnimation>(true); }
+        public void ConfigureCombatAnimation(EnemyCombatAnimation animation) { combatAnimation = animation; }
         public void SetPaused(bool paused) { hitFlashEffect?.SetPaused(paused); }
         private Vector3 previousPosition;
         private Vector3 currentPosition;
@@ -40,12 +55,18 @@ namespace Defend.Unity
         { facingRoot = facing; strikeFlash = strike; }
         public void ResetForReuse()
         {
+            CacheAnimation();
+            IsDying = false; travelledDistance = 0; moving = false;
+            if (selectionColliders != null)
+                for (int index = 0; index < selectionColliders.Length; index++)
+                    if (selectionColliders[index] != null) selectionColliders[index].enabled = colliderEnabledStates[index];
+            combatAnimation?.ResetPose();
             hasPosition = false;
             EnemyId = 0;
             ShowSelection(false);
             healthBar?.ResetState(); hitReaction?.ResetPose();
             hitFlashEffect?.ResetFlash();
-            reactorMotion?.ResetPose();
+            if (combatAnimation == null || !combatAnimation.IsConfigured) reactorMotion?.ResetPose();
             if (facingRoot != null)
             {
                 if (!hasRestPose)
@@ -96,18 +117,24 @@ namespace Defend.Unity
         { previousPosition = previous; currentPosition = current; hasPosition = true; }
         public void ApplyHit(WorldEventSnapshot result)
         {
-            if (result.Kind != WorldEventKind.EnemyHit || result.Amount <= 0) return;
+            if (IsDying || result.Kind != WorldEventKind.EnemyHit || result.Amount <= 0) return;
+            if (combatAnimation != null && combatAnimation.IsConfigured) combatAnimation.Hit(result.Time);
             Vector3 direction = new Vector3((float)result.Hit.DirectionX, 0, (float)result.Hit.DirectionZ);
             if (result.Hit.SplashRadius > 0)
             {
                 Vector3 radial = new Vector3((float)(result.Hit.EnemyX - result.Hit.ExplosionX), 0, (float)(result.Hit.EnemyZ - result.Hit.ExplosionZ));
                 if (radial.sqrMagnitude > .000001f) direction = radial;
             }
-            hitReaction?.Play(direction); hitFlashEffect?.Flash();
+            if (combatAnimation == null || !combatAnimation.IsConfigured) hitReaction?.Play(direction);
+            hitFlashEffect?.Flash();
             ApplyDisplayHealth(result.HealthAfter, result.MaximumHealth);
         }
         public void AdvanceFeedback(float seconds)
-        { healthBar?.AdvanceFeedback(seconds); hitReaction?.AdvanceFeedback(seconds); hitFlashEffect?.AdvanceFeedback(seconds); }
+        {
+            healthBar?.AdvanceFeedback(seconds);
+            if (combatAnimation == null || !combatAnimation.IsConfigured) hitReaction?.AdvanceFeedback(seconds);
+            hitFlashEffect?.AdvanceFeedback(seconds);
+        }
         private void ApplyFacing(EnemyState state, long tick, int ticksPerSecond)
         {
             bool attacking = IsShowingAttack(state, tick, ticksPerSecond);
@@ -127,10 +154,39 @@ namespace Defend.Unity
             facingRoot.localPosition = facingRestPosition + (attacking && !industrialModel ? direction.normalized * 0.16f : Vector3.zero);
         }
 
-        public float AttackRecoverySeconds => reactorMotion == null ? .22f : ReactorEnemyMotion.RecoverySeconds;
+        public float AttackRecoverySeconds => combatAnimation != null && combatAnimation.IsConfigured ?
+            combatAnimation.AttackRecoverySeconds : reactorMotion == null ? .22f : ReactorEnemyMotion.RecoverySeconds;
+        public void SetAnimationMovement(double distance, bool isMoving)
+        { travelledDistance = distance; moving = isMoving; }
         public void SampleAttackMotion(double displayTime, double lastAttackTime, double nextAttackTime,
             bool hasConfirmedAttack, bool preparingAttack)
-        { reactorMotion?.Sample(displayTime, lastAttackTime, nextAttackTime, hasConfirmedAttack, preparingAttack); }
+        {
+            if (combatAnimation != null && combatAnimation.IsConfigured)
+                combatAnimation.Sample(displayTime, travelledDistance, moving, lastAttackTime, nextAttackTime, hasConfirmedAttack, preparingAttack);
+            else reactorMotion?.Sample(displayTime, lastAttackTime, nextAttackTime, hasConfirmedAttack, preparingAttack);
+        }
+
+        public float BeginDeath(double displayTime)
+        {
+            IsDying = true; ShowSelection(false);
+            healthBar?.ResetState();
+            if (healthFill != null) healthFill.gameObject.SetActive(false);
+            hitReaction?.ResetPose(); hitFlashEffect?.ResetFlash();
+            if (strikeFlash != null) strikeFlash.SetActive(false);
+            if (selectionColliders == null)
+            {
+                selectionColliders = GetComponentsInChildren<Collider>(true);
+                colliderEnabledStates = new bool[selectionColliders.Length];
+                for (int index = 0; index < selectionColliders.Length; index++)
+                    colliderEnabledStates[index] = selectionColliders[index].enabled;
+            }
+            foreach (var collider in selectionColliders) if (collider != null) collider.enabled = false;
+            if (combatAnimation == null || !combatAnimation.IsConfigured) return 0;
+            combatAnimation.BeginDeath(displayTime);
+            return combatAnimation.DeathDuration;
+        }
+
+        public void SampleDeath(double displayTime) { combatAnimation?.SampleDeath(displayTime); }
 
         internal static bool IsShowingAttack(EnemyState state, long tick, int ticksPerSecond)
         {
@@ -141,7 +197,11 @@ namespace Defend.Unity
         }
 
         /// <summary>仅平滑表现坐标，不回写敌人的权威位置或攻击距离。</summary>
-        public void Interpolate(float progress) { transform.position = Vector3.Lerp(previousPosition, currentPosition, progress); mechanicalMotion?.ApplyPosition(); }
+        public void Interpolate(float progress)
+        {
+            transform.position = Vector3.Lerp(previousPosition, currentPosition, progress);
+            if (combatAnimation == null || !combatAnimation.IsConfigured) mechanicalMotion?.ApplyPosition();
+        }
     }
 }
 

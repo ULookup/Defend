@@ -271,7 +271,8 @@ namespace Defend.Unity
                     switchScoreRatio: enemySwitchScoreRatio, maximumCandidates: enemyMaximumCandidates,
                     maximumEvaluationsPerTick: enemyMaximumEvaluationsPerTick, maximumPathBuildsPerTick: enemyMaximumPathBuildsPerTick,
                     maximumAdditionalTravelCells: enemyMaximumAdditionalTravelCells, routeImprovementRatio: enemyRouteImprovementRatio, baseDestructionValue: enemyBaseDestructionValue, coreValue: enemyCoreValue,
-                    firepowerValue: enemyFirepowerValue, supplyValue: enemySupplyValue), enemyDefinitions: enemies);
+                    firepowerValue: enemyFirepowerValue, supplyValue: enemySupplyValue), enemyDefinitions: enemies,
+                walls: CreateCampaignWalls());
         }
     }
 }

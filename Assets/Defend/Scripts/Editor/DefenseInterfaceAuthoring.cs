@@ -43,7 +43,8 @@ namespace Defend.Editor
                 RectTransform hud = Full("局内界面", root.transform);
                 bindings["hud"] = hud.gameObject;
                 RectTransform viewport = Full("地图可视区域", hud);
-                viewport.anchorMin = new Vector2(0, .23f); viewport.anchorMax = new Vector2(.73f, .88f);
+                viewport.anchorMin = Vector2.zero; viewport.anchorMax = Vector2.one;
+                viewport.offsetMin = viewport.offsetMax = Vector2.zero;
                 bindings["mapViewport"] = viewport;
 
                 RectTransform header = Box("顶部状态", hud, 0, 0, 1280, 96, Back);
@@ -147,7 +148,7 @@ namespace Defend.Editor
                     "三、能源与电池\n反应堆产生能量，中继器延伸网络。实际到货才进入库存或补充核心护盾；预约不等于到货。电池可同时充放电，经合法线路支援缺能工事，并按储能比例差相互补能。准备、战斗、波次结算持续供能，主动暂停才停止。\n\n" +
                     "四、维修与优先级\n维修价格按缺失耐久向上取整。全部维修先检查总资金，不足则全部不执行。选中炮塔、核心或电池可在准备阶段调整供能优先级。维修不补能源，出售按固定价格返还。\n\n" +
                     "五、敌人与通路\n敌人占据空间，狭路会排队，有空间时可避让。挡路建筑和最终目标分别显示。点击任何敌人可查看实时生命、行动、目标和攻击属性；定位按钮可把镜头移到它的位置。\n\n" +
-                    "六、镜头与暂停\n电脑使用中键拖动与滚轮缩放；触屏使用拖动与双指缩放。点击空白取消选择。空格打开暂停菜单，Esc取消放置或打开暂停。准备暂停时可收起菜单继续布置，开波会解除暂停。\n\n" +
+                    "六、镜头与暂停\n电脑使用中键拖动、滚轮缩放，Q/E旋转，WASD平移，Home返回基地视角；拉近时视角自动降低。触屏使用拖动与双指缩放。点击空白取消选择。空格打开暂停菜单，Esc取消放置或打开暂停。暂停时可收起菜单继续观察；准备阶段还可继续布置，开波会解除暂停。\n\n" +
                     "七、重新开始\n本作不保存进行中的对局。未结束时重新部署或返回开始界面需要确认；结束后可直接重新部署。音量设置会在下次启动保留。", 42, 122, 916, 424, 20);
                 bindings["closeHelp"] = Button("关闭说明", help, font, "返回", 760, 570, 198, 52, out _, true);
 
@@ -177,6 +178,10 @@ namespace Defend.Editor
                 effectsSource.playOnAwake = false; effectsSource.spatialBlend = 0;
                 if (audioData.FindProperty("musicSource") != null) audioData.FindProperty("musicSource").objectReferenceValue = musicSource;
                 if (audioData.FindProperty("effectsSource") != null) audioData.FindProperty("effectsSource").objectReferenceValue = effectsSource;
+                audioData.FindProperty("outgameMusic").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Defend/Content/EmergentDefense/Audio/局外BGM.mp3");
+                audioData.FindProperty("preparationMusic").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Defend/Content/EmergentDefense/Audio/准备阶段BGM.mp3");
+                audioData.FindProperty("combatMusic").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Defend/Content/EmergentDefense/Audio/战斗阶段BGM.mp3");
+                audioData.FindProperty("soundLibrary").objectReferenceValue = AssetDatabase.LoadAssetAtPath<DefenseSoundLibrary>(DefenseSoundLibraryAuthoring.LibraryPath);
                 audioData.ApplyModifiedPropertiesWithoutUndo();
 
                 RectTransform settlement = Page("结算页面", root.transform, bindings, "settlementPage", 760, 660);

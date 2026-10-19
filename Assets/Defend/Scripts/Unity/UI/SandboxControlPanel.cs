@@ -32,6 +32,7 @@ namespace Defend.Unity
         [SerializeField] private WorldCameraViewport cameraViewport;
         [SerializeField] private GameObject spawnMarkerPrefab;
         private readonly List<GameObject> markers = new List<GameObject>();
+        private readonly List<SandboxEntrancePresentation> markerPresentations = new List<SandboxEntrancePresentation>();
         private readonly Dictionary<Button, Image> selectionMarkers = new Dictionary<Button, Image>();
         private readonly List<SandboxEnemyGroup> groups = new List<SandboxEnemyGroup>();
         private readonly List<SandboxSpawnAllocation> allocations = new List<SandboxSpawnAllocation>();
@@ -412,8 +413,23 @@ namespace Defend.Unity
         private void RefreshMarkers()
         {
             int count = session.Battle.SandboxSpawnPoints.Count;
-            while (markers.Count < count) markers.Add(Instantiate(spawnMarkerPrefab));
-            for (int i = 0; i < markers.Count; i++) { bool active = i < count; markers[i].SetActive(active); if (active) { var point = session.Battle.SandboxSpawnPoints[i]; markers[i].transform.position = new Vector3(point.X + .5f, .04f, point.Z + .5f); } }
+            while (markers.Count < count)
+            {
+                var marker = Instantiate(spawnMarkerPrefab);
+                markers.Add(marker);
+                markerPresentations.Add(marker.GetComponent<SandboxEntrancePresentation>());
+            }
+            for (int i = 0; i < markers.Count; i++)
+            {
+                bool active = i < count;
+                if (active)
+                {
+                    var point = session.Battle.SandboxSpawnPoints[i];
+                    markerPresentations[i]?.Initialize(session, point.Id);
+                    markers[i].transform.position = new Vector3(point.X + .5f, .04f, point.Z + .5f);
+                }
+                markers[i].SetActive(active);
+            }
         }
         private void OnDestroy() { foreach (var marker in markers) if (marker != null) Destroy(marker); }
         private static string Number(double value) => value.ToString("0.######", CultureInfo.InvariantCulture);
