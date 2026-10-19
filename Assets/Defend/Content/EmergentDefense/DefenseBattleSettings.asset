@@ -124,16 +124,16 @@ MonoBehaviour:
     maximumLifetimeSeconds: 3
     yawSpeedDegrees: 240
     pitchSpeedDegrees: 180
-    minimumPitchDegrees: -65
+    minimumPitchDegrees: -20
     maximumPitchDegrees: 80
     alignmentToleranceDegrees: 2
     maximumLeadSeconds: 0.6
-    muzzleHeight: 0.56499994
-    muzzleForwardOffset: 0.5209999
-    muzzleRightOffset: 0.00000004554726
-    pivotHeight: 0.56499994
-    pivotForwardOffset: -0.015000045
-    pivotRightOffset: -0.0000000013113456
+    muzzleHeight: 0.72211588
+    muzzleForwardOffset: 0.96308106
+    muzzleRightOffset: 0
+    pivotHeight: 0.7349304
+    pivotForwardOffset: -0.017498286
+    pivotRightOffset: 0
     areaArcHeight: 1.8
     minimumRange: 0
     fireArcHalfDegrees: 180
@@ -156,12 +156,12 @@ MonoBehaviour:
     maximumPitchDegrees: 80
     alignmentToleranceDegrees: 2
     maximumLeadSeconds: 0.6
-    muzzleHeight: 0.5899999
-    muzzleForwardOffset: -0.000000059604645
-    muzzleRightOffset: -5.2108035e-15
-    pivotHeight: 0.48999998
-    pivotForwardOffset: -0.000000059604645
-    pivotRightOffset: -5.2108035e-15
+    muzzleHeight: 1.1136544
+    muzzleForwardOffset: 0.9248996
+    muzzleRightOffset: -9.510510E-17
+    pivotHeight: 1.1136544
+    pivotForwardOffset: 0.80895006
+    pivotRightOffset: -9.9067808E-17
     areaArcHeight: 1.8
     minimumRange: 0
     fireArcHalfDegrees: 180
@@ -197,30 +197,30 @@ MonoBehaviour:
     maximumPierceTargets: 5
     pierceDamageMultiplier: 0.8
   spawnPoints:
-  - {x: 0, y: 10}
-  - {x: 0, y: 30}
-  - {x: 18, y: 39}
-  - {x: 18, y: 0}
+  - {x: 3, y: 10}
+  - {x: 3, y: 30}
+  - {x: 18, y: 36}
+  - {x: 18, y: 3}
   entranceMetadata:
   - displayName: "\u897F\u4FA7\u4E0B\u65B9"
     unlockWave: 1
     previewWaves: 2
-    reservedOrigin: {x: 0, y: 9}
+    reservedOrigin: {x: 2, y: 9}
     reservedSize: {x: 3, y: 3}
   - displayName: "\u897F\u4FA7\u4E0A\u65B9"
     unlockWave: 5
     previewWaves: 2
-    reservedOrigin: {x: 0, y: 29}
+    reservedOrigin: {x: 2, y: 29}
     reservedSize: {x: 3, y: 3}
   - displayName: "\u5317\u4FA7"
     unlockWave: 11
     previewWaves: 2
-    reservedOrigin: {x: 17, y: 37}
+    reservedOrigin: {x: 17, y: 35}
     reservedSize: {x: 3, y: 3}
   - displayName: "\u5357\u4FA7"
     unlockWave: 19
     previewWaves: 2
-    reservedOrigin: {x: 17, y: 0}
+    reservedOrigin: {x: 17, y: 2}
     reservedSize: {x: 3, y: 3}
   blockedCells: []
   maximumBuildings: 100

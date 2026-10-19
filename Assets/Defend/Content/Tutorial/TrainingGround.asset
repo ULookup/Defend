@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c22badba1aec7f840bf42c4957b223fc, type: 3}
+  m_Name: TrainingGround
+  m_EditorClassIdentifier: Defend.Unity::Defend.Unity.CampaignLevelAsset
+  id: new-player-training
+  displayName: "\u5B88\u671B\u8BAD\u7EC3\u573A"
+  description: "\u72EC\u7ACB\u6559\u5B66\u5173\u5361\u3002\u5B66\u4E60\u89C2\u5BDF\u3001\u5EFA\u9020\u3001\u4F9B\u7535\u3001\u8FCE\u654C\u4E0E\u6574\u5907\uFF1B\u901A\u5173\u540E\u89E3\u9501\u7B2C\u4E00\u5173\uFF0C\u6210\u7EE9\u81EA\u52A8\u4FDD\u5B58\u3002"
+  startingCredits: 1800
+  wallVariant: 1
+  coreOrigin: {x: 12, y: 18}
+  battleSettings: {fileID: 11400000, guid: e7533f07e7a1b8f4a8558a9bf335f9ad, type: 2}
+  preview: {fileID: 0}
+  wallRectangles:
+  - x: 10
+    z: 12
+    width: 16
+    depth: 1
+    variant: 1
+  - x: 10
+    z: 26
+    width: 16
+    depth: 1
+    variant: 1

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c22badba1aec7f840bf42c4957b223fc, type: 3}
+  m_Name: Level02
+  m_EditorClassIdentifier: Defend.Unity::Defend.Unity.CampaignLevelAsset
+  id: campaign_02
+  displayName: "\u5206\u6D41\u68C0\u4FEE\u533A"
+  description: "\u4E24\u6761\u7EBF\u5206\u522B\u524D\u63A8\uFF0C\u5C40\u90E8\u4F9B\u80FD\uFF0C\u6E05\u6670\u5212\u5206\u63A5\u654C\u65B9\u5411\u3002\n\u6838\u5FC3\u524D\u65B9\u5408\u9632\uFF0C\u4FDD\u7559\u5357\u5317\u4E24\u4E2A\u63A5\u8FD1\u9762\uFF0C\u4E0D\u5C06\u4E24\u8DEF\u5F3A\u5236\u6536\u6210\u5355\u683C\u51FA\u53E3\u3002"
+  startingCredits: 1300
+  wallVariant: 1
+  coreOrigin: {x: 8, y: 18}
+  battleSettings: {fileID: 11400000, guid: bc2b29552866dcf4ea4a2dfb836f7e79, type: 2}
+  preview: {fileID: 21300000, guid: 526eac765387beb4781a82a299368cb9, type: 3}
+  wallRectangles:
+  - x: 20
+    z: 16
+    width: 8
+    depth: 1
+    variant: 1
+  - x: 16
+    z: 24
+    width: 8
+    depth: 1
+    variant: 1
