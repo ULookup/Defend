@@ -17,17 +17,17 @@ MonoBehaviour:
     shopSprite: {fileID: 21300012, guid: 8347f4f015924e04a84cf33bd0e6f648, type: 3}
     detailSprite: {fileID: 21300000, guid: 8347f4f015924e04a84cf33bd0e6f648, type: 3}
   - kind: 1
-    shopSprite: {fileID: 21300014, guid: 8347f4f015924e04a84cf33bd0e6f648, type: 3}
-    detailSprite: {fileID: 21300002, guid: 8347f4f015924e04a84cf33bd0e6f648, type: 3}
+    shopSprite: {fileID: 21300000, guid: e06ab18353d3a634eb5d30ed31ab281b, type: 3}
+    detailSprite: {fileID: 21300000, guid: 6bc8f42a0e2542345a40a21d6b1f89ac, type: 3}
   - kind: 6
-    shopSprite: {fileID: 21300016, guid: 8347f4f015924e04a84cf33bd0e6f648, type: 3}
-    detailSprite: {fileID: 21300004, guid: 8347f4f015924e04a84cf33bd0e6f648, type: 3}
+    shopSprite: {fileID: 21300000, guid: 4e321e8cac31b45458b22daeefff4757, type: 3}
+    detailSprite: {fileID: 21300000, guid: d8842543c25db6e449ec7d55aa2f5f3a, type: 3}
   - kind: 2
     shopSprite: {fileID: 21300000, guid: 5fac6df2ceedd60498f628a8def5dae1, type: 3}
     detailSprite: {fileID: 21300000, guid: c05d426220769a3439a18e85441e7d7d, type: 3}
   - kind: 4
-    shopSprite: {fileID: 21300000, guid: 6798c5b4a41b32944bd78745daaab49b, type: 3}
-    detailSprite: {fileID: 21300000, guid: 214a40f285bf3f8439a15c32317697cf, type: 3}
+    shopSprite: {fileID: 21300000, guid: 64e72639a4b6a6a47801d07be30c7cce, type: 3}
+    detailSprite: {fileID: 21300000, guid: 400f1481285e0ec42b268a21b4554410, type: 3}
   - kind: 5
     shopSprite: {fileID: 21300000, guid: 54350ce0e17da9747be97e4ed00f7f75, type: 3}
     detailSprite: {fileID: 21300000, guid: 147f88592d7a76a49bb5186d8e698c9e, type: 3}

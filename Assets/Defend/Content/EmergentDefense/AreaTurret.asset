@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Defend.Unity::Defend.Unity.BuildingDefinitionAsset
   kind: 5
   displayName: "\u8361\u5C18\u673A"
-  width: 1
-  depth: 1
+  width: 2
+  depth: 2
   energyCapacity: 24000
   productionPerTick: 0
   consumptionPerTick: 0

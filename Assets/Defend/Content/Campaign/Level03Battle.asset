@@ -1,0 +1,1208 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ea455e01014a354794467f79e502f07, type: 3}
+  m_Name: DefenseBattleSettings
+  m_EditorClassIdentifier: Defend.Unity::Defend.Unity.BattleSettingsAsset
+  campaignWalls:
+  - x: 17.00225
+    z: 12.202775
+    width: 1.9955001
+    depth: 0.59444964
+    height: 1.6000003
+    baseHeight: 0
+  - x: 19.00225
+    z: 12.202775
+    width: 1.9955001
+    depth: 0.59444964
+    height: 1.6000003
+    baseHeight: 0
+  - x: 21.00225
+    z: 12.202775
+    width: 1.9955001
+    depth: 0.59444964
+    height: 1.6000003
+    baseHeight: 0
+  - x: 17.00225
+    z: 27.202776
+    width: 1.9955001
+    depth: 0.59444964
+    height: 1.6000003
+    baseHeight: 0
+  - x: 19.00225
+    z: 27.202776
+    width: 1.9955001
+    depth: 0.59444964
+    height: 1.6000003
+    baseHeight: 0
+  - x: 21.00225
+    z: 27.202776
+    width: 1.9955001
+    depth: 0.59444964
+    height: 1.6000003
+    baseHeight: 0
+  - x: 12.202775
+    z: 17.00225
+    width: 0.59444964
+    depth: 1.9955001
+    height: 1.6000003
+    baseHeight: 0
+  - x: 12.202775
+    z: 19.00225
+    width: 0.59444964
+    depth: 1.9955001
+    height: 1.6000003
+    baseHeight: 0
+  - x: 12.202775
+    z: 21.00225
+    width: 0.59444964
+    depth: 1.9955001
+    height: 1.6000003
+    baseHeight: 0
+  - x: 27.202776
+    z: 17.00225
+    width: 0.59444964
+    depth: 1.9955001
+    height: 1.6000003
+    baseHeight: 0
+  - x: 27.202776
+    z: 19.00225
+    width: 0.59444964
+    depth: 1.9955001
+    height: 1.6000003
+    baseHeight: 0
+  - x: 27.202776
+    z: 21.00225
+    width: 0.59444964
+    depth: 1.9955001
+    height: 1.6000003
+    baseHeight: 0
+  enemyDefinitions:
+  - kind: 0
+    displayName: "\u5DE1\u730E\u8005"
+    description: "\u65E7\u57CE\u7684\u6E05\u969C\u88C5\u7F6E\u4ECD\u6267\u884C\u6570\u767E\u5E74\u524D\u7684\u547D\u4EE4\uFF1B\u6BD4\u8F83\u5168\u56FE\u5DE5\u4E8B\u7684\u4EF7\u503C\u4E0E\u8FDB\u653B\u4EE3\u4EF7\uFF0C\u4E5F\u4F1A\u538B\u5236\u6B63\u5728\u9020\u6210\u4F24\u5BB3\u7684\u70AE\u5854\u3002"
+    baseHealth: 60
+    radius: 0.32
+    speed: 1.8
+    bodyHeight: 1.18
+    attackDamage: 8
+    attackIntervalTicks: 20
+    attackRange: 0.58
+    killReward: 2
+    relayPreference: 1
+    reactorPreference: 1
+    riskWeight: 8
+  - kind: 1
+    displayName: "\u62ED\u51C0\u8005"
+    description: "\u66FE\u7ECF\u7A7F\u884C\u65E7\u57CE\u7684\u6E05\u626B\u866B\u7FA4\uFF0C\u5982\u4ECA\u5FEB\u901F\u6210\u7FA4\u63A5\u8FD1\u8584\u5F31\u5DE5\u4E8B\uFF0C\u6D88\u8017\u9632\u7EBF\u706B\u529B\u4E0E\u50A8\u80FD\u3002"
+    baseHealth: 40
+    radius: 0.22
+    speed: 3.24
+    bodyHeight: 0.8496001
+    attackDamage: 8
+    attackIntervalTicks: 20
+    attackRange: 0.56
+    killReward: 1
+    relayPreference: 1
+    reactorPreference: 1
+    riskWeight: 8
+  - kind: 2
+    displayName: "\u9547\u8F7D\u8005"
+    description: "\u6C89\u91CD\u7684\u78BE\u538B\u88C5\u7F6E\u59CB\u7EC8\u5411\u6838\u5FC3\u63A8\u8FDB\uFF0C\u6BD4\u8F83\u706B\u529B\u5A01\u80C1\u4E0E\u62C6\u9664\u4EE3\u4EF7\uFF0C\u6E05\u9664\u5FC5\u8981\u969C\u788D\u3002"
+    baseHealth: 300
+    radius: 0.46
+    speed: 0.99
+    bodyHeight: 0.4885
+    attackDamage: 24
+    attackIntervalTicks: 20
+    attackRange: 0.64
+    killReward: 6
+    relayPreference: 1
+    reactorPreference: 1
+    riskWeight: 5
+  - kind: 3
+    displayName: "\u62C6\u8FC1\u8005"
+    description: "\u539F\u4E3A\u5207\u65AD\u7EA0\u7F20\u7EBF\u8DEF\u7684\u88C5\u7F6E\uFF0C\u5982\u4ECA\u503E\u5411\u62C6\u9664\u4E2D\u7EE7\u5668\uFF0C\u4E5F\u4F1A\u9009\u62E9\u66F4\u6613\u7834\u574F\u7684\u9AD8\u6536\u76CA\u5DE5\u4E8B\u3002"
+    baseHealth: 95
+    radius: 0.36
+    speed: 1.62
+    bodyHeight: 1.3216
+    attackDamage: 16
+    attackIntervalTicks: 20
+    attackRange: 0.6
+    killReward: 3
+    relayPreference: 5
+    reactorPreference: 1
+    riskWeight: 8
+  - kind: 4
+    displayName: "\u6536\u675F\u8005"
+    description: "\u62D6\u7740\u5C65\u5E26\u4E0E\u56DE\u6536\u6597\u5BFB\u627E\u80FD\u6E90\uFF0C\u503E\u5411\u7834\u574F\u53CD\u5E94\u5806\uFF0C\u5207\u65AD\u771F\u5B9E\u652F\u6491\u9632\u7EBF\u7684\u80FD\u6E90\u6E90\u5934\u3002"
+    baseHealth: 115
+    radius: 0.38
+    speed: 1.44
+    bodyHeight: 0.944
+    attackDamage: 16
+    attackIntervalTicks: 20
+    attackRange: 0.6
+    killReward: 4
+    relayPreference: 1
+    reactorPreference: 5
+    riskWeight: 8
+  turretDefinitions:
+  - kind: 2
+    range: 7
+    damage: 18
+    energyPerShot: 1200
+    cooldownTicks: 6
+    splashRadius: 0
+    projectileSpeed: 20
+    projectileRadius: 0.035
+    maximumFlightDistance: 10
+    maximumLifetimeSeconds: 3
+    yawSpeedDegrees: 240
+    pitchSpeedDegrees: 180
+    minimumPitchDegrees: -65
+    maximumPitchDegrees: 80
+    alignmentToleranceDegrees: 2
+    maximumLeadSeconds: 0.6
+    muzzleHeight: 0.6719998
+    muzzleForwardOffset: 1.084
+    muzzleRightOffset: 0
+    pivotHeight: 0.516
+    pivotForwardOffset: -0.16799992
+    pivotRightOffset: 0
+    areaArcHeight: 1.8
+    minimumRange: 0
+    fireArcHalfDegrees: 180
+    chargeTicks: 0
+    maximumPierceTargets: 1
+    pierceDamageMultiplier: 1
+  - kind: 4
+    range: 9
+    damage: 130
+    energyPerShot: 8000
+    cooldownTicks: 40
+    splashRadius: 0
+    projectileSpeed: 20
+    projectileRadius: 0.035
+    maximumFlightDistance: 12
+    maximumLifetimeSeconds: 3
+    yawSpeedDegrees: 240
+    pitchSpeedDegrees: 180
+    minimumPitchDegrees: -20
+    maximumPitchDegrees: 80
+    alignmentToleranceDegrees: 2
+    maximumLeadSeconds: 0.6
+    muzzleHeight: 0.72211588
+    muzzleForwardOffset: 0.96308106
+    muzzleRightOffset: 0
+    pivotHeight: 0.7349304
+    pivotForwardOffset: -0.017498286
+    pivotRightOffset: 0
+    areaArcHeight: 1.8
+    minimumRange: 0
+    fireArcHalfDegrees: 180
+    chargeTicks: 0
+    maximumPierceTargets: 1
+    pierceDamageMultiplier: 1
+  - kind: 5
+    range: 7.5
+    damage: 42
+    energyPerShot: 6000
+    cooldownTicks: 32
+    splashRadius: 2.4
+    projectileSpeed: 20
+    projectileRadius: 0.035
+    maximumFlightDistance: 10.5
+    maximumLifetimeSeconds: 3
+    yawSpeedDegrees: 240
+    pitchSpeedDegrees: 180
+    minimumPitchDegrees: -65
+    maximumPitchDegrees: 80
+    alignmentToleranceDegrees: 2
+    maximumLeadSeconds: 0.6
+    muzzleHeight: 1.1136544
+    muzzleForwardOffset: 0.9248996
+    muzzleRightOffset: -9.510510E-17
+    pivotHeight: 1.1136544
+    pivotForwardOffset: 0.80895006
+    pivotRightOffset: -9.9067808E-17
+    areaArcHeight: 1.8
+    minimumRange: 0
+    fireArcHalfDegrees: 180
+    chargeTicks: 0
+    maximumPierceTargets: 1
+    pierceDamageMultiplier: 1
+  - kind: 7
+    range: 14
+    damage: 180
+    energyPerShot: 12000
+    cooldownTicks: 72
+    splashRadius: 0
+    projectileSpeed: 20
+    projectileRadius: 0.06
+    maximumFlightDistance: 14
+    maximumLifetimeSeconds: 3
+    yawSpeedDegrees: 35
+    pitchSpeedDegrees: 30
+    minimumPitchDegrees: -12
+    maximumPitchDegrees: 12
+    alignmentToleranceDegrees: 0.35
+    maximumLeadSeconds: 0
+    muzzleHeight: 1.0700002
+    muzzleForwardOffset: 1.7900001
+    muzzleRightOffset: 0.00000015648678
+    pivotHeight: 1.0400004
+    pivotForwardOffset: -0.6200001
+    pivotRightOffset: -0.000000054202122
+    areaArcHeight: 1.8
+    minimumRange: 3.5
+    fireArcHalfDegrees: 25
+    chargeTicks: 24
+    maximumPierceTargets: 5
+    pierceDamageMultiplier: 0.8
+  spawnPoints:
+  - {x: 3, y: 19}
+  - {x: 36, y: 19}
+  - {x: 19, y: 36}
+  - {x: 19, y: 3}
+  entranceMetadata:
+  - displayName: "\u897F\u4FA7\u4F9B\u80FD\u53E3"
+    unlockWave: 1
+    previewWaves: 2
+    reservedOrigin: {x: 2, y: 18}
+    reservedSize: {x: 3, y: 3}
+  - displayName: "\u4E1C\u4FA7\u4F9B\u80FD\u53E3"
+    unlockWave: 1
+    previewWaves: 2
+    reservedOrigin: {x: 35, y: 18}
+    reservedSize: {x: 3, y: 3}
+  - displayName: "\u5317\u4FA7\u63A5\u5165\u6BB5"
+    unlockWave: 3
+    previewWaves: 2
+    reservedOrigin: {x: 18, y: 35}
+    reservedSize: {x: 3, y: 3}
+  - displayName: "\u5357\u4FA7\u63A5\u5165\u6BB5"
+    unlockWave: 7
+    previewWaves: 2
+    reservedOrigin: {x: 18, y: 2}
+    reservedSize: {x: 3, y: 3}
+  blockedCells:
+  - {x: 17, y: 12}
+  - {x: 18, y: 12}
+  - {x: 19, y: 12}
+  - {x: 20, y: 12}
+  - {x: 21, y: 12}
+  - {x: 22, y: 12}
+  - {x: 17, y: 27}
+  - {x: 18, y: 27}
+  - {x: 19, y: 27}
+  - {x: 20, y: 27}
+  - {x: 21, y: 27}
+  - {x: 22, y: 27}
+  - {x: 12, y: 17}
+  - {x: 12, y: 18}
+  - {x: 12, y: 19}
+  - {x: 12, y: 20}
+  - {x: 12, y: 21}
+  - {x: 12, y: 22}
+  - {x: 27, y: 17}
+  - {x: 27, y: 18}
+  - {x: 27, y: 19}
+  - {x: 27, y: 20}
+  - {x: 27, y: 21}
+  - {x: 27, y: 22}
+  maximumBuildings: 100
+  maximumLivingEnemies: 200
+  enemySpeedCellsPerSecond: 1.2
+  enemyAttackDamage: 10
+  enemyAttackIntervalTicks: 20
+  enableEnemyBehavior: 1
+  enemySensingRadius: 8
+  enemyObservationMemorySeconds: 3
+  enemyEvaluationIntervalSeconds: 0.5
+  enemyMinimumTargetLockSeconds: 3
+  enemySwitchScoreRatio: 1.35
+  enemyRouteImprovementRatio: 0.8
+  enemyBaseDestructionValue: 5
+  enemyCoreValue: 20
+  enemyFirepowerValue: 3
+  enemySupplyValue: 6
+  enemyMaximumCandidates: 6
+  enemyMaximumEvaluationsPerTick: 20
+  enemyMaximumPathBuildsPerTick: 2
+  enemyMaximumAdditionalTravelCells: 6
+  turretRange: 7
+  turretDamage: 20
+  turretEnergyPerShot: 2000
+  turretCooldownTicks: 8
+  shotDisplayTicks: 6
+  waves:
+  - enemyCount: 32
+    enemyHealth: 66
+    spawnIntervalTicks: 1
+    clearReward: 110
+    enemyPattern: 00000000i
+    entranceIndex: -1
+    briefing: "\u7B2C 1 \u6CE2\uFF1A32 \u540D\u654C\u4EBA\uFF0C\u6CE8\u610F\u5404\u5165\u53E3\u7684\u961F\u4F0D\u4E0E\u4F9B\u80FD\u3002"
+    groups:
+    - kind: 0
+      count: 9
+      entranceIndex: 0
+      startTick: 0
+      intervalTicks: 37
+    - kind: 1
+      count: 6
+      entranceIndex: 0
+      startTick: 2
+      intervalTicks: 59
+    - kind: 2
+      count: 1
+      entranceIndex: 0
+      startTick: 4
+      intervalTicks: 295
+    - kind: 0
+      count: 9
+      entranceIndex: 1
+      startTick: 0
+      intervalTicks: 37
+    - kind: 1
+      count: 6
+      entranceIndex: 1
+      startTick: 2
+      intervalTicks: 59
+    - kind: 2
+      count: 1
+      entranceIndex: 1
+      startTick: 4
+      intervalTicks: 295
+    independentGroups: 1
+    plannedSpawnDurationTicks: 300
+  - enemyCount: 40
+    enemyHealth: 70
+    spawnIntervalTicks: 1
+    clearReward: 110
+    enemyPattern: 00000000i
+    entranceIndex: -1
+    briefing: "\u7B2C 2 \u6CE2\uFF1A40 \u540D\u654C\u4EBA\uFF0C\u6CE8\u610F\u5404\u5165\u53E3\u7684\u961F\u4F0D\u4E0E\u4F9B\u80FD\u3002"
+    groups:
+    - kind: 0
+      count: 11
+      entranceIndex: 0
+      startTick: 0
+      intervalTicks: 31
+    - kind: 1
+      count: 6
+      entranceIndex: 0
+      startTick: 2
+      intervalTicks: 63
+    - kind: 2
+      count: 2
+      entranceIndex: 0
+      startTick: 4
+      intervalTicks: 315
+    - kind: 4
+      count: 1
+      entranceIndex: 0
+      startTick: 8
+      intervalTicks: 311
+    - kind: 0
+      count: 11
+      entranceIndex: 1
+      startTick: 0
+      intervalTicks: 31
+    - kind: 1
+      count: 6
+      entranceIndex: 1
+      startTick: 2
+      intervalTicks: 63
+    - kind: 2
+      count: 2
+      entranceIndex: 1
+      startTick: 4
+      intervalTicks: 315
+    - kind: 4
+      count: 1
+      entranceIndex: 1
+      startTick: 8
+      intervalTicks: 311
+    independentGroups: 1
+    plannedSpawnDurationTicks: 320
+  - enemyCount: 44
+    enemyHealth: 74
+    spawnIntervalTicks: 1
+    clearReward: 150
+    enemyPattern: 00000000i
+    entranceIndex: -1
+    briefing: "\u7B2C 3 \u6CE2\uFF1A44 \u540D\u654C\u4EBA\uFF0C\u6CE8\u610F\u5404\u5165\u53E3\u7684\u961F\u4F0D\u4E0E\u4F9B\u80FD\u3002"
+    groups:
+    - kind: 0
+      count: 8
+      entranceIndex: 0
+      startTick: 0
+      intervalTicks: 45
+    - kind: 1
+      count: 4
+      entranceIndex: 0
+      startTick: 2
+      intervalTicks: 105
+    - kind: 2
+      count: 1
+      entranceIndex: 0
+      startTick: 4
+      intervalTicks: 315
+    - kind: 3
+      count: 1
+      entranceIndex: 0
+      startTick: 6
+      intervalTicks: 313
+    - kind: 0
+      count: 8
+      entranceIndex: 1
+      startTick: 0
+      intervalTicks: 45
+    - kind: 1
+      count: 4
+      entranceIndex: 1
+      startTick: 2
+      intervalTicks: 105
+    - kind: 2
+      count: 1
+      entranceIndex: 1
+      startTick: 4
+      intervalTicks: 315
+    - kind: 4
+      count: 1
+      entranceIndex: 1
+      startTick: 8
+      intervalTicks: 311
+    - kind: 0
+      count: 8
+      entranceIndex: 2
+      startTick: 0
+      intervalTicks: 45
+    - kind: 1
+      count: 4
+      entranceIndex: 2
+      startTick: 2
+      intervalTicks: 105
+    - kind: 2
+      count: 2
+      entranceIndex: 2
+      startTick: 4
+      intervalTicks: 315
+    - kind: 3
+      count: 1
+      entranceIndex: 2
+      startTick: 6
+      intervalTicks: 313
+    - kind: 4
+      count: 1
+      entranceIndex: 2
+      startTick: 8
+      intervalTicks: 311
+    independentGroups: 1
+    plannedSpawnDurationTicks: 320
+  - enemyCount: 54
+    enemyHealth: 80
+    spawnIntervalTicks: 1
+    clearReward: 80
+    enemyPattern: 00000000i
+    entranceIndex: -1
+    briefing: "\u7B2C 4 \u6CE2\uFF1A54 \u540D\u654C\u4EBA\uFF0C\u6CE8\u610F\u5404\u5165\u53E3\u7684\u961F\u4F0D\u4E0E\u4F9B\u80FD\u3002"
+    groups:
+    - kind: 0
+      count: 7
+      entranceIndex: 0
+      startTick: 0
+      intervalTicks: 59
+    - kind: 1
+      count: 5
+      entranceIndex: 0
+      startTick: 2
+      intervalTicks: 89
+    - kind: 2
+      count: 2
+      entranceIndex: 0
+      startTick: 4
+      intervalTicks: 355
+    - kind: 3
+      count: 1
+      entranceIndex: 0
+      startTick: 6
+      intervalTicks: 353
+    - kind: 4
+      count: 1
+      entranceIndex: 0
+      startTick: 8
+      intervalTicks: 351
+    - kind: 0
+      count: 7
+      entranceIndex: 1
+      startTick: 0
+      intervalTicks: 59
+    - kind: 1
+      count: 5
+      entranceIndex: 1
+      startTick: 2
+      intervalTicks: 89
+    - kind: 2
+      count: 2
+      entranceIndex: 1
+      startTick: 4
+      intervalTicks: 355
+    - kind: 3
+      count: 1
+      entranceIndex: 1
+      startTick: 6
+      intervalTicks: 353
+    - kind: 4
+      count: 1
+      entranceIndex: 1
+      startTick: 8
+      intervalTicks: 351
+    - kind: 0
+      count: 8
+      entranceIndex: 2
+      startTick: 0
+      intervalTicks: 51
+    - kind: 1
+      count: 8
+      entranceIndex: 2
+      startTick: 2
+      intervalTicks: 51
+    - kind: 2
+      count: 2
+      entranceIndex: 2
+      startTick: 4
+      intervalTicks: 355
+    - kind: 3
+      count: 2
+      entranceIndex: 2
+      startTick: 6
+      intervalTicks: 353
+    - kind: 4
+      count: 2
+      entranceIndex: 2
+      startTick: 8
+      intervalTicks: 351
+    independentGroups: 1
+    plannedSpawnDurationTicks: 360
+  - enemyCount: 60
+    enemyHealth: 86
+    spawnIntervalTicks: 1
+    clearReward: 80
+    enemyPattern: 00000000i
+    entranceIndex: -1
+    briefing: "\u7B2C 5 \u6CE2\uFF1A60 \u540D\u654C\u4EBA\uFF0C\u6CE8\u610F\u5404\u5165\u53E3\u7684\u961F\u4F0D\u4E0E\u4F9B\u80FD\u3002"
+    groups:
+    - kind: 0
+      count: 6
+      entranceIndex: 0
+      startTick: 0
+      intervalTicks: 79
+    - kind: 1
+      count: 8
+      entranceIndex: 0
+      startTick: 2
+      intervalTicks: 56
+    - kind: 2
+      count: 3
+      entranceIndex: 0
+      startTick: 4
+      intervalTicks: 197
+    - kind: 3
+      count: 1
+      entranceIndex: 0
+      startTick: 6
+      intervalTicks: 393
+    - kind: 4
+      count: 2
+      entranceIndex: 0
+      startTick: 8
+      intervalTicks: 391
+    - kind: 0
+      count: 7
+      entranceIndex: 1
+      startTick: 0
+      intervalTicks: 66
+    - kind: 1
+      count: 8
+      entranceIndex: 1
+      startTick: 2
+      intervalTicks: 56
+    - kind: 2
+      count: 3
+      entranceIndex: 1
+      startTick: 4
+      intervalTicks: 197
+    - kind: 3
+      count: 1
+      entranceIndex: 1
+      startTick: 6
+      intervalTicks: 393
+    - kind: 4
+      count: 1
+      entranceIndex: 1
+      startTick: 8
+      intervalTicks: 391
+    - kind: 0
+      count: 7
+      entranceIndex: 2
+      startTick: 0
+      intervalTicks: 66
+    - kind: 1
+      count: 8
+      entranceIndex: 2
+      startTick: 2
+      intervalTicks: 56
+    - kind: 2
+      count: 2
+      entranceIndex: 2
+      startTick: 4
+      intervalTicks: 395
+    - kind: 3
+      count: 2
+      entranceIndex: 2
+      startTick: 6
+      intervalTicks: 393
+    - kind: 4
+      count: 1
+      entranceIndex: 2
+      startTick: 8
+      intervalTicks: 391
+    independentGroups: 1
+    plannedSpawnDurationTicks: 400
+  - enemyCount: 72
+    enemyHealth: 92
+    spawnIntervalTicks: 1
+    clearReward: 130
+    enemyPattern: 00000000i
+    entranceIndex: -1
+    briefing: "\u7B2C 6 \u6CE2\uFF1A72 \u540D\u654C\u4EBA\uFF0C\u6CE8\u610F\u5404\u5165\u53E3\u7684\u961F\u4F0D\u4E0E\u4F9B\u80FD\u3002"
+    groups:
+    - kind: 0
+      count: 8
+      entranceIndex: 0
+      startTick: 0
+      intervalTicks: 62
+    - kind: 1
+      count: 9
+      entranceIndex: 0
+      startTick: 2
+      intervalTicks: 54
+    - kind: 2
+      count: 3
+      entranceIndex: 0
+      startTick: 4
+      intervalTicks: 217
+    - kind: 3
+      count: 2
+      entranceIndex: 0
+      startTick: 6
+      intervalTicks: 433
+    - kind: 4
+      count: 2
+      entranceIndex: 0
+      startTick: 8
+      intervalTicks: 431
+    - kind: 0
+      count: 8
+      entranceIndex: 1
+      startTick: 0
+      intervalTicks: 62
+    - kind: 1
+      count: 9
+      entranceIndex: 1
+      startTick: 2
+      intervalTicks: 54
+    - kind: 2
+      count: 3
+      entranceIndex: 1
+      startTick: 4
+      intervalTicks: 217
+    - kind: 3
+      count: 2
+      entranceIndex: 1
+      startTick: 6
+      intervalTicks: 433
+    - kind: 4
+      count: 2
+      entranceIndex: 1
+      startTick: 8
+      intervalTicks: 431
+    - kind: 0
+      count: 8
+      entranceIndex: 2
+      startTick: 0
+      intervalTicks: 62
+    - kind: 1
+      count: 10
+      entranceIndex: 2
+      startTick: 2
+      intervalTicks: 48
+    - kind: 2
+      count: 2
+      entranceIndex: 2
+      startTick: 4
+      intervalTicks: 435
+    - kind: 3
+      count: 2
+      entranceIndex: 2
+      startTick: 6
+      intervalTicks: 433
+    - kind: 4
+      count: 2
+      entranceIndex: 2
+      startTick: 8
+      intervalTicks: 431
+    independentGroups: 1
+    plannedSpawnDurationTicks: 440
+  - enemyCount: 76
+    enemyHealth: 96
+    spawnIntervalTicks: 1
+    clearReward: 120
+    enemyPattern: 00000000i
+    entranceIndex: -1
+    briefing: "\u7B2C 7 \u6CE2\uFF1A76 \u540D\u654C\u4EBA\uFF0C\u6CE8\u610F\u5404\u5165\u53E3\u7684\u961F\u4F0D\u4E0E\u4F9B\u80FD\u3002"
+    groups:
+    - kind: 0
+      count: 6
+      entranceIndex: 0
+      startTick: 0
+      intervalTicks: 87
+    - kind: 1
+      count: 6
+      entranceIndex: 0
+      startTick: 2
+      intervalTicks: 87
+    - kind: 2
+      count: 3
+      entranceIndex: 0
+      startTick: 4
+      intervalTicks: 217
+    - kind: 3
+      count: 1
+      entranceIndex: 0
+      startTick: 6
+      intervalTicks: 433
+    - kind: 4
+      count: 2
+      entranceIndex: 0
+      startTick: 8
+      intervalTicks: 431
+    - kind: 0
+      count: 7
+      entranceIndex: 1
+      startTick: 0
+      intervalTicks: 73
+    - kind: 1
+      count: 5
+      entranceIndex: 1
+      startTick: 2
+      intervalTicks: 109
+    - kind: 2
+      count: 2
+      entranceIndex: 1
+      startTick: 4
+      intervalTicks: 435
+    - kind: 3
+      count: 2
+      entranceIndex: 1
+      startTick: 6
+      intervalTicks: 433
+    - kind: 4
+      count: 2
+      entranceIndex: 1
+      startTick: 8
+      intervalTicks: 431
+    - kind: 0
+      count: 7
+      entranceIndex: 2
+      startTick: 0
+      intervalTicks: 73
+    - kind: 1
+      count: 6
+      entranceIndex: 2
+      startTick: 2
+      intervalTicks: 87
+    - kind: 2
+      count: 2
+      entranceIndex: 2
+      startTick: 4
+      intervalTicks: 435
+    - kind: 3
+      count: 1
+      entranceIndex: 2
+      startTick: 6
+      intervalTicks: 433
+    - kind: 4
+      count: 2
+      entranceIndex: 2
+      startTick: 8
+      intervalTicks: 431
+    - kind: 0
+      count: 8
+      entranceIndex: 3
+      startTick: 0
+      intervalTicks: 62
+    - kind: 1
+      count: 7
+      entranceIndex: 3
+      startTick: 2
+      intervalTicks: 72
+    - kind: 2
+      count: 3
+      entranceIndex: 3
+      startTick: 4
+      intervalTicks: 217
+    - kind: 3
+      count: 2
+      entranceIndex: 3
+      startTick: 6
+      intervalTicks: 433
+    - kind: 4
+      count: 2
+      entranceIndex: 3
+      startTick: 8
+      intervalTicks: 431
+    independentGroups: 1
+    plannedSpawnDurationTicks: 440
+  - enemyCount: 84
+    enemyHealth: 104
+    spawnIntervalTicks: 1
+    clearReward: 0
+    enemyPattern: 00000000i
+    entranceIndex: -1
+    briefing: "\u7B2C 8 \u6CE2\uFF1A84 \u540D\u654C\u4EBA\uFF0C\u6CE8\u610F\u5404\u5165\u53E3\u7684\u961F\u4F0D\u4E0E\u4F9B\u80FD\u3002"
+    groups:
+    - kind: 0
+      count: 7
+      entranceIndex: 0
+      startTick: 0
+      intervalTicks: 79
+    - kind: 1
+      count: 8
+      entranceIndex: 0
+      startTick: 2
+      intervalTicks: 68
+    - kind: 2
+      count: 3
+      entranceIndex: 0
+      startTick: 4
+      intervalTicks: 237
+    - kind: 3
+      count: 2
+      entranceIndex: 0
+      startTick: 6
+      intervalTicks: 473
+    - kind: 4
+      count: 2
+      entranceIndex: 0
+      startTick: 8
+      intervalTicks: 471
+    - kind: 0
+      count: 7
+      entranceIndex: 1
+      startTick: 0
+      intervalTicks: 79
+    - kind: 1
+      count: 8
+      entranceIndex: 1
+      startTick: 2
+      intervalTicks: 68
+    - kind: 2
+      count: 3
+      entranceIndex: 1
+      startTick: 4
+      intervalTicks: 237
+    - kind: 3
+      count: 2
+      entranceIndex: 1
+      startTick: 6
+      intervalTicks: 473
+    - kind: 4
+      count: 2
+      entranceIndex: 1
+      startTick: 8
+      intervalTicks: 471
+    - kind: 0
+      count: 7
+      entranceIndex: 2
+      startTick: 0
+      intervalTicks: 79
+    - kind: 1
+      count: 8
+      entranceIndex: 2
+      startTick: 2
+      intervalTicks: 68
+    - kind: 2
+      count: 3
+      entranceIndex: 2
+      startTick: 4
+      intervalTicks: 237
+    - kind: 3
+      count: 2
+      entranceIndex: 2
+      startTick: 6
+      intervalTicks: 473
+    - kind: 4
+      count: 2
+      entranceIndex: 2
+      startTick: 8
+      intervalTicks: 471
+    - kind: 0
+      count: 5
+      entranceIndex: 3
+      startTick: 0
+      intervalTicks: 119
+    - kind: 1
+      count: 6
+      entranceIndex: 3
+      startTick: 2
+      intervalTicks: 95
+    - kind: 2
+      count: 3
+      entranceIndex: 3
+      startTick: 4
+      intervalTicks: 237
+    - kind: 3
+      count: 2
+      entranceIndex: 3
+      startTick: 6
+      intervalTicks: 473
+    - kind: 4
+      count: 2
+      entranceIndex: 3
+      startTick: 8
+      intervalTicks: 471
+    independentGroups: 1
+    plannedSpawnDurationTicks: 480
+  - enemyCount: 96
+    enemyHealth: 114
+    spawnIntervalTicks: 1
+    clearReward: 40
+    enemyPattern: 00000000i
+    entranceIndex: -1
+    briefing: "\u7B2C 9 \u6CE2\uFF1A96 \u540D\u654C\u4EBA\uFF0C\u6CE8\u610F\u5404\u5165\u53E3\u7684\u961F\u4F0D\u4E0E\u4F9B\u80FD\u3002"
+    groups:
+    - kind: 0
+      count: 7
+      entranceIndex: 0
+      startTick: 0
+      intervalTicks: 79
+    - kind: 1
+      count: 8
+      entranceIndex: 0
+      startTick: 2
+      intervalTicks: 68
+    - kind: 2
+      count: 4
+      entranceIndex: 0
+      startTick: 4
+      intervalTicks: 158
+    - kind: 3
+      count: 2
+      entranceIndex: 0
+      startTick: 6
+      intervalTicks: 473
+    - kind: 4
+      count: 3
+      entranceIndex: 0
+      startTick: 8
+      intervalTicks: 235
+    - kind: 0
+      count: 7
+      entranceIndex: 1
+      startTick: 0
+      intervalTicks: 79
+    - kind: 1
+      count: 8
+      entranceIndex: 1
+      startTick: 2
+      intervalTicks: 68
+    - kind: 2
+      count: 4
+      entranceIndex: 1
+      startTick: 4
+      intervalTicks: 158
+    - kind: 3
+      count: 2
+      entranceIndex: 1
+      startTick: 6
+      intervalTicks: 473
+    - kind: 4
+      count: 3
+      entranceIndex: 1
+      startTick: 8
+      intervalTicks: 235
+    - kind: 0
+      count: 7
+      entranceIndex: 2
+      startTick: 0
+      intervalTicks: 79
+    - kind: 1
+      count: 9
+      entranceIndex: 2
+      startTick: 2
+      intervalTicks: 59
+    - kind: 2
+      count: 3
+      entranceIndex: 2
+      startTick: 4
+      intervalTicks: 237
+    - kind: 3
+      count: 3
+      entranceIndex: 2
+      startTick: 6
+      intervalTicks: 236
+    - kind: 4
+      count: 2
+      entranceIndex: 2
+      startTick: 8
+      intervalTicks: 471
+    - kind: 0
+      count: 7
+      entranceIndex: 3
+      startTick: 0
+      intervalTicks: 79
+    - kind: 1
+      count: 9
+      entranceIndex: 3
+      startTick: 2
+      intervalTicks: 59
+    - kind: 2
+      count: 3
+      entranceIndex: 3
+      startTick: 4
+      intervalTicks: 237
+    - kind: 3
+      count: 3
+      entranceIndex: 3
+      startTick: 6
+      intervalTicks: 236
+    - kind: 4
+      count: 2
+      entranceIndex: 3
+      startTick: 8
+      intervalTicks: 471
+    independentGroups: 1
+    plannedSpawnDurationTicks: 480
+  - enemyCount: 88
+    enemyHealth: 102
+    spawnIntervalTicks: 1
+    clearReward: 0
+    enemyPattern: 00000000i
+    entranceIndex: -1
+    briefing: "\u7B2C 10 \u6CE2\uFF1A88 \u540D\u654C\u4EBA\uFF0C\u6CE8\u610F\u5404\u5165\u53E3\u7684\u961F\u4F0D\u4E0E\u4F9B\u80FD\u3002"
+    groups:
+    - kind: 0
+      count: 6
+      entranceIndex: 0
+      startTick: 0
+      intervalTicks: 119
+    - kind: 1
+      count: 8
+      entranceIndex: 0
+      startTick: 2
+      intervalTicks: 85
+    - kind: 2
+      count: 3
+      entranceIndex: 0
+      startTick: 4
+      intervalTicks: 297
+    - kind: 3
+      count: 3
+      entranceIndex: 0
+      startTick: 6
+      intervalTicks: 296
+    - kind: 4
+      count: 2
+      entranceIndex: 0
+      startTick: 8
+      intervalTicks: 591
+    - kind: 0
+      count: 6
+      entranceIndex: 1
+      startTick: 0
+      intervalTicks: 119
+    - kind: 1
+      count: 8
+      entranceIndex: 1
+      startTick: 2
+      intervalTicks: 85
+    - kind: 2
+      count: 3
+      entranceIndex: 1
+      startTick: 4
+      intervalTicks: 297
+    - kind: 3
+      count: 3
+      entranceIndex: 1
+      startTick: 6
+      intervalTicks: 296
+    - kind: 4
+      count: 2
+      entranceIndex: 1
+      startTick: 8
+      intervalTicks: 591
+    - kind: 0
+      count: 6
+      entranceIndex: 2
+      startTick: 0
+      intervalTicks: 119
+    - kind: 1
+      count: 8
+      entranceIndex: 2
+      startTick: 2
+      intervalTicks: 85
+    - kind: 2
+      count: 3
+      entranceIndex: 2
+      startTick: 4
+      intervalTicks: 297
+    - kind: 3
+      count: 2
+      entranceIndex: 2
+      startTick: 6
+      intervalTicks: 593
+    - kind: 4
+      count: 3
+      entranceIndex: 2
+      startTick: 8
+      intervalTicks: 295
+    - kind: 0
+      count: 6
+      entranceIndex: 3
+      startTick: 0
+      intervalTicks: 119
+    - kind: 1
+      count: 8
+      entranceIndex: 3
+      startTick: 2
+      intervalTicks: 85
+    - kind: 2
+      count: 3
+      entranceIndex: 3
+      startTick: 4
+      intervalTicks: 297
+    - kind: 3
+      count: 2
+      entranceIndex: 3
+      startTick: 6
+      intervalTicks: 593
+    - kind: 4
+      count: 3
+      entranceIndex: 3
+      startTick: 8
+      intervalTicks: 295
+    independentGroups: 1
+    plannedSpawnDurationTicks: 600
