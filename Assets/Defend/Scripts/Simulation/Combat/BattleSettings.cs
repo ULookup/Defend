@@ -19,6 +19,7 @@ namespace Defend.Simulation
         public int TurretCooldownTicks { get; }
         public int ShotDisplayTicks { get; }
         public IReadOnlyList<SpawnPoint> BlockedCells { get; }
+        public IReadOnlyList<WallDefinition> Walls { get; }
         public EnemyBehaviorSettings EnemyBehavior { get; }
         private readonly Dictionary<EnemyKind, EnemyDefinition> enemies = new Dictionary<EnemyKind, EnemyDefinition>();
         public EnemyDefinition GetEnemy(EnemyKind kind) => enemies[kind];
@@ -31,7 +32,8 @@ namespace Defend.Simulation
             int turretDamage = 20, long turretEnergyPerShot = 2000, int turretCooldownTicks = 8,
             int shotDisplayTicks = 6, IEnumerable<SpawnPoint> spawnPoints = null,
             IEnumerable<TurretDefinition> turretDefinitions = null, IEnumerable<SpawnPoint> blockedCells = null,
-            EnemyBehaviorSettings enemyBehavior = null, IEnumerable<EnemyDefinition> enemyDefinitions = null)
+            EnemyBehaviorSettings enemyBehavior = null, IEnumerable<EnemyDefinition> enemyDefinitions = null,
+            IEnumerable<WallDefinition> walls = null)
         {
             if (maximumBuildings <= 0 || maximumBuildings > 10000) throw new ArgumentOutOfRangeException(nameof(maximumBuildings));
             if (maximumLivingEnemies <= 0 || maximumLivingEnemies > 10000) throw new ArgumentOutOfRangeException(nameof(maximumLivingEnemies));
@@ -76,6 +78,10 @@ namespace Defend.Simulation
             TurretCooldownTicks = turretCooldownTicks;
             ShotDisplayTicks = shotDisplayTicks;
             BlockedCells = new List<SpawnPoint>(blockedCells ?? Array.Empty<SpawnPoint>()).AsReadOnly();
+            var configuredWalls = new List<WallDefinition>(walls ?? Array.Empty<WallDefinition>());
+            if (configuredWalls.Exists(wall => !wall.IsValid))
+                throw new ArgumentException("墙体必须具有有限且为正的实体尺寸。", nameof(walls));
+            Walls = configuredWalls.AsReadOnly();
             EnemyBehavior = enemyBehavior ?? new EnemyBehaviorSettings();
             foreach (EnemyKind kind in Enum.GetValues(typeof(EnemyKind)))
                 enemies.Add(kind, EnemyDefinition.Default(kind, enemySpeedCellsPerSecond, enemyAttackDamage, enemyAttackIntervalTicks));

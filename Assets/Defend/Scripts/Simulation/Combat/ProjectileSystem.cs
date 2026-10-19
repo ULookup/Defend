@@ -27,6 +27,7 @@ namespace Defend.Simulation
             var projectile = new ProjectileState { Id = nextId++, SourceBuildingId = aim.Turret.Id, SourceGeneration = aim.Turret.LifeGeneration,
                 Weapon = weapon, StartX = aim.MuzzleX, StartY = aim.MuzzleY, StartZ = aim.MuzzleZ,
                 TargetX = aim.TargetX, TargetY = aim.TargetY, TargetZ = aim.TargetZ, LaunchTime = time,
+                ExplosionX = aim.TargetX, ExplosionY = aim.TargetY, ExplosionZ = aim.TargetZ,
                 DirectionX = Math.Sin(yaw) * Math.Cos(pitch), DirectionY = Math.Sin(pitch), DirectionZ = Math.Cos(yaw) * Math.Cos(pitch) };
             if (weapon.IsPiercing)
             {
@@ -61,23 +62,34 @@ namespace Defend.Simulation
                     projectile.Position(contact.Time, out double x, out double y, out double z);
                     battle.ResolveProjectileHit(projectile, contact.Enemy, contact.Time, x, y, z);
                 }
-                else if (contact.Reason == ProjectileEndReason.Explosion)
+                else if (contact.Reason == ProjectileEndReason.Wall)
                 {
-                    var hit = new HitContext(projectile, null, projectile.TargetX, 0, projectile.TargetZ, 0, 0);
-                    world.Record(WorldEventKind.Explosion, projectile.Id, projectile.TargetX, projectile.TargetZ, hit: hit, time: contact.Time);
-                    foreach (var enemy in battle.Enemies)
-                    {
-                        if (!enemy.IsAlive) continue;
-                        enemy.SampleMotion(contact.Time, out double x, out double z);
-                        double dx = x - projectile.TargetX, dz = z - projectile.TargetZ;
-                        if (dx * dx + dz * dz <= projectile.Weapon.SplashRadius * projectile.Weapon.SplashRadius)
-                            battle.ResolveProjectileHit(projectile, enemy, contact.Time, x, enemy.Definition.BodyHeight * .55, z);
-                    }
+                    projectile.Position(contact.Time, out double x, out double y, out double z);
+                    RecordWallHit(projectile, contact.Time, x, y, z);
+                    if (projectile.Weapon.SplashRadius > 0) Explode(projectile, contact.Time, x, y, z);
                 }
+                else if (contact.Reason == ProjectileEndReason.Explosion)
+                    Explode(projectile, contact.Time, projectile.TargetX, projectile.TargetY, projectile.TargetZ);
                 projectile.Ended = contact.Reason != ProjectileEndReason.None;
                 snapshots.Add(new ProjectileSnapshot(projectile, start, contact.Time, contact.Reason));
             }
             active.RemoveAll(projectile => projectile.Ended);
+        }
+        private void Explode(ProjectileState projectile, double time, double x, double y, double z)
+        {
+            // 保留原始落点供轨迹采样，爆炸圆心单独保存；撞墙后不能回到墙后的旧落点结算。
+            projectile.ExplosionX = x; projectile.ExplosionY = y; projectile.ExplosionZ = z;
+            var hit = new HitContext(projectile, null, x, y, z, 0, 0);
+            world.Record(WorldEventKind.Explosion, projectile.Id, x, z, hit: hit, time: time);
+            foreach (var enemy in battle.Enemies)
+            {
+                if (!enemy.IsAlive) continue;
+                enemy.SampleMotion(time, out double enemyX, out double enemyZ);
+                double dx = enemyX - x, dz = enemyZ - z;
+                // 爆炸与磁暴继续按地面半径作用，不附加墙体遮挡或高度衰减。
+                if (dx * dx + dz * dz <= projectile.Weapon.SplashRadius * projectile.Weapon.SplashRadius)
+                    battle.ResolveProjectileHit(projectile, enemy, time, enemyX, enemy.Definition.BodyHeight * .55, enemyZ);
+            }
         }
         internal void Clear(double time)
         {
@@ -101,6 +113,8 @@ namespace Defend.Simulation
             {
                 double landing = projectile.LaunchTime + projectile.Duration;
                 if (landing <= stop) { stop = landing; reason = ProjectileEndReason.Explosion; }
+                if (FirstWallContact(projectile, start, stop, out double wallTime))
+                { stop = wallTime; reason = ProjectileEndReason.Wall; }
                 return new Contact(projectile, null, stop, reason);
             }
             double speed = projectile.Weapon.ProjectileSpeed;
@@ -111,6 +125,8 @@ namespace Defend.Simulation
                 double ground = projectile.LaunchTime - projectile.StartY / (projectile.DirectionY * speed);
                 if (ground <= stop) { stop = ground; reason = ProjectileEndReason.Ground; }
             }
+            if (FirstWallContact(projectile, start, stop, out double wallContact))
+            { stop = wallContact; reason = ProjectileEndReason.Wall; }
             EnemyState nearest = null;
             foreach (var enemy in battle.Enemies)
             {
@@ -120,6 +136,7 @@ namespace Defend.Simulation
                     double from = Math.Max(start, segment.StartTime), to = Math.Min(stop, segment.EndTime);
                     if (to < from) continue;
                     if (!TryContact(projectile, enemy, segment, from, to, out double time)) continue;
+                    if (reason == ProjectileEndReason.Wall && time >= stop - 1e-9) continue;
                     if (time < stop || nearest == null || (time == stop && enemy.Id < nearest.Id))
                     { nearest = enemy; stop = time; reason = ProjectileEndReason.Hit; }
                 }

@@ -23,6 +23,10 @@ namespace Defend.Simulation
             if (projectile.DirectionY < -1e-10)
                 length = Math.Min(length, Math.Max(0, -projectile.StartY / projectile.DirectionY));
 
+            bool wallHit = WallCollision.FirstContact(battle.Settings.Walls, projectile.StartX, projectile.StartY, projectile.StartZ,
+                projectile.DirectionX, projectile.DirectionY, projectile.DirectionZ, 0, 0, length, weapon.ProjectileRadius, out double wallDistance);
+            if (wallHit) length = wallDistance;
+
             rayContacts.Clear();
             foreach (var enemy in battle.Enemies)
             {
@@ -30,7 +34,8 @@ namespace Defend.Simulation
                 double dx = enemy.X - source.CenterX, dz = enemy.Z - source.CenterZ;
                 double distanceSquared = dx * dx + dz * dz;
                 if (distanceSquared < weapon.MinimumRange * weapon.MinimumRange || distanceSquared > weapon.Range * weapon.Range) continue;
-                if (TryRayContact(projectile, enemy, length, out double distance)) rayContacts.Add(new RayContact(enemy, distance));
+                if (TryRayContact(projectile, enemy, length, out double distance) && (!wallHit || distance < wallDistance - 1e-9))
+                    rayContacts.Add(new RayContact(enemy, distance));
             }
             rayContacts.Sort(CompareRayContacts);
             int count = Math.Min(weapon.MaximumPierceTargets, rayContacts.Count);
@@ -49,6 +54,8 @@ namespace Defend.Simulation
                     projectile.StartZ + projectile.DirectionZ * contact.Distance, damage);
                 damage = Math.Max(1, (int)Math.Floor(damage * weapon.PierceDamageMultiplier));
             }
+            if (wallHit && length >= wallDistance - 1e-9)
+                RecordWallHit(projectile, time, projectile.TargetX, projectile.TargetY, projectile.TargetZ);
         }
 
         private static int CompareRayContacts(RayContact first, RayContact second)
