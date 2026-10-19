@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Defend.PhaseFiveEffects::Defend.PhaseFiveEffects.EffectLibrary
   Entries:
   - Id: AreaDischarge
-    Prefab: {fileID: 5913664738059979814, guid: 5e61b34b459e0054383327ba916d6f5b, type: 3}
+    Prefab: {fileID: 6180037750516772256, guid: ef1ca2e833cab494cbf70f9eb7f003a6, type: 3}
   - Id: AreaImpact
-    Prefab: {fileID: 6197269316127857135, guid: 54650832c5894204e8e5f8af3b376441, type: 3}
+    Prefab: {fileID: 3706525666422172733, guid: db4a3a6abc1e409469a2945fca552293, type: 3}
   - Id: BuildingDestruction
     Prefab: {fileID: 3695080884743223628, guid: 1389fb468d5406f429bf437b9fb93037, type: 3}
   - Id: BuildingHit
