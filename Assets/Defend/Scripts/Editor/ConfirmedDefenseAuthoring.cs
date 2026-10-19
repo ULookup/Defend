@@ -34,6 +34,11 @@ namespace Defend.Editor
                 var asset = CloneAsset(source, Root + "/" + source.Kind + ".asset");
                 var data = new SerializedObject(asset);
                 string title = source.Kind == BuildingKind.Turret ? "闪哨机" : source.Kind == BuildingKind.BurstTurret ? "崩岩机" : source.Kind == BuildingKind.AreaTurret ? "荡尘机" : source.DisplayName;
+                if (source.Kind == BuildingKind.BurstTurret || source.Kind == BuildingKind.AreaTurret)
+                {
+                    data.FindProperty("width").intValue = 2;
+                    data.FindProperty("depth").intValue = 2;
+                }
                 data.FindProperty("displayName").stringValue = title; data.ApplyModifiedPropertiesWithoutUndo(); definitions[source.Kind] = asset;
             }
             var battery = AssetDatabase.LoadAssetAtPath<BuildingDefinitionAsset>(Root + "/Battery.asset");
@@ -46,7 +51,22 @@ namespace Defend.Editor
                 string path = Root + "/Buildings/" + source.Definition.Kind + ".prefab";
                 if (AssetDatabase.LoadAssetAtPath<GameObject>(path) == null) AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(source), path);
                 var instance = PrefabUtility.LoadPrefabContents(path);
-                try { var data = new SerializedObject(instance.GetComponent<BuildingView>()); Set(data, "definition", definitions[source.Definition.Kind]); data.ApplyModifiedPropertiesWithoutUndo(); PrefabUtility.SaveAsPrefabAsset(instance, path); }
+                try
+                {
+                    var data = new SerializedObject(instance.GetComponent<BuildingView>());
+                    Set(data, "definition", definitions[source.Definition.Kind]);
+                    if (source.Definition.Kind == BuildingKind.BurstTurret || source.Definition.Kind == BuildingKind.AreaTurret)
+                    {
+                        var selection = (GameObject)data.FindProperty("selectionRoot").objectReferenceValue;
+                        Vector3 selectionScale = selection.transform.localScale;
+                        selection.transform.localScale = new Vector3(2.02f, selectionScale.y, 2.02f);
+                        var collider = instance.GetComponent<BoxCollider>();
+                        Vector3 size = collider.size;
+                        collider.size = new Vector3(Mathf.Max(2, size.x), size.y, Mathf.Max(2, size.z));
+                    }
+                    data.ApplyModifiedPropertiesWithoutUndo();
+                    PrefabUtility.SaveAsPrefabAsset(instance, path);
+                }
                 finally { PrefabUtility.UnloadPrefabContents(instance); }
                 views[source.Definition.Kind] = AssetDatabase.LoadAssetAtPath<GameObject>(path).GetComponent<BuildingView>();
             }
@@ -78,13 +98,18 @@ namespace Defend.Editor
             Set(sessionData, "defenseInterface", controller); sessionData.ApplyModifiedPropertiesWithoutUndo();
             var audio = ui.GetComponentInChildren<DefenseAudio>(true); var audioData = new SerializedObject(audio);
             var music = (AudioSource)audioData.FindProperty("musicSource").objectReferenceValue; var effects = (AudioSource)audioData.FindProperty("effectsSource").objectReferenceValue;
-            music.clip = AssetDatabase.LoadAssetAtPath<AudioClip>(Root + "/Audio/守望环境.wav"); music.loop = true; music.playOnAwake = false;
+            music.clip = null; music.loop = true; music.playOnAwake = false;
+            audioData.FindProperty("outgameMusic").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>(Root + "/Audio/局外BGM.mp3");
+            audioData.FindProperty("preparationMusic").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>(Root + "/Audio/准备阶段BGM.mp3");
+            audioData.FindProperty("combatMusic").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>(Root + "/Audio/战斗阶段BGM.mp3");
+            audioData.FindProperty("soundLibrary").objectReferenceValue = AssetDatabase.LoadAssetAtPath<DefenseSoundLibrary>(DefenseSoundLibraryAuthoring.LibraryPath);
+            audioData.ApplyModifiedPropertiesWithoutUndo();
             effects.clip = AssetDatabase.LoadAssetAtPath<AudioClip>(Root + "/Audio/界面反馈.wav"); effects.playOnAwake = false;
             PrefabUtility.RecordPrefabInstancePropertyModifications(controller); PrefabUtility.RecordPrefabInstancePropertyModifications(music); PrefabUtility.RecordPrefabInstancePropertyModifications(effects);
             // 正式入口唯一启用，开发关卡保留列表但不作为启动入口。
             var buildScenes = new List<EditorBuildSettingsScene> { new EditorBuildSettingsScene(PhaseFiveCombatSceneBuilder.ScenePath, true) };
             foreach (var existing in EditorBuildSettings.scenes) if (existing.path != PhaseFiveCombatSceneBuilder.ScenePath) buildScenes.Add(new EditorBuildSettingsScene(existing.path, false));
-            EditorBuildSettings.scenes = buildScenes.ToArray(); AssetDatabase.SaveAssets(); EditorSceneManager.MarkSceneDirty(scene); EditorSceneManager.SaveScene(scene);
+            EditorBuildSettings.scenes = buildScenes.ToArray(); CombatImpactAuthoring.IntegrateScene(scene); PlacementPreviewAuthoring.IntegrateScene(scene); RapidTurretFootprintAuthoring.IntegrateScene(scene); AssetDatabase.SaveAssets(); EditorSceneManager.MarkSceneDirty(scene); EditorSceneManager.SaveScene(scene);
         }
 
         private static BuildingView MakeBattery(BuildingView source, BuildingDefinitionAsset definition)
@@ -118,10 +143,8 @@ namespace Defend.Editor
                 if (instance.GetComponentInChildren<HitFlashEffect>(true) == null) instance.AddComponent<HitFlashEffect>();
                 instance.name = kind.ToString(); var view = instance.GetComponent<EnemyView>(); var data = new SerializedObject(view);
                 var facing = (Transform)data.FindProperty("facingRoot").objectReferenceValue; facing.localScale *= scale;
-                var badge = CreateMaterial(kind+"Signal",color);
-                Cube(facing,"类别识别灯",new Vector3(0,1.12f,0),new Vector3(.5f,.12f,.32f),badge);
-                if (kind == EnemyKind.Demolisher) Cube(facing,"拆线臂",new Vector3(.45f,.6f,.24f),new Vector3(.16f,.8f,.16f),badge);
-                if (kind == EnemyKind.Converger) Cube(facing,"回收斗",new Vector3(0,.3f,.66f),new Vector3(1.05f,.26f,.4f),badge);
+                if (kind == EnemyKind.Demolisher) Cube(facing,"拆线臂",new Vector3(.45f,.6f,.24f),new Vector3(.16f,.8f,.16f),CreateMaterial(kind+"Signal",color));
+                if (kind == EnemyKind.Converger) Cube(facing,"回收斗",new Vector3(0,.3f,.66f),new Vector3(1.05f,.26f,.4f),CreateMaterial(kind+"Signal",color));
                 var collider = instance.GetComponent<BoxCollider>(); if (collider == null) collider = instance.AddComponent<BoxCollider>(); collider.center = new Vector3(0,.5f,0); collider.size = new Vector3(kind == EnemyKind.Fast ? .55f : .8f,1.1f,kind == EnemyKind.Fast ? .55f : .8f);
                 var marker = new GameObject("选中标记",typeof(LineRenderer)); marker.transform.SetParent(instance.transform,false); var line = marker.GetComponent<LineRenderer>(); line.useWorldSpace=false; line.positionCount=33; line.startWidth=line.endWidth=.035f; line.sharedMaterial=CreateMaterial("Selection",new Color(.35f,1, .8f));
                 for(int i=0;i<33;i++){ float angle=i*Mathf.PI*2/32; line.SetPosition(i,new Vector3(Mathf.Cos(angle)*.57f,.045f,Mathf.Sin(angle)*.57f)); }
@@ -166,3 +189,4 @@ namespace Defend.Editor
         private static void AssignArray(SerializedProperty property,IEnumerable<Object> objects) { var values=objects.ToArray(); property.arraySize=values.Length; for(int i=0;i<values.Length;i++)property.GetArrayElementAtIndex(i).objectReferenceValue=values[i]; }
     }
 }
+

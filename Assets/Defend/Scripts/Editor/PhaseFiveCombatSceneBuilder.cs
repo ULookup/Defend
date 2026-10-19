@@ -88,6 +88,7 @@ namespace Defend.Editor
             camera.fieldOfView = 50;
             camera.transform.rotation = Quaternion.Euler(60, 0, 0);
             camera.transform.position = new Vector3(26, 0, 20) - camera.transform.forward * (8.4f / Mathf.Tan(25 * Mathf.Deg2Rad));
+            CombatImpactAuthoring.IntegrateScene(scene); PlacementPreviewAuthoring.IntegrateScene(scene);
             EditorSceneManager.MarkSceneDirty(scene);
             if (!EditorSceneManager.SaveScene(scene)) throw new InvalidOperationException("工业防线未能保存。");
             AssetDatabase.SaveAssets();
@@ -213,3 +214,4 @@ namespace Defend.Editor
         private static void Set(SerializedObject data, string name, Object value) => data.FindProperty(name).objectReferenceValue = value;
     }
 }
+

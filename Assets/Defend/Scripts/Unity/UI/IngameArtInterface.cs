@@ -601,8 +601,15 @@ namespace Defend.Unity
             var battle = session.Battle;
             if (battle.State != BattleState.WaveCleared && !battle.IsFinished) return;
             bool ordinary = battle.State == BattleState.WaveCleared;
-            if (formalCompletion != null) formalCompletion.text = !session.IsSandbox && battle.State == BattleState.Victory
-                ? "已守住全部 " + battle.Settings.Waves.Count + " 波进攻 · 正式关卡完成" : "战况与防线";
+            if (formalCompletion != null)
+            {
+                bool victory = !session.IsSandbox && battle.State == BattleState.Victory;
+                formalCompletion.text = victory
+                    ? session.IsTutorial ? "教学通关 · 第一关已解锁" : "已守住全部 " + battle.Settings.Waves.Count + " 波进攻 · 正式关卡完成"
+                    : session.IsTutorial ? "守望训练场 · 完整通关后解锁第一关" : "战况与防线";
+                if (victory && (session.IsTutorial || session.IsCampaign))
+                    formalCompletion.text += session.CampaignSavePending ? " · 保存待重试" : " · 记录已保存";
+            }
             SetSprite(settlementHeading, session.IsSandbox && battle.LastWaveWasManuallyStopped ? "本波已手动终止" : ordinary ? "防守完成" : battle.State == BattleState.Victory ? "守望成功" : "防线失守");
             foreach (var row in resultRows) row.root.SetActive(false);
             if (session.IsSandbox)

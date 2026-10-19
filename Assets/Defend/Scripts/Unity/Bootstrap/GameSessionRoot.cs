@@ -49,6 +49,8 @@ namespace Defend.Unity
         public GridInputController GridInput => gridInput;
         public BuildingState SelectedBuilding => World?.FindBuilding(SelectedBuildingId);
         public double PendingSimulationSeconds => clock == null ? 0 : clock.PendingSeconds;
+        /// <summary>现有战场插值时钟，供门体等纯表现消费；暂停、倍速和单步沿用同一时间来源。</summary>
+        public double PresentationTimeSeconds => World == null ? 0 : displayedTick / World.Settings.TicksPerSecond;
 
         private readonly struct InitialPlacement
         {
@@ -96,7 +98,10 @@ namespace Defend.Unity
                 throw new InvalidOperationException("场景缺少必需引用，请在 Inspector 中检查 GameSessionRoot。");
             foreach (BuildingView view in presentation.AuthoredBuildings) initialPlacements.Add(new InitialPlacement(view));
             CreateWorld();
-            if (defenseInterface != null) { defenseInterface.Initialize(this); ReturnToStart(); }
+            if (defenseInterface != null)
+            {
+                defenseInterface.Initialize(this); ReturnToStart();
+            }
         }
 
         private void CreateWorld()
@@ -107,9 +112,18 @@ namespace Defend.Unity
             placementPresentation?.ResetSession();
             List<BuildingDefinition> definitions = new List<BuildingDefinition>();
             foreach (BuildingDefinitionAsset asset in buildingDefinitions) definitions.Add(asset.CreateDefinition());
-            World = new GameWorld(definitions, experimentSettings.CreateWorldSettings(), experimentSettings.CreateEnergySettings(),
+            World = new GameWorld(definitions, ActiveCampaignLevel == null ? experimentSettings.CreateWorldSettings() :
+                ActiveCampaignLevel.CreateWorldSettings(experimentSettings.TicksPerSecond), experimentSettings.CreateEnergySettings(),
+                ActiveCampaignLevel != null ? ActiveCampaignLevel.BattleSettings.CreateSettings() :
                 battleSettings == null ? null : battleSettings.CreateSettings(), sandboxMode);
             clock = new SimulationClock(experimentSettings.TicksPerSecond);
+            if (ActiveCampaignLevel != null)
+            {
+                var core = ActiveCampaignLevel.CoreOrigin;
+                var result = World.Submit(WorldCommand.Place(BuildingKind.Core, core.x, core.y));
+                if (!result.Succeeded) throw new InvalidOperationException("关卡核心无法放置：" + result.Message);
+            }
+            else
             foreach (InitialPlacement placement in initialPlacements)
             {
                 CommandResult result = World.Submit(WorldCommand.Place(placement.Kind, placement.X, placement.Z, placement.OrientationQuarterTurns));
@@ -125,7 +139,7 @@ namespace Defend.Unity
         {
             StopCameraFollow();
             clock = new SimulationClock(experimentSettings.TicksPerSecond);
-            presentation.Initialize(World, experimentSettings);
+            presentation.Initialize(World, experimentSettings, ActiveCampaignLevel != null);
             displayedTick = World.CurrentTick;
             environmentCloudMotion?.ResetSession();
             environmentCloudMotion?.Refresh(displayedTick, experimentSettings.TicksPerSecond);
@@ -154,6 +168,7 @@ namespace Defend.Unity
             SelectedBuildingId = 0;
             SelectedEnemy = null;
             AtStartPage = false;
+            campaignEnvironment?.Present(ActiveCampaignLevel, this);
             lastReportedCommand = World.LastCommandResult.Sequence;
             Feedback = Battle == null ? "选择建筑查看供给，或从左侧购买建筑。" : "部署炮塔与供电线路，准备好后开始第一波。";
             presentation.Refresh(World, SelectedBuildingId, World.CurrentTick);
@@ -175,6 +190,7 @@ namespace Defend.Unity
             bool terminal = Battle != null && (Battle.State == BattleState.Victory || Battle.State == BattleState.Defeat);
             if (terminal && gridInput.HasPlacement) gridInput.Cancel();
             clock.Advance(Time.unscaledDeltaTime, Paused || terminal || AtStartPage, Speed, StepWorld);
+            ObserveCampaignVictory();
             if (SelectedBuilding != null && (!SelectedBuilding.IsAlive || SelectedBuilding.IsSold)) SelectedBuildingId = 0;
             CommandResult result = World.LastCommandResult;
             if (result.Sequence != 0 && result.Sequence != lastReportedCommand)
@@ -359,6 +375,8 @@ namespace Defend.Unity
             presentation.ObserveStep(World);
             battlePresentation?.ObserveStep(World);
             if (combatArt != null && combatArt.IsBoundTo(World)) combatArt.ObserveStep(World);
+            // 本次模拟步若结束关卡，立即保存；单步推进和随后立刻退出同样可靠。
+            if (Battle != null && Battle.State == BattleState.Victory) ObserveCampaignVictory();
         }
         public void Select(long id) { if (id != 0 && (SelectedBuildingId != id || SelectedEnemy != null)) PlayInterfaceSound(DefenseSoundCue.Selection); SelectedEnemy = null; SelectedBuildingId = id; defenseInterface?.RevealDetails(); RefreshPanels(); }
         public void SelectEnemy(EnemyState enemy) { if (enemy != null && SelectedEnemy != enemy) PlayInterfaceSound(DefenseSoundCue.Selection); SelectedBuildingId = 0; SelectedEnemy = enemy; defenseInterface?.RevealDetails(); RefreshPanels(); }
@@ -372,6 +390,7 @@ namespace Defend.Unity
             if (!value && defenseInterface != null && defenseInterface.IsSandboxPanelOpen) return;
             bool changed = Paused != value;
             Paused = value;
+            if (value) FlushProgressForLifecycle();
             defenseAudio?.SetCombatPaused(Paused || AtStartPage);
             if (changed && !AtStartPage) PlayInterfaceSound(value ? DefenseSoundCue.Pause : DefenseSoundCue.Resume);
             RefreshPanels();
@@ -406,8 +425,15 @@ namespace Defend.Unity
             { ShowFeedback("请先完成出生点操作并关闭沙盒配置，再开始本波。"); PlayInterfaceSound(DefenseSoundCue.UiDenied); return; }
             gridInput.Cancel(); Submit(WorldCommand.StartWave()); if (Battle.State == BattleState.Combat) SetPaused(false);
         }
-        public void Restart() { if (World != null) { CreateWorld(); defenseInterface?.SessionStarted(); } }
-        public void ReturnToStart() { StopCameraFollow(); sandboxMode = false; if (!AtStartPage && World != null) CreateWorld(); gridInput.Cancel(); ClearSelection(); AtStartPage = true; Paused = true; defenseInterface?.ShowStart(); }
+        public void Restart() { if (World != null) { FlushProgressForLifecycle(); CreateWorld(); defenseInterface?.SessionStarted(); } }
+        public void ReturnToStart()
+        {
+            FlushProgressForLifecycle();
+            StopCameraFollow(); ResetTutorialSession(); sandboxMode = false; ActiveCampaignLevel = null;
+            if (!AtStartPage && World != null) CreateWorld();
+            gridInput.Cancel(); ClearSelection(); AtStartPage = true; Paused = true;
+            campaignEnvironment?.Present(null, this); defenseInterface?.ShowStart();
+        }
         public void ToggleTestLoad() => Submit(WorldCommand.SetTestLoad(!World.TestLoadEnabled));
         public void SellSelected() { if (SelectedBuilding != null) Submit(WorldCommand.Sell(SelectedBuildingId)); }
         public void DamageSelected() { if (SelectedBuilding != null) Submit(WorldCommand.Damage(SelectedBuildingId, SelectedBuilding.Definition.MaximumHealth)); }

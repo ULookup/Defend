@@ -19,6 +19,7 @@ namespace Defend.Unity
         private BattlePresentation enemies;
         private DefenseAudio audio;
         private long lastTick = -1, sequence, stateTick = -1, stateSelection = -1;
+        private long stateDisplayRevision = -1;
         private double presentationSeconds;
         private double audioDisplaySeconds;
         private bool presentationPaused;
@@ -31,7 +32,6 @@ namespace Defend.Unity
             new Dictionary<(string, long), (Vector3, EffectHandle)>();
         private readonly Dictionary<(string effect, long id), Vector3> wantedStates = new Dictionary<(string, long), Vector3>();
         private readonly List<(string effect, long id)> retiredStates = new List<(string, long)>();
-        private readonly HashSet<long> connected = new HashSet<long>();
         private sealed class EnergyFrame
         {
             public double Time;
@@ -55,6 +55,7 @@ namespace Defend.Unity
         public int ObservedDeliveries { get; private set; }
         public int ObservedDeaths { get; private set; }
         public int ObservedBuildingHits { get; private set; }
+        public int ObservedWallHits { get; private set; }
         public int ObservedRepairs { get; private set; }
         public int ObservedShieldHits { get; private set; }
         public int ObservedShieldBreaks { get; private set; }
@@ -80,11 +81,12 @@ namespace Defend.Unity
                 foreach (long id in aimFrames.Keys) buildings.FindView(id)?.ModelAnchors?.ResetPose();
             presentationPaused = false;
             world = null; lastTick = stateTick = stateSelection = -1; sequence = 0; presentationSeconds = 0;
+            stateDisplayRevision = -1;
             displayQueue.Clear(); energyFrames.Clear(); aimFrames.Clear(); heavyContacts.Clear(); enemyAttacks.Clear();
             displayedRailgunShots.Clear();
             muzzleHandles.Clear(); transferHandles.Clear(); states.Clear(); wantedStates.Clear();
-            travelling.Clear(); retiredTransfers.Clear(); retiredStates.Clear(); connected.Clear();
-            ObservedShots = ObservedDeliveries = ObservedDeaths = ObservedBuildingHits = ObservedRepairs = ObservedShieldHits = ObservedShieldBreaks = 0;
+            travelling.Clear(); retiredTransfers.Clear(); retiredStates.Clear();
+            ObservedShots = ObservedDeliveries = ObservedDeaths = ObservedBuildingHits = ObservedWallHits = ObservedRepairs = ObservedShieldHits = ObservedShieldBreaks = 0;
             PlayedRapidShots = SuppressedEnergyEndpoints = 0;
         }
 
@@ -139,6 +141,7 @@ namespace Defend.Unity
             // 终局后模拟时钟停在最后一步，允许已经发出的短效果完成收尾；主动暂停仍由调用者冻结。
             if (world?.Battle != null && world.Battle.IsFinished && presentationSeconds >= world.CurrentTick / (double)world.Settings.TicksPerSecond)
             {
+                pool?.AdvanceDomains(seconds, 0f);
                 foreach (var laser in railgunLasers.Values) if (laser != null) laser.Advance(seconds);
                 foreach (var id in aimFrames.Keys) buildings.FindView(id)?.ModelAnchors?.RailgunMotion?.Advance(seconds);
             }
@@ -269,6 +272,14 @@ namespace Defend.Unity
                     buildings.ApplyResult(result); return;
                 case WorldEventKind.MagneticStormBurst:
                     return;
+                case WorldEventKind.ProjectileWallHit:
+                    ObservedWallHits++;
+                    // 范围炮由同一个真实碰撞点的爆炸事件表现，避免重复播放冲击与伤害数字。
+                    if (result.Hit.SplashRadius > 0) return;
+                    position = new Vector3((float)result.Hit.X, (float)result.Hit.Y, (float)result.Hit.Z);
+                    effect = result.Hit.TurretKind == BuildingKind.BurstTurret ||
+                        result.Hit.TurretKind == BuildingKind.PiercingRailgun ? "HeavyImpact" : "RapidImpact";
+                    break;
                 case WorldEventKind.EnemyHit:
                     if (result.Amount <= 0) return;
                     position = result.Hit.SplashRadius > 0
@@ -281,9 +292,11 @@ namespace Defend.Unity
                         result.Hit.TurretKind == BuildingKind.BurstTurret ? "HeavyImpact" : "RapidImpact";
                     break;
                 case WorldEventKind.Explosion:
-                    var explosion = Request(new Vector3((float)result.Hit.ExplosionX, 0, (float)result.Hit.ExplosionZ), position);
+                    var explosionPosition = new Vector3((float)result.Hit.ExplosionX,
+                        (float)result.Hit.ExplosionY, (float)result.Hit.ExplosionZ);
+                    var explosion = Request(explosionPosition, explosionPosition);
                     explosion.Radius = (float)result.Hit.SplashRadius;
-                    pool.TryPlay("AreaImpact", explosion, 0, EffectTimeDomain.Feedback); return;
+                    pool.TryPlay("AreaImpact", explosion); return;
                 case WorldEventKind.EnemyDeath:
                     effect = "EnemyDeath"; ObservedDeaths++; enemies?.ApplyResult(result); break;
                 case WorldEventKind.BuildingDestroyed:
@@ -334,6 +347,8 @@ namespace Defend.Unity
             bool matchesSource = sourceView != null && sourceView.gameObject.activeInHierarchy &&
                 sourceView.BuildingId == shot.TurretId && sourceState != null && sourceState.LifeGeneration == shot.SourceGeneration;
             var anchors = matchesSource ? sourceView?.ModelAnchors : null;
+            if (shot.TurretKind == BuildingKind.AreaTurret && matchesSource)
+                sourceView.DangchenjiMotion?.NotifyShot();
             if (shot.TurretKind == BuildingKind.PiercingRailgun)
             {
                 anchors?.RailgunMotion?.NotifyShot();
@@ -359,7 +374,7 @@ namespace Defend.Unity
             var request = Request(source, target, anchors == null ? null : sourceView.VisualRoot);
             request.AuthoritativeAim = true;
             muzzleHandles[shot.TurretId] = pool.TryPlay(prefix == "Area" ? "AreaDischarge" : prefix + "Muzzle",
-                request, 0, EffectTimeDomain.Feedback);
+                request, 0, prefix == "Area" ? EffectTimeDomain.Simulation : EffectTimeDomain.Feedback);
         }
 
         private void PresentResultAudio(WorldEventSnapshot result, Vector3 position)
@@ -371,6 +386,12 @@ namespace Defend.Unity
             if (audioDisplaySeconds - result.Time > .25) return;
             switch (result.Kind)
             {
+                case WorldEventKind.ProjectileWallHit:
+                    if (result.Hit.SplashRadius > 0) return;
+                    position = new Vector3((float)result.Hit.X, (float)result.Hit.Y, (float)result.Hit.Z);
+                    audio.PlayAt(result.Hit.TurretKind == BuildingKind.PiercingRailgun ? DefenseSoundCue.RailgunImpact :
+                        result.Hit.TurretKind == BuildingKind.BurstTurret ? DefenseSoundCue.HeavyImpact : DefenseSoundCue.MetalImpact, position);
+                    break;
                 case WorldEventKind.EnemyHit:
                     if (result.Amount <= 0) return;
                     position = result.Hit.SplashRadius > 0 ? Point(result.Hit.EnemyX, result.Hit.EnemyZ, .35f) :
@@ -379,7 +400,8 @@ namespace Defend.Unity
                         result.Hit.TurretKind == BuildingKind.BurstTurret ? DefenseSoundCue.HeavyImpact : DefenseSoundCue.MetalImpact, position);
                     break;
                 case WorldEventKind.Explosion:
-                    audio.PlayAt(DefenseSoundCue.AreaExplosion, Point(result.Hit.ExplosionX, result.Hit.ExplosionZ, .25f));
+                    audio.PlayAt(DefenseSoundCue.AreaExplosion, new Vector3((float)result.Hit.ExplosionX,
+                        (float)result.Hit.ExplosionY + .25f, (float)result.Hit.ExplosionZ));
                     break;
                 case WorldEventKind.EnemyDeath:
                     audio.PlayAt(result.Hit.EnemyKind == EnemyKind.Heavy || result.Hit.EnemyKind == EnemyKind.Demolisher
@@ -449,24 +471,15 @@ namespace Defend.Unity
 
         private void RefreshStates(long selectedId)
         {
-            if (stateTick == world.CurrentTick && stateSelection == selectedId) return;
+            if (stateTick == world.CurrentTick && stateSelection == selectedId && stateDisplayRevision == buildings.DisplayRevision) return;
             stateTick = world.CurrentTick; stateSelection = selectedId;
+            stateDisplayRevision = buildings.DisplayRevision;
             wantedStates.Clear();
             if (world.Battle != null)
                 foreach (EnemyState enemy in world.Battle.Enemies)
                     if (enemy.Kind == EnemyKind.Heavy && enemy.TargetBuildingId > 0 && wantedStates.Count < 16)
                         Want(enemy.TargetPurpose == EnemyTargetPurpose.SearchLastKnownPosition ? "SearchMarker" : "HeavyLock",
                             enemy.TargetBuildingId, Point(enemy.TargetX, enemy.TargetZ, .05f));
-            connected.Clear();
-            foreach (var building in world.Buildings)
-                if (building.IsAlive && !building.IsSold && building.Kind == BuildingKind.Reactor) connected.Add(building.Id);
-            bool changed = true;
-            while (changed)
-            {
-                changed = false;
-                foreach (var edge in world.Energy.Connections)
-                    if (connected.Contains(edge.SourceId)) changed |= connected.Add(edge.TargetId);
-            }
             AddBuildingState(world.FindBuilding(selectedId), true);
             foreach (var building in world.Buildings) if (building.Id != selectedId) AddBuildingState(building, true);
             foreach (var building in world.Buildings) AddBuildingState(building, false);
@@ -482,17 +495,23 @@ namespace Defend.Unity
 
         private void AddBuildingState(BuildingState building, bool warning)
         {
-            if (building == null || building.IsSold || !building.IsAlive || wantedStates.Count >= (warning ? 24 : 32)) return;
+            if (building == null || wantedStates.Count >= (warning ? 24 : 32)) return;
             var view = buildings.FindView(building.Id);
             if (view == null) return;
+            if (!buildings.TryGetDisplayedEnergyStatus(building.Id, out BuildingEnergyStatus energyStatus) ||
+                energyStatus == BuildingEnergyStatus.NotRequired) return;
+            // 正式局内能源条自行持有状态图标，不再占用有限的状态特效池或重复警告。
+            if (warning && view.HasWorldEnergyBar) return;
             var anchors = view.VisualRoot.GetComponent<CombatModelAnchors>();
             if (anchors == null) return;
             if (warning)
             {
-                if (!connected.Contains(building.Id)) Want("EnergyDisconnected", building.Id, anchors.StatusPosition);
-                else if (building.CombatState == TurretCombatState.WaitingForEnergy) Want("EnergyShortage", building.Id, anchors.StatusPosition);
+                if (energyStatus == BuildingEnergyStatus.Disconnected) Want("EnergyDisconnected", building.Id, anchors.StatusPosition);
+                else if (energyStatus == BuildingEnergyStatus.WaitingForEnergy || energyStatus == BuildingEnergyStatus.SourceDepleted)
+                    Want("EnergyShortage", building.Id, anchors.StatusPosition);
             }
-            else if (connected.Contains(building.Id))
+            else if (energyStatus == BuildingEnergyStatus.Connected || energyStatus == BuildingEnergyStatus.WaitingForEnergy ||
+                energyStatus == BuildingEnergyStatus.BatterySupport)
             {
                 if (building.Kind == BuildingKind.Reactor) Want("ReactorRunning", building.Id, anchors.PortPosition);
                 else if (building.Kind == BuildingKind.Relay && (building.StoredEnergy > 0 || building.ReceivedLastSecond > 0))

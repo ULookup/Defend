@@ -9,9 +9,9 @@ namespace Defend.PhaseFiveEffects.Editor
         {
             BuildStatus("ReactorRunning", EnergyStatusKind.Reactor, 1.05f);
             BuildStatus("RelayRunning", EnergyStatusKind.Relay, 1.5f);
-            BuildEndpoint("PortSend", false, .12f);
+            BuildEndpoint("PortSend", false, .16f);
             BuildTransfer();
-            BuildEndpoint("EnergyArrival", true, .18f);
+            BuildEndpoint("EnergyArrival", true, .24f);
             BuildStatus("EnergyShortage", EnergyStatusKind.Shortage, 1.2f);
             BuildStatus("EnergyDisconnected", EnergyStatusKind.Disconnected, 1.4f);
             BuildStatus("HeavyLock", EnergyStatusKind.HeavyLock, 1f);
@@ -89,33 +89,12 @@ namespace Defend.PhaseFiveEffects.Editor
 
         private static void BuildEndpoint(string id, bool arrival, float lifetime)
         {
-            EnergyEndpointEffect effect = EffectAuthoring.Root<EnergyEndpointEffect>(id, lifetime);
-            Transform geometry = Group(effect.transform, "EndpointGeometry");
-            List<LineRenderer> lines = new List<LineRenderer>();
-            Material cyan = EffectAuthoring.Material("CyanGlow");
-            for (int index = 0; index < 3; index++)
-                lines.Add(EffectAuthoring.Line(geometry, "EndpointArc" + index, cyan, .016f,
-                    Arc(arrival ? .13f : .09f, index * 120f, index * 120f + 82f, 7)));
-            float cross = arrival ? .035f : .022f;
-            lines.Add(EffectAuthoring.Line(geometry, "EndpointCrossHorizontal", EffectAuthoring.Material("WhiteGlow"), .014f,
-                new[] { new Vector3(-cross, .025f, 0), new Vector3(cross, .025f, 0) }));
-            lines.Add(EffectAuthoring.Line(geometry, "EndpointCrossVertical", EffectAuthoring.Material("WhiteGlow"), .014f,
-                new[] { new Vector3(0, .025f, -cross), new Vector3(0, .025f, cross) }));
-            effect.Configure(arrival, geometry, lines.ToArray());
-            EffectAuthoring.Save(effect, "Energy", id);
+            EnergyTransferPolishAuthoring.BuildEndpoint(id, arrival, lifetime);
         }
 
         private static void BuildTransfer()
         {
-            EnergyTransferEffect effect = EffectAuthoring.Root<EnergyTransferEffect>(
-                "EnergyTransfer", .45f, EffectBudgetGroup.EnergyPulse);
-            Transform head = EffectAuthoring.Shape(effect.transform, "EnergyBead", PrimitiveType.Cube,
-                Vector3.zero, new Vector3(.035f, .025f, .075f), EffectAuthoring.Material("WhiteGlow"));
-            LineRenderer trail = EffectAuthoring.Line(effect.transform, "ShortEnergyTrail",
-                EffectAuthoring.Material("CyanGlow"), .018f, new[] { Vector3.zero, Vector3.zero });
-            trail.useWorldSpace = true;
-            effect.Configure(head, trail);
-            EffectAuthoring.Save(effect, "Energy", "EnergyTransfer");
+            EnergyTransferPolishAuthoring.BuildTransfer();
         }
 
         private static void BuildShield(string id, bool breaking, float lifetime)

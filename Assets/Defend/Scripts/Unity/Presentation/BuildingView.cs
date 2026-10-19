@@ -13,10 +13,13 @@ namespace Defend.Unity
         [SerializeField] private GameObject destroyedMarker;
         [SerializeField] private Renderer feedbackRenderer;
         [SerializeField] private HealthBarView healthBar;
+        [SerializeField] private BuildingEnergyBarView worldEnergyBar;
         [SerializeField] private ShieldPresentation shieldPresentation;
         [SerializeField] private CoreReactorMotion coreReactorMotion;
         [SerializeField] private ResonanceMagneticTowerMotion resonanceMotion;
         [SerializeField] private ReactorUpperRotation importedReactorRotation;
+        [SerializeField] private BatteryChargePresentation batteryCharge;
+        [SerializeField] private DangchenjiMechanicalMotion dangchenjiMotion;
         [SerializeField] private Vector3 authoredVisualScale = Vector3.one;
         [SerializeField] private float energyBarHeight = 1.5f;
         private MaterialPropertyBlock feedbackProperties;
@@ -27,19 +30,31 @@ namespace Defend.Unity
         public CoreReactorMotion ReactorMotion => coreReactorMotion;
         public ResonanceMagneticTowerMotion ResonanceMotion => resonanceMotion;
         public ReactorUpperRotation ImportedReactorRotation => importedReactorRotation;
+        public DangchenjiMechanicalMotion DangchenjiMotion => dangchenjiMotion;
         public Transform VisualRoot => visualRoot;
+        public bool HasWorldEnergyBar => worldEnergyBar != null || (shieldPresentation != null && shieldPresentation.HasWorldEnergyBar);
         public CombatModelAnchors ModelAnchors => modelAnchors != null ? modelAnchors : modelAnchors = visualRoot.GetComponent<CombatModelAnchors>();
         public long BuildingId { get; private set; }
         public void ResetForReuse()
         {
             transform.rotation = Quaternion.identity;
-            ModelAnchors?.ResetPose(); healthBar?.ResetState(); shieldPresentation?.ResetState();
+            ModelAnchors?.ResetPose(); healthBar?.ResetState(); worldEnergyBar?.ResetState(); shieldPresentation?.ResetState();
             coreReactorMotion?.ResetPose(); resonanceMotion?.ResetPose(); importedReactorRotation?.ResetPose();
+            batteryCharge?.ResetState();
+            dangchenjiMotion?.ResetPose();
             BuildingId = 0; appliedOrientationQuarterTurns = -1;
         }
         public void Configure(BuildingDefinitionAsset asset, Transform visual, GameObject selection, Transform fill, GameObject destroyed)
         { definition = asset; visualRoot = visual; modelAnchors = null; selectionRoot = selection; energyFill = fill; destroyedMarker = destroyed; }
         public void ConfigureImpact(HealthBarView health, ShieldPresentation shield) { healthBar = health; shieldPresentation = shield; }
+        public void ConfigureWorldEnergyBar(BuildingEnergyBarView bar) { worldEnergyBar = bar; }
+        public void ConfigureBatteryCharge(BatteryChargePresentation charge) { batteryCharge = charge; }
+        public void ConfigureDangchenjiMotion(DangchenjiMechanicalMotion motion) { dangchenjiMotion = motion; }
+        public void ApplyEnergyStatus(BuildingEnergyStatus status)
+        {
+            if (definition.Kind == BuildingKind.Core && shieldPresentation != null) shieldPresentation.SetEnergyStatus(status);
+            else worldEnergyBar?.SetStatus(status);
+        }
         public void Apply(BuildingState state, bool selected, long tick = 0)
         {
             ApplyVisualState(state, selected, tick);
@@ -62,6 +77,9 @@ namespace Defend.Unity
             ApplyPlacementPose(state);
             if (state.Definition.Resonance != null) resonanceMotion?.ConfigureBurstRadius((float)state.Definition.Resonance.BurstRadius);
             selectionRoot.SetActive(selected);
+            healthBar?.SetSelected(selected);
+            worldEnergyBar?.SetSelected(selected);
+            shieldPresentation?.SetSelected(selected);
             if (feedbackRenderer != null)
             {
                 if (feedbackProperties == null) feedbackProperties = new MaterialPropertyBlock();
@@ -78,11 +96,20 @@ namespace Defend.Unity
             coreReactorMotion?.SetAlive(alive);
             resonanceMotion?.SetAlive(alive);
             importedReactorRotation?.SetAlive(alive);
+            batteryCharge?.SetEnergy(storedEnergy, capacity, alive);
+            dangchenjiMotion?.SetEnergy(storedEnergy, capacity, alive);
             visualRoot.localScale = Vector3.Scale(authoredVisualScale, alive ? Vector3.one : new Vector3(1, .25f, 1));
             healthBar?.SetHealth(alive ? health : 0, maxHealth);
             if (definition.Kind == BuildingKind.Core && shieldPresentation != null)
             {
                 shieldPresentation.Apply(storedEnergy, capacity, alive);
+                worldEnergyBar?.SetEnergy(0, 0, false);
+                if (energyFill != null) energyFill.gameObject.SetActive(false);
+            }
+            else if (worldEnergyBar != null)
+            {
+                bool requiresEnergy = definition.Kind != BuildingKind.ResonanceMagneticTower;
+                worldEnergyBar.SetEnergy(storedEnergy, capacity, alive && requiresEnergy);
                 if (energyFill != null) energyFill.gameObject.SetActive(false);
             }
             else if (energyFill != null)
@@ -94,9 +121,9 @@ namespace Defend.Unity
                 energyFill.localPosition = new Vector3((fraction - 1) * .4f, energyBarHeight, 0);
             }
         }
-        public void AdvanceFeedback(float seconds) { healthBar?.AdvanceFeedback(seconds); shieldPresentation?.AdvanceFeedback(seconds); }
+        public void AdvanceFeedback(float seconds) { healthBar?.AdvanceFeedback(seconds); worldEnergyBar?.AdvanceFeedback(seconds); shieldPresentation?.AdvanceFeedback(seconds); }
         public void AdvanceShieldPresentation(float seconds) { shieldPresentation?.AdvancePresentation(seconds); }
-        public void AdvanceModelPresentation(float seconds) { coreReactorMotion?.Advance(seconds); resonanceMotion?.Advance(seconds); importedReactorRotation?.Advance(seconds); }
+        public void AdvanceModelPresentation(float seconds) { coreReactorMotion?.Advance(seconds); resonanceMotion?.Advance(seconds); importedReactorRotation?.Advance(seconds); dangchenjiMotion?.Advance(seconds); }
         public void NotifyShieldHit(Vector3 worldDirection)
         {
             if (definition.Kind == BuildingKind.Core) shieldPresentation?.NotifyHit(worldDirection);

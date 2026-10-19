@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Defend.Simulation;
 
 namespace Defend.Unity
 {
@@ -10,14 +11,19 @@ namespace Defend.Unity
         [SerializeField] private HexShieldVisual hexShield;
         [SerializeField] private CanvasGroup bar;
         [SerializeField] private Image fill;
+        [SerializeField] private BuildingEnergyBarView worldEnergyBar;
         private Camera worldCamera;
         private bool visible;
         public HexShieldVisual Visual => hexShield;
+        public bool HasWorldEnergyBar => worldEnergyBar != null;
         public void Configure(GameObject visual, CanvasGroup group, Image shieldFill)
         {
             shieldVisual = visual; bar = group; fill = shieldFill;
             hexShield = visual == null ? null : visual.GetComponentInChildren<HexShieldVisual>(true);
         }
+        public void ConfigureWorldEnergyBar(BuildingEnergyBarView energyBar) { worldEnergyBar = energyBar; }
+        public void SetSelected(bool selected) => worldEnergyBar?.SetSelected(selected);
+        public void SetEnergyStatus(BuildingEnergyStatus status) => worldEnergyBar?.SetStatus(status);
         public void Apply(long storedEnergy, long capacity, bool alive)
         {
             visible = alive && storedEnergy > 0 && capacity > 0;
@@ -28,7 +34,8 @@ namespace Defend.Unity
                 hexShield.SetEnergy(visible ? fraction : 0);
             }
             if (shieldVisual != null) shieldVisual.SetActive(visible);
-            if (bar != null) { bar.alpha = visible ? 1 : 0; bar.blocksRaycasts = false; bar.interactable = false; }
+            worldEnergyBar?.SetEnergy(storedEnergy, capacity, alive);
+            if (bar != null) { bar.alpha = worldEnergyBar == null && visible ? 1 : 0; bar.blocksRaycasts = false; bar.interactable = false; }
             if (fill != null) fill.fillAmount = fraction;
         }
         public void NotifyHit(Vector3 worldDirection)
@@ -42,10 +49,11 @@ namespace Defend.Unity
         }
         public void AdvanceFeedback(float seconds)
         {
+            worldEnergyBar?.AdvanceFeedback(seconds);
             if (worldCamera == null) worldCamera = Camera.main;
             if (worldCamera != null && bar != null) bar.transform.rotation = worldCamera.transform.rotation;
         }
-        public void ResetState() { Apply(0, 1, false); }
+        public void ResetState() { Apply(0, 1, false); worldEnergyBar?.ResetState(); }
         private void OnDisable() { ResetState(); }
     }
 }

@@ -36,6 +36,8 @@ namespace Defend.Unity
         private ObjectPool<LineRenderer> shotPool;
         private ObjectPool<EnemyTargetView> targetMarkerPool;
         private readonly Dictionary<long, EnemyView> enemyViews = new Dictionary<long, EnemyView>();
+        private readonly List<(EnemyView view, double endTime)> dyingViews = new List<(EnemyView, double)>();
+        public int DyingViewCount => dyingViews.Count;
         private readonly List<LineRenderer> shotViews = new List<LineRenderer>();
         private readonly List<EnemyTargetView> targetMarkers = new List<EnemyTargetView>();
         private readonly Dictionary<(long building, double x, double z, bool searching), int> targetIndices =
@@ -43,6 +45,7 @@ namespace Defend.Unity
         private readonly List<(double x, double z, bool searching, bool attacking)> targetSnapshots =
             new List<(double, double, bool, bool)>();
         private long lastAppliedTick = -1;
+        private double displaySeconds;
         private readonly struct EnemyFacingFrame
         {
             public readonly double Time, AttackTime, AttackDuration, NextAttackTime;
@@ -55,9 +58,9 @@ namespace Defend.Unity
                 NextAttackTime = state.NextAttackTick / (double)ticksPerSecond;
                 AttackDuration = Mathf.Max(1, Mathf.CeilToInt(ticksPerSecond * .22f)) / (double)ticksPerSecond;
                 HasTarget = state.TargetBuildingId > 0;
-                HasAttack = state.CurrentAttackBuildingId > 0 && state.LastAttackTick >= 0 &&
+                HasAttack = state.LastAttackTick >= 0 && state.LastAttackTargetBuildingId > 0;
+                PreparingAttack = HasAttack && state.CurrentAction == EnemyAction.Attacking &&
                     state.LastAttackTargetBuildingId == state.CurrentAttackBuildingId;
-                PreparingAttack = HasAttack && state.CurrentAction == EnemyAction.Attacking;
                 Target = new Vector3((float)state.TargetX, 0, (float)state.TargetZ);
                 AttackTarget = new Vector3((float)state.LastAttackTargetX, 0, (float)state.LastAttackTargetZ);
             }
@@ -66,6 +69,7 @@ namespace Defend.Unity
         {
             public EnemyState Source;
             public double SpawnTime, RemovalTime = double.PositiveInfinity;
+            public double SampledUntil, TravelledDistance;
             public readonly List<EnemyMotionSegment> Segments = new List<EnemyMotionSegment>();
             public readonly List<EnemyFacingFrame> Facing = new List<EnemyFacingFrame>();
         }
@@ -99,13 +103,15 @@ namespace Defend.Unity
             AddVariant(EnemyKind.Converger, convergerEnemyPrefab);
             foreach (EnemyView view in enemyViews.Values) if (view != null) Pool(view.Kind).Release(view);
             enemyViews.Clear();
+            foreach (var dying in dyingViews) if (dying.view != null) Pool(dying.view.Kind).Release(dying.view);
+            dyingViews.Clear();
             foreach (LineRenderer view in shotViews) if (view != null) shotPool.Release(view);
             shotViews.Clear();
             foreach (EnemyTargetView view in targetMarkers) if (view != null) targetMarkerPool.Release(view);
             targetMarkers.Clear();
             targetIndices.Clear();
             targetSnapshots.Clear();
-            lastAppliedTick = -1; displays.Clear(); fallbackResults.Clear(); fallbackPaths.Clear();
+            lastAppliedTick = -1; displaySeconds = 0; displays.Clear(); fallbackResults.Clear(); fallbackPaths.Clear();
         }
 
         public void ObserveStep(GameWorld world)
@@ -120,11 +126,12 @@ namespace Defend.Unity
                 {
                     var view = Pool(state.Kind).Get();
                     enemyViews.Add(state.Id, view);
-                    display = new EnemyDisplay { Source = state, SpawnTime = seconds };
+                    display = new EnemyDisplay { Source = state, SpawnTime = seconds, SampledUntil = seconds };
                     displays.Add(state.Id, display);
                     view.Apply(state, world.CurrentTick, world.Settings.TicksPerSecond, false, false);
-                    view.ApplyDisplayHealth(state.Health, state.MaximumHealth);
                     view.gameObject.SetActive(false);
+                    // 隐藏到出生显示时刻会触发 OnDisable 清理；在隐藏之后写入出生快照。
+                    view.ApplyDisplayHealth(state.Health, state.MaximumHealth);
                 }
                 else enemyViews[state.Id].Apply(state, world.CurrentTick, world.Settings.TicksPerSecond, false, false);
             }
@@ -159,6 +166,8 @@ namespace Defend.Unity
             if (world.Battle == null) return;
             ObserveStep(world);
             double seconds = displayTick / world.Settings.TicksPerSecond;
+            displaySeconds = seconds;
+            RefreshDeaths(seconds);
             foreach (var pair in displays)
             {
                 var display = pair.Value;
@@ -169,15 +178,33 @@ namespace Defend.Unity
                 if (!visible) continue;
                 double positionTime = System.Math.Min(seconds, display.RemovalTime);
                 var segments = display.Segments;
+                // 累加真实分段的已显示部分，低帧率跨越转角也不以首尾直线冒充行进距离。
+                if (positionTime > display.SampledUntil)
+                    foreach (var travelled in segments)
+                    {
+                        double start = System.Math.Max(display.SampledUntil, travelled.StartTime);
+                        double end = System.Math.Min(positionTime, travelled.EndTime);
+                        if (end <= start || travelled.EndTime <= travelled.StartTime) continue;
+                        double dx = travelled.EndX - travelled.StartX, dz = travelled.EndZ - travelled.StartZ;
+                        display.TravelledDistance += System.Math.Sqrt(dx * dx + dz * dz) *
+                            (end - start) / (travelled.EndTime - travelled.StartTime);
+                    }
+                display.SampledUntil = positionTime;
                 while (segments.Count > 1 && segments[0].EndTime < positionTime - 1e-9) segments.RemoveAt(0);
                 if (segments.Count == 0)
-                { view.Interpolate(1f); ApplyFacing(view, display, seconds, Vector3.zero); continue; }
+                {
+                    view.SetAnimationMovement(display.TravelledDistance, false);
+                    view.Interpolate(1f); ApplyFacing(view, display, seconds, Vector3.zero); continue;
+                }
                 var segment = segments[0];
                 segment.Sample(positionTime, out double x, out double z);
                 var position = new Vector3((float)x, 0, (float)z);
                 view.SetDisplayPosition(position, position);
                 view.Interpolate(1f);
-                ApplyFacing(view, display, seconds, new Vector3((float)(segment.EndX - segment.StartX), 0, (float)(segment.EndZ - segment.StartZ)));
+                Vector3 movement = new Vector3((float)(segment.EndX - segment.StartX), 0, (float)(segment.EndZ - segment.StartZ));
+                bool moving = positionTime >= segment.StartTime && positionTime <= segment.EndTime + 1e-9 && movement.sqrMagnitude > .00000001f;
+                view.SetAnimationMovement(display.TravelledDistance, moving);
+                ApplyFacing(view, display, seconds, movement);
             }
             if (!externalCombatEffects)
             {
@@ -193,7 +220,7 @@ namespace Defend.Unity
             if (frames.Count == 0) return;
             var frame = frames[0];
             bool attacking = frame.HasAttack && seconds >= frame.AttackTime && seconds < frame.AttackTime + System.Math.Max(frame.AttackDuration, view.AttackRecoverySeconds);
-            Vector3 direction = attacking ? frame.AttackTarget - view.transform.position :
+            Vector3 direction = attacking || frame.PreparingAttack ? frame.AttackTarget - view.transform.position :
                 movement.sqrMagnitude > .000001f ? movement : frame.HasTarget ? frame.Target - view.transform.position : Vector3.zero;
             view.ApplyDisplayFacing(direction, attacking);
             view.SampleAttackMotion(seconds, frame.AttackTime, frame.NextAttackTime, frame.HasAttack, frame.PreparingAttack);
@@ -211,10 +238,7 @@ namespace Defend.Unity
                 if (seconds < segment.StartTime) continue;
                 while (shotViews.Count <= count) shotViews.Add(shotPool.Get());
                 var line = shotViews[count++];
-                float progress = segment.EndTime > segment.StartTime ? Mathf.Clamp01((float)((seconds - segment.StartTime) / (segment.EndTime - segment.StartTime))) : 1f;
-                var from = new Vector3((float)segment.PreviousX, (float)segment.PreviousY, (float)segment.PreviousZ);
-                var to = new Vector3((float)segment.X, (float)segment.Y, (float)segment.Z);
-                line.positionCount = 2; line.SetPosition(0, from); line.SetPosition(1, Vector3.Lerp(from, to, progress));
+                ProjectilePresentation.SetTrajectoryTrail(line, segment, segment.StartTime, System.Math.Min(seconds, segment.EndTime));
                 if (segment.IsEnded && seconds >= segment.EndTime) completedPaths.Add(pair.Key);
             }
             foreach (long id in completedPaths) fallbackPaths.Remove(id);
@@ -231,11 +255,32 @@ namespace Defend.Unity
             }
             else if (result.Kind == WorldEventKind.EnemyDeath)
             {
-                view.ResetForReuse();
-                Pool(view.Kind).Release(view);
                 enemyViews.Remove(result.SubjectId); displays.Remove(result.SubjectId);
+                Vector3 position = new Vector3((float)result.X, 0, (float)result.Z);
+                view.SetDisplayPosition(position, position); view.Interpolate(1f);
+                float duration = view.BeginDeath(result.Time);
+                if (duration > 0 && displaySeconds < result.Time + duration)
+                {
+                    view.SampleDeath(displaySeconds);
+                    dyingViews.Add((view, result.Time + duration));
+                }
+                else ReleaseView(view);
             }
         }
+
+        private void RefreshDeaths(double seconds)
+        {
+            for (int index = dyingViews.Count - 1; index >= 0; index--)
+            {
+                var dying = dyingViews[index];
+                dying.view.SampleDeath(seconds);
+                if (seconds + 1e-9 < dying.endTime) continue;
+                ReleaseView(dying.view); dyingViews.RemoveAt(index);
+            }
+        }
+
+        private void ReleaseView(EnemyView view)
+        { view.ResetForReuse(); Pool(view.Kind).Release(view); }
 
         public void AdvanceFeedback(float seconds)
         {

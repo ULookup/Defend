@@ -49,7 +49,17 @@ namespace Defend.Unity
         }
         private readonly Queue<BuildingDisplayFrame> displayFrames = new Queue<BuildingDisplayFrame>();
         private readonly Dictionary<long, BuildingDisplayState> displayedBuildings = new Dictionary<long, BuildingDisplayState>();
+        private readonly BuildingEnergyStatusResolver energyStatusResolver = new BuildingEnergyStatusResolver();
         private long lastObservedTick = -1;
+        public long DisplayRevision { get; private set; }
+
+        public bool TryGetDisplayedEnergyStatus(long buildingId, out BuildingEnergyStatus status)
+        {
+            if (displayedBuildings.TryGetValue(buildingId, out BuildingDisplayState state) && state.Alive && !state.Sold)
+            { status = state.EnergyStatus; return true; }
+            status = BuildingEnergyStatus.NotRequired;
+            return false;
+        }
 
         private readonly struct BuildingDisplayState
         {
@@ -57,21 +67,25 @@ namespace Defend.Unity
             public readonly int Health, MaximumHealth;
             public readonly long Energy, Capacity;
             public readonly bool Alive, Sold;
-            public BuildingDisplayState(BuildingState state)
+            public readonly BuildingEnergyStatus EnergyStatus;
+            public BuildingDisplayState(BuildingState state, BuildingEnergyStatus energyStatus)
             {
                 Source = state; Health = state.Health; MaximumHealth = state.Definition.MaximumHealth;
                 Energy = state.StoredEnergy; Capacity = state.Definition.EnergyCapacity;
                 Alive = state.IsAlive; Sold = state.IsSold;
+                EnergyStatus = energyStatus;
             }
             public BuildingDisplayState(BuildingDisplayState state, int health)
             {
                 Source = state.Source; Health = health; MaximumHealth = state.MaximumHealth;
                 Energy = state.Energy; Capacity = state.Capacity; Alive = health > 0; Sold = state.Sold;
+                EnergyStatus = state.EnergyStatus;
             }
             public BuildingDisplayState(BuildingDisplayState state, long energy)
             {
                 Source = state.Source; Health = state.Health; MaximumHealth = state.MaximumHealth;
                 Energy = energy; Capacity = state.Capacity; Alive = state.Alive; Sold = state.Sold;
+                EnergyStatus = state.EnergyStatus;
             }
         }
 
@@ -79,25 +93,27 @@ namespace Defend.Unity
         {
             public readonly long Tick;
             public readonly BuildingDisplayState[] States;
-            public BuildingDisplayFrame(GameWorld world)
+            public BuildingDisplayFrame(GameWorld world, BuildingEnergyStatusResolver statusResolver)
             {
                 Tick = world.CurrentTick;
+                statusResolver.Capture(world);
                 States = new BuildingDisplayState[world.Buildings.Count];
-                for (int index = 0; index < States.Length; index++) States[index] = new BuildingDisplayState(world.Buildings[index]);
+                for (int index = 0; index < States.Length; index++)
+                    States[index] = new BuildingDisplayState(world.Buildings[index], statusResolver.GetStatus(world.Buildings[index].Id));
             }
         }
 
-        /// <summary>保存本步的生命和真实储能；表现延迟期间不再读取可变的生命字段。</summary>
+        /// <summary>保存本步的生命、真实储能与来源状态；表现延迟期间不读取未来状态。</summary>
         public void ObserveStep(GameWorld world)
         {
             if (lastObservedTick == world.CurrentTick) return;
-            displayFrames.Enqueue(new BuildingDisplayFrame(world));
+            displayFrames.Enqueue(new BuildingDisplayFrame(world, energyStatusResolver));
             lastObservedTick = world.CurrentTick;
         }
 
         public void ObserveCommands(GameWorld world)
         {
-            displayFrames.Enqueue(new BuildingDisplayFrame(world));
+            displayFrames.Enqueue(new BuildingDisplayFrame(world, energyStatusResolver));
             Invalidate();
         }
 
@@ -172,7 +188,7 @@ namespace Defend.Unity
             previewRenderer = previewShape;
         }
 
-        public void Initialize(GameWorld world, EnergyExperimentSettings settings)
+        public void Initialize(GameWorld world, EnergyExperimentSettings settings, bool bindCampaignCore = false)
         {
             if (authoredBuildings == null || authoredBuildings.Length == 0)
                 throw new System.InvalidOperationException("初始建筑列表为空，请在编辑模式配置场景中的建筑引用。");
@@ -200,8 +216,10 @@ namespace Defend.Unity
             foreach (BuildingView view in buildingViews.Values)
                 if (!authoredViews.Contains(view)) buildingPools[view.Definition.Kind].Release(view);
             buildingViews.Clear();
-            displayFrames.Clear(); displayedBuildings.Clear(); lastObservedTick = -1;
-            foreach (BuildingState state in world.Buildings) displayedBuildings[state.Id] = new BuildingDisplayState(state);
+            displayFrames.Clear(); displayedBuildings.Clear(); lastObservedTick = -1; DisplayRevision = 0;
+            energyStatusResolver.Clear(); energyStatusResolver.Capture(world);
+            foreach (BuildingState state in world.Buildings)
+                displayedBuildings[state.Id] = new BuildingDisplayState(state, energyStatusResolver.GetStatus(state.Id));
             foreach (EnergyTransferView view in transferViews) transferPool.Release(view);
             transferViews.Clear();
             lastAppliedTick = -1;
@@ -221,6 +239,14 @@ namespace Defend.Unity
                 view.ResetForReuse();
                 view.transform.position = authoredPositions[index];
                 view.gameObject.SetActive(true);
+                if (bindCampaignCore)
+                {
+                    // 复用场景核心的美术实例，但位置与身份始终来自新关卡的模拟世界。
+                    var campaignCore = world.Battle == null ? null : world.FindBuilding(world.Battle.CoreBuildingId);
+                    if (view.Definition.Kind != BuildingKind.Core || campaignCore == null || buildingViews.ContainsKey(campaignCore.Id))
+                    { view.gameObject.SetActive(false); continue; }
+                    view.ApplyPlacementPose(campaignCore); buildingViews.Add(campaignCore.Id, view); continue;
+                }
                 int x = Mathf.FloorToInt(view.transform.position.x);
                 int z = Mathf.FloorToInt(view.transform.position.z);
                 BuildingState state = world.FindBuildingAt(x, z);
@@ -239,6 +265,7 @@ namespace Defend.Unity
             {
                 BuildingDisplayFrame frame = displayFrames.Dequeue();
                 foreach (BuildingDisplayState state in frame.States) displayedBuildings[state.Source.Id] = state;
+                DisplayRevision++;
                 changed = true;
             }
             // 静止建筑与连接只随逻辑状态或选择变化刷新，运输插值仍然每帧执行。
@@ -289,6 +316,7 @@ namespace Defend.Unity
                 if (state.Kind == BuildingKind.PiercingRailgun && world.Battle.State == BattleState.Preparing)
                     view.ModelAnchors?.ApplyAuthoritativeAim(state.FacingDegrees, 0);
                 view.ApplyVitals(state.Id, display.Health, display.MaximumHealth, display.Energy, display.Capacity, display.Alive);
+                view.ApplyEnergyStatus(display.EnergyStatus);
                 view.ResonanceMotion?.SetCombatActive(world.Battle != null && world.Battle.State == BattleState.Combat);
             }
         }
