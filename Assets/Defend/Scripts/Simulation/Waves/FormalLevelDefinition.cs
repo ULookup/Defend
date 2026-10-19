@@ -47,10 +47,10 @@ namespace Defend.Simulation
         };
 
         public static SpawnPoint[] CreateEntrances() => new[] {
-            new SpawnPoint(0,10,"西侧下方",1,2,0,9,3,3),
-            new SpawnPoint(0,30,"西侧上方",5,2,0,29,3,3),
-            new SpawnPoint(18,39,"北侧",11,2,17,37,3,3),
-            new SpawnPoint(18,0,"南侧",19,2,17,0,3,3)
+            new SpawnPoint(3,10,"西侧下方",1,2,2,9,3,3),
+            new SpawnPoint(3,30,"西侧上方",5,2,2,29,3,3),
+            new SpawnPoint(18,36,"北侧",11,2,17,35,3,3),
+            new SpawnPoint(18,3,"南侧",19,2,17,2,3,3)
         };
 
         public static int KillReward(EnemyKind kind)

@@ -54,10 +54,12 @@ namespace Defend.Simulation
             var spawnPoints = new List<SpawnPoint>(settings.SpawnPoints);
             if (spawnPoints.Count == 0)
             {
-                spawnPoints.Add(new SpawnPoint(grid.Width / 2, 0));
-                spawnPoints.Add(new SpawnPoint(grid.Width - 1, grid.Depth / 2));
-                spawnPoints.Add(new SpawnPoint(grid.Width / 2, grid.Depth - 1));
-                spawnPoints.Add(new SpawnPoint(0, grid.Depth / 2));
+                // 正式主甲板及更大地图为门体后移留出空间；小地图保留白盒边缘规则。
+                int entranceInset = grid.Width >= 40 && grid.Depth >= 40 ? 3 : 0;
+                spawnPoints.Add(new SpawnPoint(grid.Width / 2, entranceInset));
+                spawnPoints.Add(new SpawnPoint(grid.Width - 1 - entranceInset, grid.Depth / 2));
+                spawnPoints.Add(new SpawnPoint(grid.Width / 2, grid.Depth - 1 - entranceInset));
+                spawnPoints.Add(new SpawnPoint(entranceInset, grid.Depth / 2));
             }
             foreach (SpawnPoint point in spawnPoints)
             {
@@ -234,12 +236,13 @@ namespace Defend.Simulation
                 aim.PreviousChargeProgress = turret.ChargeProgress;
                 if (weapon.IsPiercing)
                 {
-                    if (turret.ChargeStartedTick < 0 || !aim.CanTarget(weapon, aim.Target))
+                    if (turret.ChargeStartedTick < 0 || !aim.CanTarget(weapon, aim.Target) || !projectiles.CanReachTarget(aim, weapon, aim.Target))
                     {
                         EnemyState farthest = null; double farthestDistance = -1;
                         foreach (var enemy in enemies)
                         {
                             if (!aim.CanTarget(weapon, enemy)) continue;
+                            if (!projectiles.CanReachTarget(aim, weapon, enemy)) continue;
                             double dx = enemy.X - turret.CenterX, dz = enemy.Z - turret.CenterZ, distance = dx * dx + dz * dz;
                             if (distance > farthestDistance || (distance == farthestDistance && enemy.Id < farthest.Id))
                             { farthest = enemy; farthestDistance = distance; }
@@ -258,6 +261,7 @@ namespace Defend.Simulation
                     if (!enemy.IsAlive) continue;
                     double dx = enemy.X - turret.CenterX, dz = enemy.Z - turret.CenterZ, distance = dx * dx + dz * dz;
                     if (distance > nearestDistance || (distance == nearestDistance && nearest != null && enemy.Id > nearest.Id)) continue;
+                    if (!projectiles.CanReachTarget(aim, weapon, enemy)) continue;
                     nearest = enemy; nearestDistance = distance;
                 }
                 aim.Target = nearest;
@@ -297,6 +301,12 @@ namespace Defend.Simulation
                 if (aimIndex >= 0) aimSnapshots[aimIndex] = new TurretAimSnapshot(aim,
                     (double)(tick - 1) / world.Settings.TicksPerSecond, (double)tick / world.Settings.TicksPerSecond);
                 if (!aim.Aligned) { if (!weapon.IsPiercing) CancelCharge(turret); turret.CombatState = TurretCombatState.Aiming; continue; }
+                if (!projectiles.HasClearShot(aim, weapon))
+                {
+                    aim.Target = null; aim.Aligned = false;
+                    if (!weapon.IsPiercing) CancelCharge(turret);
+                    turret.CombatState = TurretCombatState.Searching; continue;
+                }
                 if (weapon.ChargeTicks > 0)
                 {
                     // 蓄力只是准备；储量不足立即中断，完成后仍由正式扣能入口重新核对。

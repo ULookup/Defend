@@ -1,7 +1,7 @@
 namespace Defend.Simulation
 {
     public enum WorldEventKind { EnemyHit, EnemyDeath, BuildingHit, BuildingDestroyed, Repair, ShieldHit, ShieldBreak, Explosion,
-        ResonanceAbsorbed, ResonanceRepair, MagneticStormCharging, MagneticStormBurst }
+        ResonanceAbsorbed, ResonanceRepair, MagneticStormCharging, MagneticStormBurst, ProjectileWallHit }
 
     /// <summary>真实接触的不可变上下文；非弹道事件使用默认值，ProjectileId 为零。</summary>
     public readonly struct HitContext
@@ -10,7 +10,7 @@ namespace Defend.Simulation
         public readonly int SourceGeneration;
         public readonly BuildingKind TurretKind;
         public readonly EnemyKind EnemyKind;
-        public readonly double X, Y, Z, DirectionX, DirectionY, DirectionZ, ExplosionX, ExplosionZ, SplashRadius, EnemyX, EnemyZ;
+        public readonly double X, Y, Z, DirectionX, DirectionY, DirectionZ, ExplosionX, ExplosionY, ExplosionZ, SplashRadius, EnemyX, EnemyZ;
         public readonly int HealthAfter, MaximumHealth;
         public readonly bool IsFatal;
         internal HitContext(ProjectileState projectile, EnemyState enemy, double x, double y, double z, double enemyX, double enemyZ)
@@ -18,7 +18,10 @@ namespace Defend.Simulation
             ProjectileId = projectile.Id; SourceBuildingId = projectile.SourceBuildingId; SourceGeneration = projectile.SourceGeneration;
             TurretKind = projectile.Weapon.Kind; EnemyKind = enemy == null ? default : enemy.Kind;
             X = x; Y = y; Z = z; DirectionX = projectile.DirectionX; DirectionY = projectile.DirectionY; DirectionZ = projectile.DirectionZ;
-            ExplosionX = projectile.TargetX; ExplosionZ = projectile.TargetZ; SplashRadius = projectile.Weapon.SplashRadius;
+            SplashRadius = projectile.Weapon.SplashRadius;
+            ExplosionX = SplashRadius > 0 ? projectile.ExplosionX : projectile.TargetX;
+            ExplosionY = SplashRadius > 0 ? projectile.ExplosionY : projectile.TargetY;
+            ExplosionZ = SplashRadius > 0 ? projectile.ExplosionZ : projectile.TargetZ;
             EnemyX = enemyX; EnemyZ = enemyZ; HealthAfter = enemy?.Health ?? 0; MaximumHealth = enemy?.MaximumHealth ?? 0;
             IsFatal = enemy != null && !enemy.IsAlive;
         }
@@ -31,7 +34,7 @@ namespace Defend.Simulation
             double distance = System.Math.Sqrt(dx * dx + dz * dz);
             DirectionX = distance > .000001 ? dx / distance : 0;
             DirectionY = 0; DirectionZ = distance > .000001 ? dz / distance : 0;
-            ExplosionX = source.CenterX; ExplosionZ = source.CenterZ; SplashRadius = radius;
+            ExplosionX = source.CenterX; ExplosionY = 0; ExplosionZ = source.CenterZ; SplashRadius = radius;
             HealthAfter = enemy.Health; MaximumHealth = enemy.MaximumHealth; IsFatal = !enemy.IsAlive;
         }
     }
